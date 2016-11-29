@@ -2,6 +2,7 @@
 
 namespace Phug\Parser\TokenHandler;
 
+use Phug\Lexer\Token\AttributeToken;
 use Phug\Parser\Node\AttributeNode;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\Node\MixinCallNode;
@@ -15,9 +16,9 @@ class AttributeTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof AssignmentToken))
+        if (!($token instanceof AttributeToken))
             throw new \RuntimeException(
-                "You can only pass Assignment tokens to this token handler"
+                "You can only pass attribute tokens to this token handler"
             );
 
         if (!$state->getCurrentNode())
@@ -32,6 +33,7 @@ class AttributeTokenHandler implements TokenHandlerInterface
         $node->setIsEscaped($token->isEscaped());
         $node->setIsChecked($token->isChecked());
 
+        //Mixin calls take the first expression set as the name as the value
         if ($state->currentNodeIs([MixinCallNode::class]) && ($value === '' || $value === null)) {
 
             $node->setValue($name);
@@ -40,6 +42,6 @@ class AttributeTokenHandler implements TokenHandlerInterface
 
         /** @var ElementNode|MixinCallNode $current */
         $current = $state->getCurrentNode();
-        $current->getAttributes()->appendChild($node);
+        $current->getAttributes()->attach($node);
     }
 }
