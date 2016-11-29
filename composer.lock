@@ -1,0 +1,177 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "0b35f8e5156a1d255059f56c87920ee6",
+    "content-hash": "45e8b009215f150cbbb3056812f5427c",
+    "packages": [
+        {
+            "name": "phug/ast",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phug-php/ast.git",
+                "reference": "e52ce3d5a859c9f79ab3cebc890395736b4a537c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phug-php/ast/zipball/e52ce3d5a859c9f79ab3cebc890395736b4a537c",
+                "reference": "e52ce3d5a859c9f79ab3cebc890395736b4a537c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Torben Koehn",
+                    "email": "torben@talesoft.codes"
+                }
+            ],
+            "homepage": "http://phug-lang.com",
+            "keywords": [
+                "ast",
+                "dialect",
+                "html",
+                "jade",
+                "php",
+                "phtml",
+                "phug",
+                "presentation",
+                "pug",
+                "render",
+                "template",
+                "views"
+            ],
+            "time": "2016-11-29 15:20:01"
+        },
+        {
+            "name": "phug/lexer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phug-php/lexer.git",
+                "reference": "bbf9f2291401f1da76d699b3ff974b51b5582d93"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phug-php/lexer/zipball/bbf9f2291401f1da76d699b3ff974b51b5582d93",
+                "reference": "bbf9f2291401f1da76d699b3ff974b51b5582d93",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0",
+                "phug/reader": "*@dev",
+                "phug/util": "*@dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Torben Koehn",
+                    "email": "torben@talesoft.codes"
+                }
+            ],
+            "homepage": "http://phug-lang.com",
+            "keywords": [
+                "dialect",
+                "html",
+                "jade",
+                "lexer",
+                "php",
+                "phtml",
+                "phug",
+                "presentation",
+                "pug",
+                "render",
+                "template",
+                "views"
+            ],
+            "time": "2016-11-29 15:54:30"
+        },
+        {
+            "name": "phug/util",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phug-php/util.git",
+                "reference": "e83bc76c90c7f4541ec2563e7a43c052215924ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phug-php/util/zipball/e83bc76c90c7f4541ec2563e7a43c052215924ef",
+                "reference": "e83bc76c90c7f4541ec2563e7a43c052215924ef",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Torben Koehn",
+                    "email": "torben@talesoft.codes"
+                }
+            ],
+            "homepage": "http://phug-lang.com",
+            "keywords": [
+                "dialect",
+                "html",
+                "jade",
+                "php",
+                "phtml",
+                "phug",
+                "presentation",
+                "pug",
+                "render",
+                "template",
+                "util",
+                "views"
+            ],
+            "time": "2016-11-29 15:43:28"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "phug/lexer": 20,
+        "phug/util": 20,
+        "phug/ast": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.5.0"
+    },
+    "platform-dev": []
+}
