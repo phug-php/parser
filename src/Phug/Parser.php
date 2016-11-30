@@ -188,7 +188,7 @@ class Parser implements OptionInterface
         ], $options ?: []);
 
         $lexerClassName = $this->options['lexer_class_name'];
-        if (!is_a($lexerClassName, Lexer::class))
+        if (!is_a($lexerClassName, Lexer::class, true))
             throw new ParserException(
                 "Passed lexer class $lexerClassName is ".
                 "not a valid ".Lexer::class
@@ -312,7 +312,6 @@ class Parser implements OptionInterface
         }
 
         $text = str_repeat('  ', $level)."[$text]";
-
         if (count($node) > 0) {
 
             foreach ($node as $child)
