@@ -16,10 +16,11 @@ class TextTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof TextToken))
+        if (!($token instanceof TextToken)) {
             throw new \RuntimeException(
                 "You can only pass text tokens to this token handler"
             );
+        }
 
         /** @var TextNode $node */
         $node = $state->createNode(TextNode::class, $token);
@@ -28,9 +29,9 @@ class TextTokenHandler implements TokenHandlerInterface
         $node->setIsEscaped($token->isEscaped());
 
         if ($state->getCurrentNode()) {
-
             $state->getCurrentNode()->appendChild($node);
-        } else
+        } else {
             $state->setCurrentNode($node);
+        }
     }
 }

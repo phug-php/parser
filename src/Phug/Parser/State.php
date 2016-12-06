@@ -85,8 +85,9 @@ class State implements OptionInterface
         //This will actually work as expected, no node will be skipped
         //HHVM always needs a first ->next() (I don't know if this is a bug or
         //expected behaviour)
-        if (defined('HHVM_VERSION'))
+        if (defined('HHVM_VERSION')) {
             $this->tokens->next();
+        }
     }
 
     /**
@@ -249,11 +250,12 @@ class State implements OptionInterface
         $token = $token ?: $this->getToken();
         $className = get_class($token);
 
-        if (!isset($this->options['token_handlers'][$className]))
+        if (!isset($this->options['token_handlers'][$className])) {
             $this->throwException(
                 "Unexpected token `$className`, no token handler registered",
                 $token
             );
+        }
 
         //TODO: Instances should be cached
         $handler = $this->options['token_handlers'][$className];
@@ -280,12 +282,12 @@ class State implements OptionInterface
     {
 
         while ($this->hasTokens()) {
-
             $token = $this->getToken();
-            if (in_array(get_class($token), $types, true))
+            if (in_array(get_class($token), $types, true)) {
                 yield $token;
-            else
+            } else {
                 break;
+            }
 
             $this->nextToken();
         }
@@ -321,7 +323,6 @@ class State implements OptionInterface
     {
 
         foreach ($this->lookUp($types) as $token) {
-
             return $token;
         }
 
@@ -393,9 +394,11 @@ class State implements OptionInterface
     public function is(Node $node, array $classNames)
     {
 
-        foreach ($classNames as $className)
-            if (is_a($node, $className))
+        foreach ($classNames as $className) {
+            if (is_a($node, $className)) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -403,8 +406,9 @@ class State implements OptionInterface
     public function currentNodeIs(array $classNames)
     {
 
-        if (!$this->currentNode)
+        if (!$this->currentNode) {
             return false;
+        }
 
         return $this->is($this->currentNode, $classNames);
     }
@@ -412,8 +416,9 @@ class State implements OptionInterface
     public function lastNodeIs(array $classNames)
     {
 
-        if (!$this->lastNode)
+        if (!$this->lastNode) {
             return false;
+        }
 
         return $this->is($this->lastNode, $classNames);
     }
@@ -421,8 +426,9 @@ class State implements OptionInterface
     public function parentNodeIs(array $classNames)
     {
 
-        if (!$this->parentNode)
+        if (!$this->parentNode) {
             return false;
+        }
 
         return $this->is($this->parentNode, $classNames);
     }
@@ -447,10 +453,11 @@ class State implements OptionInterface
     public function createNode($className, TokenInterface $token = null)
     {
 
-        if (!is_subclass_of($className, Node::class))
+        if (!is_subclass_of($className, Node::class)) {
             throw new \InvalidArgumentException(
                 "$className is not a valid token class"
             );
+        }
 
         return new $className(
             $token ? $token->getLine() : null,
@@ -464,8 +471,9 @@ class State implements OptionInterface
 
         $this->level++;
 
-        if (!$this->lastNode)
+        if (!$this->lastNode) {
             return $this;
+        }
 
         $this->parentNode = $this->lastNode;
 
@@ -477,11 +485,12 @@ class State implements OptionInterface
 
         $this->level--;
 
-        if (!$this->parentNode->getParent())
+        if (!$this->parentNode->getParent()) {
             $this->throwException(
                 "Failed to outdent: No parent to outdent to. "
                 ."Seems the parser moved out too many levels."
             );
+        }
 
         $this->parentNode = $this->parentNode->getParent();
     }
@@ -489,13 +498,13 @@ class State implements OptionInterface
     public function store()
     {
 
-        if (!$this->currentNode)
+        if (!$this->currentNode) {
             return $this;
+        }
 
 
         //Is there any expansion?
         if ($this->outerNode) {
-
             //Store outer node on current node for expansion
             $this->currentNode->setOuterNode($this->outerNode);
             $this->outerNode = null;

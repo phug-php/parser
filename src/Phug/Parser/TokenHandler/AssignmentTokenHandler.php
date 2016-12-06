@@ -17,19 +17,22 @@ class AssignmentTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof AssignmentToken))
+        if (!($token instanceof AssignmentToken)) {
             throw new \RuntimeException(
                 "You can only pass Assignment tokens to this token handler"
             );
+        }
 
-        if (!$state->getCurrentNode())
+        if (!$state->getCurrentNode()) {
             $state->setCurrentNode($state->createNode(ElementNode::class, $token));
+        }
 
-        if (!$state->currentNodeIs([ElementNode::class, MixinCallNode::class]))
+        if (!$state->currentNodeIs([ElementNode::class, MixinCallNode::class])) {
             $state->throwException(
                 "Assignments can only happen on elements and mixinCalls",
                 $token
             );
+        }
 
         /** @var AssignmentNode $node */
         $node = $state->createNode(AssignmentNode::class, $token);
@@ -40,7 +43,6 @@ class AssignmentTokenHandler implements TokenHandlerInterface
         $current->getAssignments()->attach($node);
 
         if ($state->expectNext([AttributeStartToken::class])) {
-
             $state->setCurrentNode($node);
             //Will trigger iteration of consecutive attribute tokens
             //in AtttributeStartTokenHandler->handleToken with $node as the target ($currentNode in State)

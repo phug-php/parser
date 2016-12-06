@@ -13,10 +13,11 @@ class OutdentTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof OutdentToken))
+        if (!($token instanceof OutdentToken)) {
             throw new \RuntimeException(
                 "You can only pass outdent tokens to this token handler"
             );
+        }
 
         $state->leave();
     }

@@ -14,10 +14,11 @@ class DoctypeTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof DoctypeToken))
+        if (!($token instanceof DoctypeToken)) {
             throw new \RuntimeException(
                 "You can only pass do tokens to this token handler"
             );
+        }
 
         /** @var DoctypeNode $node */
         $node = $state->createNode(DoctypeNode::class, $token);

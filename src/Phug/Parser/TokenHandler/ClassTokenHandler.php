@@ -16,19 +16,22 @@ class ClassTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof ClassToken))
+        if (!($token instanceof ClassToken)) {
             throw new \RuntimeException(
                 "You can only pass class tokens to this token handler"
             );
+        }
 
-        if (!$state->getCurrentNode())
+        if (!$state->getCurrentNode()) {
             $state->setCurrentNode($state->createNode(ElementNode::class, $token));
+        }
 
-        if (!$state->currentNodeIs([ElementNode::class, MixinCallNode::class]))
+        if (!$state->currentNodeIs([ElementNode::class, MixinCallNode::class])) {
             $state->throwException(
                 "Classes can only be used on elements and mixin calls",
                 $token
             );
+        }
 
         //We actually create a fake class attribute
         /** @var AttributeNode $attr */

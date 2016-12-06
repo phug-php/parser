@@ -14,10 +14,11 @@ class VariableTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof VariableToken))
+        if (!($token instanceof VariableToken)) {
             throw new \RuntimeException(
                 "You can only pass variable tokens to this token handler"
             );
+        }
 
         /** @var VariableNode $node */
         $node = $state->createNode(VariableNode::class);

@@ -14,10 +14,11 @@ class BlockTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof BlockToken))
+        if (!($token instanceof BlockToken)) {
             throw new \RuntimeException(
                 "You can only pass block tokens to this token handler"
             );
+        }
 
         /** @var BlockNode $node */
         $node = $state->createNode(BlockNode::class, $token);

@@ -14,10 +14,11 @@ class CommentTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof CommentToken))
+        if (!($token instanceof CommentToken)) {
             throw new \RuntimeException(
                 "You can only pass comment tokens to this token handler"
             );
+        }
 
         /** @var CommentNode $node */
         $node = $state->createNode(CommentNode::class, $token);

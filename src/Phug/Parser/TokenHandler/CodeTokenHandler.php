@@ -14,10 +14,11 @@ class CodeTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof CodeToken))
+        if (!($token instanceof CodeToken)) {
             throw new \RuntimeException(
                 "You can only pass code tokens to this token handler"
             );
+        }
 
         /** @var ExpressionNode $node */
         $node = $state->createNode(ExpressionNode::class, $token);
@@ -25,9 +26,10 @@ class CodeTokenHandler implements TokenHandlerInterface
         $node->setIsChecked($token->isChecked());
         $node->setValue($token->getValue());
 
-        if ($state->getCurrentNode())
+        if ($state->getCurrentNode()) {
             $state->getCurrentNode()->appendChild($node);
-        else
+        } else {
             $state->setCurrentNode($node);
+        }
     }
 }

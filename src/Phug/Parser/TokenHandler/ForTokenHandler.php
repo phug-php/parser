@@ -14,10 +14,11 @@ class ForTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof ForToken))
+        if (!($token instanceof ForToken)) {
             throw new \RuntimeException(
                 "You can only pass for tokens to this token handler"
             );
+        }
 
         /** @var ForNode $node */
         $node = $state->createNode(ForNode::class, $token);

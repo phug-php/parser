@@ -16,10 +16,11 @@ class ExpressionTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof ExpressionToken))
+        if (!($token instanceof ExpressionToken)) {
             throw new \RuntimeException(
                 "You can only pass expression tokens to this token handler"
             );
+        }
 
         /** @var ExpressionNode $node */
         $node = $state->createNode(ExpressionNode::class, $token);
@@ -27,9 +28,10 @@ class ExpressionTokenHandler implements TokenHandlerInterface
         $node->setIsChecked($token->isChecked());
         $node->setValue($token->getValue());
 
-        if ($state->getCurrentNode())
+        if ($state->getCurrentNode()) {
             $state->getCurrentNode()->appendChild($node);
-        else
+        } else {
             $state->setCurrentNode($node);
+        }
     }
 }

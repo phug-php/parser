@@ -21,9 +21,10 @@ class AttributeEndTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof AttributeEndToken))
+        if (!($token instanceof AttributeEndToken)) {
             throw new \RuntimeException(
                 "You can only pass attribute end tokens to this token handler"
             );
+        }
     }
 }

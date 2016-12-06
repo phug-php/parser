@@ -188,18 +188,20 @@ class Parser implements OptionInterface
         ], $options ?: []);
 
         $lexerClassName = $this->options['lexer_class_name'];
-        if (!is_a($lexerClassName, Lexer::class, true))
+        if (!is_a($lexerClassName, Lexer::class, true)) {
             throw new ParserException(
                 "Passed lexer class $lexerClassName is ".
                 "not a valid ".Lexer::class
             );
+        }
 
         $this->lexer = new $lexerClassName($this->options['lexer_options']);
         $this->state = null;
         $this->tokenHandlers = [];
 
-        foreach ($this->options['token_handlers'] as $className => $handler)
+        foreach ($this->options['token_handlers'] as $className => $handler) {
             $this->setTokenHandler($className, $handler);
+        }
     }
 
     /**
@@ -216,10 +218,11 @@ class Parser implements OptionInterface
     public function setTokenHandler($className, $handler)
     {
 
-        if (!is_subclass_of($handler, TokenHandlerInterface::class))
+        if (!is_subclass_of($handler, TokenHandlerInterface::class)) {
             throw new \InvalidArgumentException(
                 "Passed token handler needs to implement ".TokenHandlerInterface::class
             );
+        }
 
         $this->tokenHandlers[$className] = $handler;
 
@@ -245,10 +248,11 @@ class Parser implements OptionInterface
     {
 
         $stateClassName = $this->options['state_class_name'];
-        if (!is_a($stateClassName, State::class, true))
+        if (!is_a($stateClassName, State::class, true)) {
             throw new \InvalidArgumentException(
                 'state_class_name needs to be a valid '.State::class.' sub class'
             );
+        }
 
         $this->state = new $stateClassName(
             $this->lexer->lex($input),
@@ -260,7 +264,6 @@ class Parser implements OptionInterface
         //While we have tokens, handle current token, then go to next token
         //rinse and repeat
         while ($this->state->hasTokens()) {
-
             $this->state->handleToken();
             $this->state->nextToken();
         }
@@ -269,13 +272,12 @@ class Parser implements OptionInterface
 
         //Some work after parsing needed
         //Resolve expansions/outer nodes
-        $expandingNodes = $document->find(function(NodeInterface $node) {
+        $expandingNodes = $document->find(function (NodeInterface $node) {
 
             return $node->getOuterNode() !== null;
         });
 
         foreach ($expandingNodes as $expandingNode) {
-
             $current = $expandingNode;
             while ($outerNode = $expandingNode->getOuterNode()) {
 
@@ -302,20 +304,20 @@ class Parser implements OptionInterface
         $text = '';
         switch (get_class($node)) {
             default:
-
                 $text = get_class($node);
 
-                if ($outerNode = $node->getOuterNode())
+                if ($outerNode = $node->getOuterNode()) {
                     $text .= ' outer='.get_class($outerNode);
+                }
 
                 break;
         }
 
         $text = str_repeat('  ', $level)."[$text]";
         if (count($node) > 0) {
-
-            foreach ($node as $child)
+            foreach ($node as $child) {
                 $text .= "\n".$this->dumpNode($child, $level + 1);
+            }
         }
 
         return $text;

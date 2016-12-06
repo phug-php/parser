@@ -14,10 +14,11 @@ class ConditionalTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof ConditionalToken))
+        if (!($token instanceof ConditionalToken)) {
             throw new \RuntimeException(
                 "You can only pass conditional tokens to this token handler"
             );
+        }
 
         /** @var ConditionalNode $node */
         $node = $state->createNode(ConditionalNode::class, $token);

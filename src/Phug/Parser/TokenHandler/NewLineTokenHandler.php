@@ -13,10 +13,11 @@ class NewLineTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof NewLineToken))
+        if (!($token instanceof NewLineToken)) {
             throw new \RuntimeException(
                 "You can only pass newline tokens to this token handler"
             );
+        }
 
         $state->store();
     }

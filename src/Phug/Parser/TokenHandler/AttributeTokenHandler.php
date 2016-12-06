@@ -16,13 +16,15 @@ class AttributeTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof AttributeToken))
+        if (!($token instanceof AttributeToken)) {
             throw new \RuntimeException(
                 "You can only pass attribute tokens to this token handler"
             );
+        }
 
-        if (!$state->getCurrentNode())
+        if (!$state->getCurrentNode()) {
             $state->setCurrentNode($state->createNode(ElementNode::class, $token));
+        }
 
         /** @var AttributeNode $node */
         $node = $state->createNode(AttributeNode::class, $token);
@@ -35,7 +37,6 @@ class AttributeTokenHandler implements TokenHandlerInterface
 
         //Mixin calls take the first expression set as the name as the value
         if ($state->currentNodeIs([MixinCallNode::class]) && ($value === '' || $value === null)) {
-
             $node->setValue($name);
             $node->setName(null);
         }

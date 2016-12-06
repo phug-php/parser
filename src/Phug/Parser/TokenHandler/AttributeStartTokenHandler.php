@@ -21,34 +21,37 @@ class AttributeStartTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof AttributeStartToken))
+        if (!($token instanceof AttributeStartToken)) {
             throw new \RuntimeException(
                 "You can only pass attribute start tokens to this token handler"
             );
+        }
 
-        if (!$state->getCurrentNode())
+        if (!$state->getCurrentNode()) {
             $state->setCurrentNode($state->createNode(ElementNode::class, $token));
+        }
 
         if (!$state->currentNodeIs([
             ElementNode::class, AssignmentNode::class,
             ImportNode::class, VariableNode::class,
             MixinNode::class, MixinCallNode::class
-        ]))
+        ])) {
             $state->throwException(
                 "Attributes can only be placed on element, assignment, "
                 ."import, variable, mixin and mixinCall",
                 $token
             );
+        }
 
         foreach ($state->lookUpNext([AttributeToken::class]) as $subToken) {
-
             $state->handleToken($subToken);
         }
 
-        if (!$state->expect([AttributeEndToken::class]))
+        if (!$state->expect([AttributeEndToken::class])) {
             $state->throwException(
                 "Attribute list not closed",
                 $token
             );
+        }
     }
 }

@@ -14,10 +14,11 @@ class MixinTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof MixinToken))
+        if (!($token instanceof MixinToken)) {
             throw new \RuntimeException(
                 "You can only pass mixin tokens to this token handler"
             );
+        }
 
         /** @var MixinNode $node */
         $node = $state->createNode(MixinNode::class, $token);

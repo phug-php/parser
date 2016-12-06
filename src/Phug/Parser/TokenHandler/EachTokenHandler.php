@@ -14,10 +14,11 @@ class EachTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof EachToken))
+        if (!($token instanceof EachToken)) {
             throw new \RuntimeException(
                 "You can only pass each tokens to this token handler"
             );
+        }
 
         /** @var EachNode $node */
         $node = $state->createNode(EachNode::class, $token);

@@ -14,10 +14,11 @@ class FilterTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof FilterToken))
+        if (!($token instanceof FilterToken)) {
             throw new \RuntimeException(
                 "You can only pass filter tokens to this token handler"
             );
+        }
 
         /** @var FilterNode $node */
         $node = $state->createNode(FilterNode::class, $token);

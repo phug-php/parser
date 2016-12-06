@@ -13,10 +13,11 @@ class IndentTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof IndentToken))
+        if (!($token instanceof IndentToken)) {
             throw new \RuntimeException(
                 "You can only pass indent tokens to this token handler"
             );
+        }
 
         $state->enter();
     }

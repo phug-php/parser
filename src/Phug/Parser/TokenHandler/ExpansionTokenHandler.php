@@ -15,19 +15,20 @@ class ExpansionTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof ExpansionToken))
+        if (!($token instanceof ExpansionToken)) {
             throw new \RuntimeException(
                 "You can only pass expansion tokens to this token handler"
             );
+        }
 
-        if (!$state->getCurrentNode())
+        if (!$state->getCurrentNode()) {
             $state->throwException(
                 "Expansion needs an element to work on",
                 $token
             );
+        }
 
         if (!$state->currentNodeIs([ElementNode::class]) && !$token->hasSpace()) {
-
             if (!$state->expectNext([TagToken::class])) {
                 $state->throwException(
                     sprintf(
@@ -49,8 +50,9 @@ class ExpansionTokenHandler implements TokenHandlerInterface
         }
 
         //Make sure to keep the expansion saved
-        if ($state->getOuterNode())
+        if ($state->getOuterNode()) {
             $state->getCurrentNode()->setOuterNode($state->getOuterNode());
+        }
 
         $state->setOuterNode($state->getCurrentNode());
         $state->setCurrentNode(null);

@@ -14,10 +14,11 @@ class WhenTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof WhenToken))
+        if (!($token instanceof WhenToken)) {
             throw new \RuntimeException(
                 "You can only pass when tokens to this token handler"
             );
+        }
 
         /** @var WhenNode $node */
         $node = $state->createNode(WhenNode::class, $token);

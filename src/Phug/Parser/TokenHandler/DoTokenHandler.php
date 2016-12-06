@@ -14,10 +14,11 @@ class DoTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof DoToken))
+        if (!($token instanceof DoToken)) {
             throw new \RuntimeException(
                 "You can only pass do tokens to this token handler"
             );
+        }
 
         $node = $state->createNode(DoNode::class, $token);
         $state->setCurrentNode($node);

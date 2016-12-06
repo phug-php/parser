@@ -37,8 +37,8 @@ class Node extends AstNode implements NodeInterface
         $level = null,
         NodeInterface $parent = null,
         array $children = null
-    )
-    {
+    ) {
+    
         parent::__construct($parent, $children);
 
         $this->line = $line ?: 0;

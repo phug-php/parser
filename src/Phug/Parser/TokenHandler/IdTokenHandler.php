@@ -16,19 +16,22 @@ class IdTokenHandler implements TokenHandlerInterface
     public function handleToken(TokenInterface $token, State $state)
     {
 
-        if (!($token instanceof IdToken))
+        if (!($token instanceof IdToken)) {
             throw new \RuntimeException(
                 "You can only pass id tokens to this token handler"
             );
+        }
 
-        if (!$state->getCurrentNode())
+        if (!$state->getCurrentNode()) {
             $state->setCurrentNode($state->createNode(ElementNode::class));
+        }
 
-        if (!$state->currentNodeIs([ElementNode::class, MixinCallNode::class]))
+        if (!$state->currentNodeIs([ElementNode::class, MixinCallNode::class])) {
             $state->throwException(
                 'IDs can only be used on elements and mixin calls',
                 $token
             );
+        }
 
         /** @var AttributeNode $attr */
         $attr = $state->createNode(AttributeNode::class, $token);
