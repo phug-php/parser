@@ -6,7 +6,6 @@ use Phug\Parser;
 
 class ParserTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var Parser
      */
@@ -14,14 +13,11 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-
-
-        $this->parser = new Parser;
+        $this->parser = new Parser();
     }
 
     public function testParseAssignment()
     {
-
         var_dump($this->parser->parse('&some-assignment'));
     }
 }

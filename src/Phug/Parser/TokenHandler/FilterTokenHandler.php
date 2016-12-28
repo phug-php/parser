@@ -3,20 +3,18 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\FilterToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\FilterNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
-use Phug\Lexer\TokenInterface;
 
 class FilterTokenHandler implements TokenHandlerInterface
 {
-
     public function handleToken(TokenInterface $token, State $state)
     {
-
         if (!($token instanceof FilterToken)) {
             throw new \RuntimeException(
-                "You can only pass filter tokens to this token handler"
+                'You can only pass filter tokens to this token handler'
             );
         }
 

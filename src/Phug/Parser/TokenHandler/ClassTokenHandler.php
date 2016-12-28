@@ -3,22 +3,20 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\ClassToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\AttributeNode;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\Node\MixinCallNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
-use Phug\Lexer\TokenInterface;
 
 class ClassTokenHandler implements TokenHandlerInterface
 {
-
     public function handleToken(TokenInterface $token, State $state)
     {
-
         if (!($token instanceof ClassToken)) {
             throw new \RuntimeException(
-                "You can only pass class tokens to this token handler"
+                'You can only pass class tokens to this token handler'
             );
         }
 
@@ -28,7 +26,7 @@ class ClassTokenHandler implements TokenHandlerInterface
 
         if (!$state->currentNodeIs([ElementNode::class, MixinCallNode::class])) {
             $state->throwException(
-                "Classes can only be used on elements and mixin calls",
+                'Classes can only be used on elements and mixin calls',
                 $token
             );
         }

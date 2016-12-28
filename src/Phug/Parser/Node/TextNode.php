@@ -15,13 +15,11 @@ class TextNode extends Node
 
     public function setLevel($level)
     {
-
         $this->level = $level;
     }
 
     public function getLevel()
     {
-
         return $this->level;
     }
 }

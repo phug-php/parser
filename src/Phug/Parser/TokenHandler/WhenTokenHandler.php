@@ -3,20 +3,18 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\WhenToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\WhenNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
-use Phug\Lexer\TokenInterface;
 
 class WhenTokenHandler implements TokenHandlerInterface
 {
-
     public function handleToken(TokenInterface $token, State $state)
     {
-
         if (!($token instanceof WhenToken)) {
             throw new \RuntimeException(
-                "You can only pass when tokens to this token handler"
+                'You can only pass when tokens to this token handler'
             );
         }
 

@@ -3,20 +3,18 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\CodeToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\ExpressionNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
-use Phug\Lexer\TokenInterface;
 
 class CodeTokenHandler implements TokenHandlerInterface
 {
-
     public function handleToken(TokenInterface $token, State $state)
     {
-
         if (!($token instanceof CodeToken)) {
             throw new \RuntimeException(
-                "You can only pass code tokens to this token handler"
+                'You can only pass code tokens to this token handler'
             );
         }
 
