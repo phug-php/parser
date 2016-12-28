@@ -9,6 +9,11 @@
         {
             "name": "Torben Koehn",
             "email": "torben@talesoft.codes"
+        },
+        {
+            "name": "KyleKatarn",
+            "email": "jade-php@selfbuild.fr",
+            "homepage": "http://github.com/kylekatarnls"
         }
     ],
     "support": {
@@ -17,12 +22,15 @@
         "source": "https://github.com/phug-php/reader",
         "docs": "http://phug-lang.com/docs"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
         "php": ">=5.5.0",
-        "phug/lexer": "*@dev",
-        "phug/util": "*@dev",
-        "phug/ast": "*@dev"
+        "phug/lexer": "^0.1.0",
+        "phug/util": "^0.1.0",
+        "phug/ast": "^0.1.0"
+    },
+    "require-dev": {
+        "phug/dev-tool": "^0.1.0"
     },
     "autoload": {
         "psr-4": {

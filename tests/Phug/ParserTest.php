@@ -3,6 +3,7 @@
 namespace Phug\Test;
 
 use Phug\Parser;
+use Phug\Parser\Node\DocumentNode;
 
 class ParserTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,6 +19,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function testParseAssignment()
     {
-        var_dump($this->parser->parse('&some-assignment'));
+        self::assertInstanceOf(DocumentNode::class, $this->parser->parse('&some-assignment'));
     }
 }
