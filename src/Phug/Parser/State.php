@@ -7,7 +7,6 @@ use Phug\Lexer\TokenInterface;
 use Phug\Parser;
 use Phug\Parser\Node\DocumentNode;
 use Phug\ParserException;
-use Phug\Util\LevelTrait;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial\OptionTrait;
 
@@ -69,7 +68,6 @@ class State implements OptionInterface
 
     public function __construct(\Generator $tokens, array $options = null)
     {
-
         $this->level = 0;
         $this->tokens = $tokens;
         $this->documentNode = $this->createNode(DocumentNode::class);
@@ -78,7 +76,7 @@ class State implements OptionInterface
         $this->lastNode = null;
         $this->outerNode = null;
         $this->options = array_replace_recursive([
-            'token_handlers' => []
+            'token_handlers' => [],
         ], $options ?: []);
 
         //Fix HHVM generators needing ->next() before ->current()
@@ -95,7 +93,6 @@ class State implements OptionInterface
      */
     public function getLevel()
     {
-
         return $this->level;
     }
 
@@ -106,7 +103,6 @@ class State implements OptionInterface
      */
     public function setLevel($level)
     {
-
         $this->level = $level;
 
         return $this;
@@ -117,17 +113,16 @@ class State implements OptionInterface
      */
     public function getTokens()
     {
-
         return $this->tokens;
     }
 
     /**
      * @param \Generator $tokens
+     *
      * @return $this
      */
     public function setTokens($tokens)
     {
-
         $this->tokens = $tokens;
 
         return $this;
@@ -138,7 +133,6 @@ class State implements OptionInterface
      */
     public function getDocumentNode()
     {
-
         return $this->documentNode;
     }
 
@@ -147,7 +141,6 @@ class State implements OptionInterface
      */
     public function getParentNode()
     {
-
         return $this->parentNode;
     }
 
@@ -158,7 +151,6 @@ class State implements OptionInterface
      */
     public function setParentNode($currentParent)
     {
-
         $this->parentNode = $currentParent;
 
         return $this;
@@ -169,7 +161,6 @@ class State implements OptionInterface
      */
     public function getCurrentNode()
     {
-
         return $this->currentNode;
     }
 
@@ -180,7 +171,6 @@ class State implements OptionInterface
      */
     public function setCurrentNode($current)
     {
-
         $this->currentNode = $current;
 
         return $this;
@@ -191,7 +181,6 @@ class State implements OptionInterface
      */
     public function getLastNode()
     {
-
         return $this->lastNode;
     }
 
@@ -202,7 +191,6 @@ class State implements OptionInterface
      */
     public function setLastNode($last)
     {
-
         $this->lastNode = $last;
 
         return $this;
@@ -213,7 +201,6 @@ class State implements OptionInterface
      */
     public function getOuterNode()
     {
-
         return $this->outerNode;
     }
 
@@ -224,7 +211,6 @@ class State implements OptionInterface
      */
     public function setOuterNode(Node $node)
     {
-
         $this->outerNode = $node;
 
         return $this;
@@ -240,13 +226,12 @@ class State implements OptionInterface
      *
      * @param TokenInterface $token a token or the current lexer's generator token
      *
-     * @return $this
-     *
      * @throws ParserException when no token handler has been found
+     *
+     * @return $this
      */
     public function handleToken(TokenInterface $token = null)
     {
-
         $token = $token ?: $this->getToken();
         $className = get_class($token);
 
@@ -264,6 +249,7 @@ class State implements OptionInterface
             : new $handler();
 
         $handler->handleToken($token, $this);
+
         return $this;
     }
 
@@ -280,7 +266,6 @@ class State implements OptionInterface
      */
     public function lookUp(array $types)
     {
-
         while ($this->hasTokens()) {
             $token = $this->getToken();
             if (in_array(get_class($token), $types, true)) {
@@ -305,7 +290,6 @@ class State implements OptionInterface
      */
     public function lookUpNext(array $types)
     {
-
         return $this->nextToken()->lookUp($types);
     }
 
@@ -321,12 +305,9 @@ class State implements OptionInterface
      */
     public function expect(array $types)
     {
-
         foreach ($this->lookUp($types) as $token) {
             return $token;
         }
-
-        return null;
     }
 
     /**
@@ -341,7 +322,6 @@ class State implements OptionInterface
      */
     public function expectNext(array $types)
     {
-
         return $this->nextToken()->expect($types);
     }
 
@@ -357,7 +337,6 @@ class State implements OptionInterface
      */
     public function hasTokens()
     {
-
         return $this->tokens->valid();
     }
 
@@ -372,7 +351,6 @@ class State implements OptionInterface
      */
     public function nextToken()
     {
-
         $this->tokens->next();
 
         return $this;
@@ -387,13 +365,11 @@ class State implements OptionInterface
      */
     public function getToken()
     {
-
         return $this->tokens->current();
     }
 
     public function is(Node $node, array $classNames)
     {
-
         foreach ($classNames as $className) {
             if (is_a($node, $className)) {
                 return true;
@@ -405,7 +381,6 @@ class State implements OptionInterface
 
     public function currentNodeIs(array $classNames)
     {
-
         if (!$this->currentNode) {
             return false;
         }
@@ -415,7 +390,6 @@ class State implements OptionInterface
 
     public function lastNodeIs(array $classNames)
     {
-
         if (!$this->lastNode) {
             return false;
         }
@@ -425,7 +399,6 @@ class State implements OptionInterface
 
     public function parentNodeIs(array $classNames)
     {
-
         if (!$this->parentNode) {
             return false;
         }
@@ -445,14 +418,13 @@ class State implements OptionInterface
      * Notice that nodes are expando-objects, you can add properties on-the-fly
      * and retrieve them as an array later
      *
-     * @param string $className  the type the node should have
-     * @param TokenInterface $token the token to relate this node to
+     * @param string         $className the type the node should have
+     * @param TokenInterface $token     the token to relate this node to
      *
      * @return Node The newly created node
      */
     public function createNode($className, TokenInterface $token = null)
     {
-
         if (!is_subclass_of($className, Node::class)) {
             throw new \InvalidArgumentException(
                 "$className is not a valid token class"
@@ -468,7 +440,6 @@ class State implements OptionInterface
 
     public function enter()
     {
-
         $this->level++;
 
         if (!$this->lastNode) {
@@ -482,13 +453,12 @@ class State implements OptionInterface
 
     public function leave()
     {
-
         $this->level--;
 
         if (!$this->parentNode->getParent()) {
             $this->throwException(
-                "Failed to outdent: No parent to outdent to. "
-                ."Seems the parser moved out too many levels."
+                'Failed to outdent: No parent to outdent to. '
+                .'Seems the parser moved out too many levels.'
             );
         }
 
@@ -497,11 +467,9 @@ class State implements OptionInterface
 
     public function store()
     {
-
         if (!$this->currentNode) {
             return $this;
         }
-
 
         //Is there any expansion?
         if ($this->outerNode) {
@@ -524,14 +492,13 @@ class State implements OptionInterface
      * The current line and offset of the exception
      * get automatically appended to the message
      *
-     * @param string $message A meaningful error message
+     * @param string         $message      A meaningful error message
      * @param TokenInterface $relatedToken
      *
      * @throws ParserException
      */
     public function throwException($message, TokenInterface $relatedToken = null)
     {
-
         $pattern = "Failed to parse: %s \nToken: %s \nLine: %s \nOffset: %s";
 
         throw new ParserException(vsprintf($pattern, [

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Phug\Parser;
 
 use Phug\Ast\Node as AstNode;
@@ -14,7 +13,6 @@ use Phug\Ast\Node as AstNode;
  */
 class Node extends AstNode implements NodeInterface
 {
-
     private $line;
     private $offset;
     private $level;
@@ -25,10 +23,10 @@ class Node extends AstNode implements NodeInterface
      *
      * It can be appended to any node after that
      *
-     * @param int|null $line   the line at which we found this node
-     * @param int|null $offset the offset in a line we found this node at
-     * @param int|null $level the level of indentation this node is at
-     * @param NodeInterface $parent the parent of this node
+     * @param int|null        $line     the line at which we found this node
+     * @param int|null        $offset   the offset in a line we found this node at
+     * @param int|null        $level    the level of indentation this node is at
+     * @param NodeInterface   $parent   the parent of this node
      * @param NodeInterface[] $children the children of this node
      */
     public function __construct(
@@ -38,7 +36,6 @@ class Node extends AstNode implements NodeInterface
         NodeInterface $parent = null,
         array $children = null
     ) {
-    
         parent::__construct($parent, $children);
 
         $this->line = $line ?: 0;
@@ -52,7 +49,6 @@ class Node extends AstNode implements NodeInterface
      */
     public function getLine()
     {
-
         return $this->line;
     }
 
@@ -61,7 +57,6 @@ class Node extends AstNode implements NodeInterface
      */
     public function getOffset()
     {
-
         return $this->offset;
     }
 
@@ -70,7 +65,6 @@ class Node extends AstNode implements NodeInterface
      */
     public function getLevel()
     {
-
         return $this->level;
     }
 
@@ -89,7 +83,6 @@ class Node extends AstNode implements NodeInterface
      */
     public function setOuterNode(NodeInterface $node = null)
     {
-
         $this->outerNode = $node;
 
         return $this;

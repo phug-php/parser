@@ -3,20 +3,18 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\BlockToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\BlockNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
-use Phug\Lexer\TokenInterface;
 
 class BlockTokenHandler implements TokenHandlerInterface
 {
-
     public function handleToken(TokenInterface $token, State $state)
     {
-
         if (!($token instanceof BlockToken)) {
             throw new \RuntimeException(
-                "You can only pass block tokens to this token handler"
+                'You can only pass block tokens to this token handler'
             );
         }
 

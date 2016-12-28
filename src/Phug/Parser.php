@@ -2,11 +2,6 @@
 
 namespace Phug;
 
-use Phug\Lexer\TokenInterface;
-use Phug\Parser\Dumper\Html;
-use Phug\Parser\Dumper\Text;
-use Phug\Parser\DumperInterface;
-use Phug\Parser\Node;
 use Phug\Lexer\Token\AssignmentToken;
 use Phug\Lexer\Token\AttributeEndToken;
 use Phug\Lexer\Token\AttributeStartToken;
@@ -17,8 +12,8 @@ use Phug\Lexer\Token\ClassToken;
 use Phug\Lexer\Token\CodeToken;
 use Phug\Lexer\Token\CommentToken;
 use Phug\Lexer\Token\ConditionalToken;
-use Phug\Lexer\Token\DoToken;
 use Phug\Lexer\Token\DoctypeToken;
+use Phug\Lexer\Token\DoToken;
 use Phug\Lexer\Token\EachToken;
 use Phug\Lexer\Token\ExpansionToken;
 use Phug\Lexer\Token\ExpressionToken;
@@ -36,27 +31,7 @@ use Phug\Lexer\Token\TextToken;
 use Phug\Lexer\Token\VariableToken;
 use Phug\Lexer\Token\WhenToken;
 use Phug\Lexer\Token\WhileToken;
-use Phug\Parser\Node\AssignmentNode;
-use Phug\Parser\Node\AttributeNode;
-use Phug\Parser\Node\BlockNode;
-use Phug\Parser\Node\CaseNode;
-use Phug\Parser\Node\CodeNode;
-use Phug\Parser\Node\CommentNode;
-use Phug\Parser\Node\ConditionalNode;
-use Phug\Parser\Node\DoctypeNode;
-use Phug\Parser\Node\DoNode;
-use Phug\Parser\Node\EachNode;
-use Phug\Parser\Node\ElementNode;
-use Phug\Parser\Node\ExpressionNode;
-use Phug\Parser\Node\FilterNode;
-use Phug\Parser\Node\ForNode;
-use Phug\Parser\Node\ImportNode;
-use Phug\Parser\Node\MixinCallNode;
-use Phug\Parser\Node\MixinNode;
-use Phug\Parser\Node\TextNode;
-use Phug\Parser\Node\VariableNode;
-use Phug\Parser\Node\WhenNode;
-use Phug\Parser\Node\WhileNode;
+use Phug\Parser\Node;
 use Phug\Parser\NodeInterface;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\AssignmentTokenHandler;
@@ -145,53 +120,53 @@ class Parser implements OptionInterface
      * You can take the AST and either compile it with the Compiler or handle it yourself
      *
      * @param array|null $options the options array
+     *
      * @throws ParserException
      */
     public function __construct(array $options = null)
     {
-
         $this->options = array_replace_recursive([
             'lexer_class_name' => Lexer::class,
-            'lexer_options' => [],
+            'lexer_options'    => [],
             'state_class_name' => State::class,
-            'token_handlers' => [
-                AssignmentToken::class => AssignmentTokenHandler::class,
-                AttributeEndToken::class => AttributeEndTokenHandler::class,
+            'token_handlers'   => [
+                AssignmentToken::class     => AssignmentTokenHandler::class,
+                AttributeEndToken::class   => AttributeEndTokenHandler::class,
                 AttributeStartToken::class => AttributeStartTokenHandler::class,
-                AttributeToken::class => AttributeTokenHandler::class,
-                BlockToken::class => BlockTokenHandler::class,
-                CaseToken::class => CaseTokenHandler::class,
-                ClassToken::class => ClassTokenHandler::class,
-                CodeToken::class => CodeTokenHandler::class,
-                CommentToken::class => CommentTokenHandler::class,
-                ConditionalToken::class => ConditionalTokenHandler::class,
-                DoToken::class => DoTokenHandler::class,
-                DoctypeToken::class => DoctypeTokenHandler::class,
-                EachToken::class => EachTokenHandler::class,
-                ExpansionToken::class => ExpansionTokenHandler::class,
-                ExpressionToken::class => ExpressionTokenHandler::class,
-                FilterToken::class => FilterTokenHandler::class,
-                ForToken::class => ForTokenHandler::class,
-                IdToken::class => IdTokenHandler::class,
-                ImportToken::class => ImportTokenHandler::class,
-                IndentToken::class => IndentTokenHandler::class,
-                MixinCallToken::class => MixinCallTokenHandler::class,
-                MixinToken::class => MixinTokenHandler::class,
-                NewLineToken::class => NewLineTokenHandler::class,
-                OutdentToken::class => OutdentTokenHandler::class,
-                TagToken::class => TagTokenHandler::class,
-                TextToken::class => TextTokenHandler::class,
-                VariableToken::class => VariableTokenHandler::class,
-                WhenToken::class => WhenTokenHandler::class,
-                WhileToken::class => WhileTokenHandler::class
-            ]
+                AttributeToken::class      => AttributeTokenHandler::class,
+                BlockToken::class          => BlockTokenHandler::class,
+                CaseToken::class           => CaseTokenHandler::class,
+                ClassToken::class          => ClassTokenHandler::class,
+                CodeToken::class           => CodeTokenHandler::class,
+                CommentToken::class        => CommentTokenHandler::class,
+                ConditionalToken::class    => ConditionalTokenHandler::class,
+                DoToken::class             => DoTokenHandler::class,
+                DoctypeToken::class        => DoctypeTokenHandler::class,
+                EachToken::class           => EachTokenHandler::class,
+                ExpansionToken::class      => ExpansionTokenHandler::class,
+                ExpressionToken::class     => ExpressionTokenHandler::class,
+                FilterToken::class         => FilterTokenHandler::class,
+                ForToken::class            => ForTokenHandler::class,
+                IdToken::class             => IdTokenHandler::class,
+                ImportToken::class         => ImportTokenHandler::class,
+                IndentToken::class         => IndentTokenHandler::class,
+                MixinCallToken::class      => MixinCallTokenHandler::class,
+                MixinToken::class          => MixinTokenHandler::class,
+                NewLineToken::class        => NewLineTokenHandler::class,
+                OutdentToken::class        => OutdentTokenHandler::class,
+                TagToken::class            => TagTokenHandler::class,
+                TextToken::class           => TextTokenHandler::class,
+                VariableToken::class       => VariableTokenHandler::class,
+                WhenToken::class           => WhenTokenHandler::class,
+                WhileToken::class          => WhileTokenHandler::class,
+            ],
         ], $options ?: []);
 
         $lexerClassName = $this->options['lexer_class_name'];
         if (!is_a($lexerClassName, Lexer::class, true)) {
             throw new ParserException(
                 "Passed lexer class $lexerClassName is ".
-                "not a valid ".Lexer::class
+                'not a valid '.Lexer::class
             );
         }
 
@@ -211,16 +186,14 @@ class Parser implements OptionInterface
      */
     public function getLexer()
     {
-
         return $this->lexer;
     }
 
     public function setTokenHandler($className, $handler)
     {
-
         if (!is_subclass_of($handler, TokenHandlerInterface::class)) {
             throw new \InvalidArgumentException(
-                "Passed token handler needs to implement ".TokenHandlerInterface::class
+                'Passed token handler needs to implement '.TokenHandlerInterface::class
             );
         }
 
@@ -246,7 +219,6 @@ class Parser implements OptionInterface
      */
     public function parse($input)
     {
-
         $stateClassName = $this->options['state_class_name'];
         if (!is_a($stateClassName, State::class, true)) {
             throw new \InvalidArgumentException(
@@ -257,7 +229,7 @@ class Parser implements OptionInterface
         $this->state = new $stateClassName(
             $this->lexer->lex($input),
             [
-                'token_handlers' => $this->tokenHandlers
+                'token_handlers' => $this->tokenHandlers,
             ]
         );
 
@@ -273,7 +245,6 @@ class Parser implements OptionInterface
         //Some work after parsing needed
         //Resolve expansions/outer nodes
         $expandingNodes = $document->find(function (NodeInterface $node) {
-
             return $node->getOuterNode() !== null;
         });
 
@@ -299,7 +270,6 @@ class Parser implements OptionInterface
 
     protected function dumpNode(NodeInterface $node, $level = null)
     {
-
         $level = $level ?: 0;
         $text = '';
         switch (get_class($node)) {

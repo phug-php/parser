@@ -2,24 +2,22 @@
 
 namespace Phug\Parser\TokenHandler;
 
+use Phug\Lexer\Token\AssignmentToken;
 use Phug\Lexer\Token\AttributeStartToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\AssignmentNode;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\Node\MixinCallNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
-use Phug\Lexer\TokenInterface;
-use Phug\Lexer\Token\AssignmentToken;
 
 class AssignmentTokenHandler implements TokenHandlerInterface
 {
-
     public function handleToken(TokenInterface $token, State $state)
     {
-
         if (!($token instanceof AssignmentToken)) {
             throw new \RuntimeException(
-                "You can only pass Assignment tokens to this token handler"
+                'You can only pass Assignment tokens to this token handler'
             );
         }
 
@@ -29,7 +27,7 @@ class AssignmentTokenHandler implements TokenHandlerInterface
 
         if (!$state->currentNodeIs([ElementNode::class, MixinCallNode::class])) {
             $state->throwException(
-                "Assignments can only happen on elements and mixinCalls",
+                'Assignments can only happen on elements and mixinCalls',
                 $token
             );
         }

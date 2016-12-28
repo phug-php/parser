@@ -3,20 +3,18 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\TagToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
-use Phug\Lexer\TokenInterface;
 
 class TagTokenHandler implements TokenHandlerInterface
 {
-
     public function handleToken(TokenInterface $token, State $state)
     {
-
         if (!($token instanceof TagToken)) {
             throw new \RuntimeException(
-                "You can only pass tag tokens to this token handler"
+                'You can only pass tag tokens to this token handler'
             );
         }
 
