@@ -66,6 +66,13 @@ class State implements OptionInterface
      */
     private $outerNode;
 
+    /**
+     * Stores handlers by names.
+     *
+     * @var array
+     */
+    private $namedHandlers;
+
     public function __construct(\Generator $tokens, array $options = null)
     {
         $this->level = 0;
@@ -217,6 +224,23 @@ class State implements OptionInterface
     }
 
     /**
+     * Instanciate a new handler by name or return the previous
+     * instancied one with the same name.
+     *
+     * @param string $handler name
+     *
+     * @return TokenHandlerInterface
+     */
+    private function getNamedHandler($handler)
+    {
+    	if (!isset($this->namedHandlers[$handler])) {
+    		$this->namedHandlers[$handler] = new $handler();
+    	}
+
+    	return $this->namedHandlers[$handler];
+    }
+
+    /**
      * Handles any kind of token returned by the lexer.
      *
      * The token handler is translated according to the `token_handlers` option
@@ -246,7 +270,7 @@ class State implements OptionInterface
         $handler = $this->options['token_handlers'][$className];
         $handler = $handler instanceof TokenHandlerInterface
             ? $handler
-            : new $handler();
+            : $this->getNamedHandler($handler);
 
         $handler->handleToken($token, $this);
 
