@@ -6,6 +6,7 @@ use Phug\Lexer;
 use Phug\Lexer\Token\AttributeToken;
 use Phug\Lexer\Token\NewLineToken;
 use Phug\Lexer\Token\TagToken;
+use Phug\Parser\Node\AttributeNode;
 use Phug\Parser\Node\DocumentNode;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\State;
@@ -225,5 +226,89 @@ class StateTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(TagToken::class, $state->expectNext($types));
         self::assertInstanceOf(NewLineToken::class, $state->expectNext($types));
         self::assertSame(null, $state->expectNext($types));
+    }
+
+    /**
+     * @covers ::is
+     */
+    public function testIs()
+    {
+        $tokens = [];
+        $lexer = new Lexer();
+        $handler = new TagTokenHandler();
+        $state = new State($lexer->lex(''));
+        $types = [DocumentNode::class, ElementNode::class];
+        $element = new ElementNode();
+        $attribute = new AttributeNode();
+
+        self::assertTrue($state->is($element, $types));
+        self::assertFalse($state->is($attribute, $types));
+    }
+
+    /**
+     * @covers ::currentNodeIs
+     */
+    public function testCurrentNodeIs()
+    {
+        $tokens = [];
+        $lexer = new Lexer();
+        $handler = new TagTokenHandler();
+        $state = new State($lexer->lex(''));
+        $types = [DocumentNode::class, ElementNode::class];
+        $element = new ElementNode();
+        $attribute = new AttributeNode();
+
+        self::assertFalse($state->currentNodeIs($types));
+
+        $state->setCurrentNode($element);
+        self::assertTrue($state->currentNodeIs($types));
+
+        $state->setCurrentNode($attribute);
+        self::assertFalse($state->currentNodeIs($types));
+    }
+
+    /**
+     * @covers ::lastNodeIs
+     */
+    public function testLastNodeIs()
+    {
+        $tokens = [];
+        $lexer = new Lexer();
+        $handler = new TagTokenHandler();
+        $state = new State($lexer->lex(''));
+        $types = [DocumentNode::class, ElementNode::class];
+        $element = new ElementNode();
+        $attribute = new AttributeNode();
+
+        self::assertFalse($state->lastNodeIs($types));
+
+        $state->setLastNode($element);
+        self::assertTrue($state->lastNodeIs($types));
+
+        $state->setLastNode($attribute);
+        self::assertFalse($state->lastNodeIs($types));
+    }
+
+    /**
+     * @covers ::parentNodeIs
+     */
+    public function testParentNodeIs()
+    {
+        $tokens = [];
+        $lexer = new Lexer();
+        $handler = new TagTokenHandler();
+        $state = new State($lexer->lex(''));
+        $types = [DocumentNode::class, ElementNode::class];
+        $element = new ElementNode();
+        $attribute = new AttributeNode();
+
+        $state->setParentNode(null);
+        self::assertFalse($state->parentNodeIs($types));
+
+        $state->setParentNode($element);
+        self::assertTrue($state->parentNodeIs($types));
+
+        $state->setParentNode($attribute);
+        self::assertFalse($state->parentNodeIs($types));
     }
 }
