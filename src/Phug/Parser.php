@@ -227,7 +227,8 @@ class Parser implements OptionInterface
         }
 
         $this->state = new $stateClassName(
-            $this->lexer->lex($input),
+            //Append a new line to get last outdents and tag if not ending with \n
+            $this->lexer->lex($input."\n"),
             [
                 'token_handlers' => $this->tokenHandlers,
             ]
@@ -266,6 +267,18 @@ class Parser implements OptionInterface
 
         //Return the final document node with all its awesome child nodes
         return $document;
+    }
+
+    /**
+     * Dump a representation of the parser rendering.
+     *
+     * @param string $input the input jade string that is to be parsed
+     *
+     * @return string representation of parser rendering
+     */
+    public function dump($input)
+    {
+        return $this->dumpNode($this->parse($input));
     }
 
     protected function dumpNode(NodeInterface $node, $level = null)
