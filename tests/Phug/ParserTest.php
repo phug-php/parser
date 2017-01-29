@@ -9,18 +9,8 @@ use Phug\Parser\Node\DocumentNode;
 /**
  * @coversDefaultClass Phug\Parser
  */
-class ParserTest extends \PHPUnit_Framework_TestCase
+class ParserTest extends AbstractParserTest
 {
-    /**
-     * @var Parser
-     */
-    private $parser;
-
-    public function setUp()
-    {
-        $this->parser = new Parser();
-    }
-
     /**
      * @covers ::<public>
      */
@@ -29,6 +19,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(DocumentNode::class, $this->parser->parse('&some-assignment'));
         self::assertInstanceOf(Lexer::class, $this->parser->getLexer());
     }
+
     /**
      * @covers                   ::<public>
      * @expectedException        \Phug\ParserException
@@ -71,23 +62,21 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testDump()
     {
-        self::assertSame(
-            "[Phug\\Parser\\Node\\DocumentNode]\n".
-            "  [Phug\\Parser\\Node\\ElementNode]\n".
-            "    [Phug\\Parser\\Node\\ElementNode]\n".
-            "      [Phug\\Parser\\Node\\ElementNode]\n".
-            "        [Phug\\Parser\\Node\\TextNode]\n".
-            "  [Phug\\Parser\\Node\\ElementNode]",
-            $this->parser->dump("div\n  section: p Hello\nfooter")
-        );
-        self::assertSame(
-            "[Phug\\Parser\\Node\\DocumentNode]\n".
-            "  [Phug\\Parser\\Node\\ElementNode]\n".
-            "    [Phug\\Parser\\Node\\ElementNode]\n".
-            "      [Phug\\Parser\\Node\\ElementNode outer=Phug\Parser\Node\ElementNode]\n".
-            "        [Phug\\Parser\\Node\\ElementNode]\n".
-            "          [Phug\\Parser\\Node\\TextNode]",
-            $this->parser->dump("div: div\n  section: p: span i")
-        );
+        $this->assertNodes("div\n  section: p Hello\nfooter", [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [ElementNode]',
+            '      [ElementNode]',
+            '        [TextNode]',
+            '  [ElementNode]',
+        ]);
+        $this->assertNodes("div: div\n  section: p: span i", [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [ElementNode]',
+            '      [ElementNode outer=ElementNode]',
+            '        [ElementNode]',
+            '          [TextNode]',
+        ]);
     }
 }
