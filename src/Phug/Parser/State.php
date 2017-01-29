@@ -233,11 +233,11 @@ class State implements OptionInterface
      */
     private function getNamedHandler($handler)
     {
-    	if (!isset($this->namedHandlers[$handler])) {
-    		$this->namedHandlers[$handler] = new $handler();
-    	}
+        if (!isset($this->namedHandlers[$handler])) {
+            $this->namedHandlers[$handler] = new $handler();
+        }
 
-    	return $this->namedHandlers[$handler];
+        return $this->namedHandlers[$handler];
     }
 
     /**

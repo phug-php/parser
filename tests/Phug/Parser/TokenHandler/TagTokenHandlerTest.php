@@ -4,8 +4,6 @@ namespace Phug\Test\Parser\TokenHandler;
 
 use Phug\Lexer;
 use Phug\Lexer\Token\TagToken;
-use Phug\Parser\Node\DocumentNode;
-use Phug\Parser\Node\ElementNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\TagTokenHandler;
 
