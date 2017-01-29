@@ -52,6 +52,20 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers                   ::<public>
+     * @covers                   ::dumpNode
+     * @expectedException        \InvalidArgumentException
+     * @expectedExceptionMessage state_class_name needs to be a valid Phug\Parser\State sub class
+     */
+    public function testWrongStateClassNameOption()
+    {
+        $parser = new Parser([
+            'state_class_name' => \ErrorException::class,
+        ]);
+        $parser->parse('');
+    }
+
+    /**
      * @covers ::<public>
      * @covers ::dumpNode
      */
