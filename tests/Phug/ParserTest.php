@@ -80,5 +80,14 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             "  [Phug\\Parser\\Node\\ElementNode]",
             $this->parser->dump("div\n  section: p Hello\nfooter")
         );
+        self::assertSame(
+            "[Phug\\Parser\\Node\\DocumentNode]\n".
+            "  [Phug\\Parser\\Node\\ElementNode]\n".
+            "    [Phug\\Parser\\Node\\ElementNode]\n".
+            "      [Phug\\Parser\\Node\\ElementNode outer=Phug\Parser\Node\ElementNode]\n".
+            "        [Phug\\Parser\\Node\\ElementNode]\n".
+            "          [Phug\\Parser\\Node\\TextNode]",
+            $this->parser->dump("div: div\n  section: p: span i")
+        );
     }
 }
