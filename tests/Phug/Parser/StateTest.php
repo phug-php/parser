@@ -311,4 +311,131 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $state->setParentNode($attribute);
         self::assertFalse($state->parentNodeIs($types));
     }
+
+    /**
+     * @covers                   ::createNode
+     * @expectedException        \InvalidArgumentException
+     * @expectedExceptionMessage ErrorException is not a valid token class
+     */
+    public function testCreateNodeException()
+    {
+        $tokens = [];
+        $lexer = new Lexer();
+        $state = new State($lexer->lex(''));
+
+        $state->createNode(\ErrorException::class);
+    }
+
+    /**
+     * @covers ::enter
+     */
+    public function testEnter()
+    {
+        $tokens = [];
+        $lexer = new Lexer();
+        $state = new State($lexer->lex(''));
+
+        $element = new ElementNode();
+        $state->setLevel(42)->setParentNode($element)->enter();
+
+        self::assertSame(43, $state->getLevel());
+        self::assertSame($element, $state->getParentNode());
+
+        $child = new ElementNode();
+        $state->setLastNode($child)->enter();
+
+        self::assertSame(44, $state->getLevel());
+        self::assertSame($child, $state->getParentNode());
+    }
+
+    /**
+     * @covers ::leave
+     */
+    public function testLeave()
+    {
+        $tokens = [];
+        $lexer = new Lexer();
+        $state = new State($lexer->lex(''));
+
+        $element = new ElementNode();
+        $state->setLevel(42)->setParentNode($element)->enter();
+        $child = new ElementNode();
+        $state->setLastNode($child)->enter();
+        $child->setParent($element);
+
+        self::assertSame(44, $state->getLevel());
+        self::assertSame($child, $state->getParentNode());
+
+        $state->leave();
+
+        self::assertSame(43, $state->getLevel());
+        self::assertSame($element, $state->getParentNode());
+    }
+
+    /**
+     * @covers                   ::leave
+     * @expectedException        \Phug\ParserException
+     * @expectedExceptionMessage Failed to outdent: No parent to outdent to.
+     * @expectedExceptionMessage Seems the parser moved out too many levels.
+     */
+    public function testLeaveException()
+    {
+        $tokens = [];
+        $lexer = new Lexer();
+        $state = new State($lexer->lex(''));
+
+        $element = new ElementNode();
+        $state->setLevel(42)->setParentNode($element)->leave();
+    }
+
+    /**
+     * @covers ::store
+     */
+    public function testStore()
+    {
+        $tokens = [];
+        $lexer = new Lexer();
+        $state = new State($lexer->lex(''));
+        $element = new ElementNode();
+        $state->setParentNode($element);
+        
+        self::assertSame($state, $state->store());
+        self::assertSame(0, count($element->getChildren()));
+        
+        $childA = new ElementNode();
+        $state->setCurrentNode($childA);
+
+        self::assertSame($state, $state->store());
+        self::assertSame(1, count($element->getChildren()));
+        self::assertSame($childA, $element->getChildren()[0]);
+        
+        $childB = new ElementNode();
+        $state->setCurrentNode($childB);
+        $childC = new ElementNode();
+        $state->setOuterNode($childC);
+
+        self::assertSame($state, $state->store());
+        self::assertSame(2, count($element->getChildren()));
+        self::assertSame($childB, $element->getChildren()[1]);
+        self::assertSame($childC, $childB->getOuterNode());
+    }
+
+    /**
+     * @covers                   ::throwException
+     * @expectedException        \Phug\ParserException
+     * @expectedExceptionMessage Failed to parse: Unexpected token
+     * @expectedExceptionMessage `Phug\Lexer\Token\TagToken`,
+     * @expectedExceptionMessage no token handler registered
+     * @expectedExceptionMessage Token: Phug\Lexer\Token\TagToken
+     * @expectedExceptionMessage Line: 12
+     * @expectedExceptionMessage Offset: 5
+     */
+    public function testThrowException()
+    {
+        $tokens = [];
+        $lexer = new Lexer();
+        $state = new State($lexer->lex(''));
+        $token = new TagToken(12, 5);
+        $state->handleToken($token);
+    }
 }
