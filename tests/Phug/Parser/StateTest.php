@@ -398,17 +398,17 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $state = new State($lexer->lex(''));
         $element = new ElementNode();
         $state->setParentNode($element);
-        
+
         self::assertSame($state, $state->store());
         self::assertSame(0, count($element->getChildren()));
-        
+
         $childA = new ElementNode();
         $state->setCurrentNode($childA);
 
         self::assertSame($state, $state->store());
         self::assertSame(1, count($element->getChildren()));
         self::assertSame($childA, $element->getChildren()[0]);
-        
+
         $childB = new ElementNode();
         $state->setCurrentNode($childB);
         $childC = new ElementNode();

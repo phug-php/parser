@@ -4,19 +4,19 @@ namespace Phug\Test\Parser\TokenHandler;
 
 use Phug\Lexer;
 use Phug\Lexer\Token\AssignmentToken;
-use Phug\Lexer\Token\AttributeToken;
 use Phug\Lexer\Token\AttributeEndToken;
 use Phug\Lexer\Token\AttributeStartToken;
+use Phug\Lexer\Token\AttributeToken;
 use Phug\Lexer\Token\TagToken;
 use Phug\Parser\Node\DocumentNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\AssignmentTokenHandler;
-use Phug\Parser\TokenHandler\AttributeTokenHandler;
 use Phug\Parser\TokenHandler\AttributeEndTokenHandler;
 use Phug\Parser\TokenHandler\AttributeStartTokenHandler;
+use Phug\Parser\TokenHandler\AttributeTokenHandler;
 
 /**
- * @coversDefaultClass Phug\Parser\TokenHandler\AssignmentTokenHandler 
+ * @coversDefaultClass Phug\Parser\TokenHandler\AssignmentTokenHandler
  */
 class AssignmentTokenHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -104,28 +104,5 @@ class AssignmentTokenHandlerTest extends \PHPUnit_Framework_TestCase
         $assignment->setName('foo');
         $state->setCurrentNode(new DocumentNode());
         $state->handleToken($assignment);
-    }
-
-    /**
-     * @covers                   ::<public>
-     * @expectedException        \Phug\ParserException
-     * @expectedExceptionMessage Failed to parse: The element already has a tag name
-     */
-    public function skip_testHandleTokenTagNameException()
-    {
-        $lexer = new Lexer();
-        $state = new State($lexer->lex('div'), [
-            'token_handlers'   => [
-                TagToken::class => TagTokenHandler::class,
-            ],
-        ]);
-
-        $tag = new TagToken();
-        $tag->setName('foo');
-        $state->handleToken($tag);
-
-        $tag = new TagToken();
-        $tag->setName('foo');
-        $state->handleToken($tag);
     }
 }

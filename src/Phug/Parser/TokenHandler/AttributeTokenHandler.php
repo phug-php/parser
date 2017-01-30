@@ -26,8 +26,8 @@ class AttributeTokenHandler implements TokenHandlerInterface
 
         /** @var AttributeNode $node */
         $node = $state->createNode(AttributeNode::class, $token);
-        $name = $node->getName();
-        $value = $node->getValue();
+        $name = $token->getName();
+        $value = $token->getValue();
         $node->setName($name);
         $node->setValue($value);
         $node->setIsEscaped($token->isEscaped());
