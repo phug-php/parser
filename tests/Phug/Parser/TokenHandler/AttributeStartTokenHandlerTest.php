@@ -62,6 +62,7 @@ class AttributeStartTokenHandlerTest extends AbstractParserTest
 
     /**
      * @covers                   ::<public>
+     * @covers                   Phug\Parser\TokenHandler\AttributeStartTokenHandler::<public>
      * @expectedException        \RuntimeException
      * @expectedExceptionMessage You can only pass attribute start tokens to this token handler
      */
@@ -75,6 +76,7 @@ class AttributeStartTokenHandlerTest extends AbstractParserTest
 
     /**
      * @covers                   ::<public>
+     * @covers                   Phug\Parser\TokenHandler\AttributeStartTokenHandler::<public>
      * @expectedException        \Phug\ParserException
      * @expectedExceptionMessage Failed to parse: Attributes can only be placed on
      * @expectedExceptionMessage element, assignment, import, variable,
@@ -97,6 +99,7 @@ class AttributeStartTokenHandlerTest extends AbstractParserTest
 
     /**
      * @covers                   ::<public>
+     * @covers                   Phug\Parser\TokenHandler\AttributeStartTokenHandler::<public>
      * @expectedException        \Phug\ParserException
      * @expectedExceptionMessage Attribute list not closed
      */

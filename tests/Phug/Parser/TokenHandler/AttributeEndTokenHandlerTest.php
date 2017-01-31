@@ -9,7 +9,7 @@ use Phug\Parser\State;
 use Phug\Parser\TokenHandler\AttributeEndTokenHandler;
 
 /**
- * @coversDefaultClass Phug\Parser\TokenHandler\AttributeEndTokenHandler 
+ * @coversDefaultClass Phug\Parser\TokenHandler\AttributeEndTokenHandler
  */
 class AttributeEndTokenHandlerTest extends \PHPUnit_Framework_TestCase
 {
