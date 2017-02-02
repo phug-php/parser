@@ -5,10 +5,10 @@ namespace Phug\Parser\TokenHandler;
 use Phug\Lexer\Token\CodeToken;
 use Phug\Lexer\Token\TextToken;
 use Phug\Lexer\TokenInterface;
-use Phug\ParserException;
 use Phug\Parser\Node\CodeNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
+use Phug\ParserException;
 
 class CodeTokenHandler implements TokenHandlerInterface
 {

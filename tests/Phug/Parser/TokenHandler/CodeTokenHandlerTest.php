@@ -38,6 +38,7 @@ class CodeTokenHandlerTest extends AbstractParserTest
         self::assertSame('do_something()', $elementNodes[0]->getValue());
         self::assertSame('foo', $elementNodes[1]->getValue());
     }
+
     /**
      * @covers ::<public>
      */
