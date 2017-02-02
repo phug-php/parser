@@ -5,27 +5,22 @@ namespace Phug\Test\Parser\TokenHandler;
 use Phug\Lexer;
 use Phug\Lexer\Token\TagToken;
 use Phug\Parser\State;
-use Phug\Parser\TokenHandler\ExpressionTokenHandler;
+use Phug\Parser\TokenHandler\VariableTokenHandler;
 use Phug\Test\AbstractParserTest;
 
 /**
- * @coversDefaultClass Phug\Parser\TokenHandler\ExpressionTokenHandler
+ * @coversDefaultClass Phug\Parser\TokenHandler\VariableTokenHandler
  */
-class ExpressionTokenHandlerTest extends AbstractParserTest
+class VariableTokenHandlerTest extends AbstractParserTest
 {
     /**
      * @covers ::<public>
      */
     public function testhandleToken()
     {
-        $this->assertNodes('p=foo()', [
+        $this->assertNodes('$p = foo', [
             '[DocumentNode]',
-            '  [ElementNode]',
-            '    [ExpressionNode]',
-        ]);
-        $this->assertNodes("p\n  =foo()", [
-            '[DocumentNode]',
-            '  [ElementNode]',
+            '  [VariableNode]',
             '    [ExpressionNode]',
         ]);
     }
@@ -33,13 +28,13 @@ class ExpressionTokenHandlerTest extends AbstractParserTest
     /**
      * @covers                   ::<public>
      * @expectedException        \RuntimeException
-     * @expectedExceptionMessage You can only pass expression tokens to this token handler
+     * @expectedExceptionMessage You can only pass variable tokens to this token handler
      */
     public function testHandleTokenTokenException()
     {
         $lexer = new Lexer();
         $state = new State($lexer->lex(''));
-        $handler = new ExpressionTokenHandler();
+        $handler = new VariableTokenHandler();
         $handler->handleToken(new TagToken(), $state);
     }
 }

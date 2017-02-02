@@ -18,12 +18,12 @@ class ExpansionTokenHandlerTest extends AbstractParserTest
      */
     public function testhandleToken()
     {
-        $this->assertNodes("p: p", [
+        $this->assertNodes('p: p', [
             '[DocumentNode]',
             '  [ElementNode]',
             '    [ElementNode]',
         ]);
-        $this->assertNodes("p: p: i Hello", [
+        $this->assertNodes('p: p: i Hello', [
             '[DocumentNode]',
             '  [ElementNode outer=ElementNode]',
             '    [ElementNode]',

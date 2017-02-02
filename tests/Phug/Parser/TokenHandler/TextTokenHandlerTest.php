@@ -18,7 +18,7 @@ class TextTokenHandlerTest extends AbstractParserTest
      */
     public function testhandleToken()
     {
-        $this->assertNodes("p foo", [
+        $this->assertNodes('p foo', [
             '[DocumentNode]',
             '  [ElementNode]',
             '    [TextNode]',
