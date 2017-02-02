@@ -266,7 +266,6 @@ class State implements OptionInterface
             );
         }
 
-        //TODO: Instances should be cached
         $handler = $this->options['token_handlers'][$className];
         $handler = $handler instanceof TokenHandlerInterface
             ? $handler
