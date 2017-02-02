@@ -14,7 +14,7 @@ class DoctypeTokenHandler implements TokenHandlerInterface
     {
         if (!($token instanceof DoctypeToken)) {
             throw new \RuntimeException(
-                'You can only pass do tokens to this token handler'
+                'You can only pass doctype tokens to this token handler'
             );
         }
 
