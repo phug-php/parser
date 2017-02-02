@@ -24,10 +24,6 @@ class TextTokenHandler implements TokenHandlerInterface
         $node->setLevel($token->getLevel());
         $node->setIsEscaped($token->isEscaped());
 
-        if ($state->getCurrentNode()) {
-            $state->getCurrentNode()->appendChild($node);
-        } else {
-            $state->setCurrentNode($node);
-        }
+        $state->append($node);
     }
 }

@@ -5,6 +5,8 @@ engines:
     checks:
       Similar code:
         enabled: false
+      Identical code:
+        enabled: false
     config:
       languages:
       - ruby
@@ -15,6 +17,9 @@ engines:
     enabled: true
   phpmd:
     enabled: true
+    exclude_fingerprints:
+    # Allow is method
+    - 9566f83b400b55b985a7c18e702063fd
 ratings:
   paths:
   - "**.inc"

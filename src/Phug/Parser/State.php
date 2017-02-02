@@ -184,6 +184,24 @@ class State implements OptionInterface
     }
 
     /**
+     * Append to current node, or set as current if node selected.
+     *
+     * @param Node $node
+     *
+     * @return $this
+     */
+    public function append($node)
+    {
+        $current = $this->getCurrentNode();
+
+        $current
+            ? $current->appendChild($node)
+            : $this->setCurrentNode($node);
+
+        return $this;
+    }
+
+    /**
      * @return Node
      */
     public function getLastNode()

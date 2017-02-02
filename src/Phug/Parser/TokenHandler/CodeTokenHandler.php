@@ -31,11 +31,8 @@ class CodeTokenHandler implements TokenHandlerInterface
                 );
             }
             $node->setValue($token->getValue());
-            $state->getCurrentNode()->appendChild($node);
-
-            return;
         }
 
-        $state->setCurrentNode($node);
+        $state->append($node);
     }
 }

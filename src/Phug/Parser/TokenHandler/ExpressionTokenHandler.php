@@ -24,10 +24,6 @@ class ExpressionTokenHandler implements TokenHandlerInterface
         $node->setIsChecked($token->isChecked());
         $node->setValue($token->getValue());
 
-        if ($state->getCurrentNode()) {
-            $state->getCurrentNode()->appendChild($node);
-        } else {
-            $state->setCurrentNode($node);
-        }
+        $state->append($node);
     }
 }

@@ -268,6 +268,32 @@ class StateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::append
+     */
+    public function testAppend()
+    {
+        $tokens = [];
+        $lexer = new Lexer();
+        $handler = new TagTokenHandler();
+        $state = new State($lexer->lex(''));
+        $a = new ElementNode();
+        $b = new ElementNode();
+
+        self::assertSame(null, $state->getCurrentNode());
+
+        $state->append($a);
+
+        self::assertSame($a, $state->getCurrentNode());
+        self::assertSame(0, count($a->getChildren()));
+
+        $state->append($b);
+
+        self::assertSame($a, $state->getCurrentNode());
+        self::assertSame(1, count($a->getChildren()));
+        self::assertSame($b, $a->getChildren()[0]);
+    }
+
+    /**
      * @covers ::lastNodeIs
      */
     public function testLastNodeIs()
