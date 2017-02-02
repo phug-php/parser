@@ -12,4 +12,16 @@ class ElementNode extends Node
     use NameTrait;
     use AttributeTrait;
     use AssignmentTrait;
+
+    /**
+     * @return string
+     */
+    public function getAttribute($name)
+    {
+        foreach ($this->getAttributes() as $attribute) {
+            if ($attribute->getName() === $name) {
+                return $attribute->getValue();
+            }
+        }
+    }
 }
