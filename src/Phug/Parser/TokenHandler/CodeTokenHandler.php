@@ -3,10 +3,12 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\CodeToken;
+use Phug\Lexer\Token\TextToken;
 use Phug\Lexer\TokenInterface;
-use Phug\Parser\Node\ExpressionNode;
+use Phug\Parser\Node\CodeNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
+use Phug\ParserException;
 
 class CodeTokenHandler implements TokenHandlerInterface
 {
@@ -18,16 +20,22 @@ class CodeTokenHandler implements TokenHandlerInterface
             );
         }
 
-        /** @var ExpressionNode $node */
-        $node = $state->createNode(ExpressionNode::class, $token);
-        $node->setIsEscaped($token->isEscaped());
-        $node->setIsChecked($token->isChecked());
-        $node->setValue($token->getValue());
+        /** @var CodeNode $node */
+        $node = $state->createNode(CodeNode::class, $token);
 
         if ($state->getCurrentNode()) {
+            $token = $state->expectNext([TextToken::class]);
+            if (!$token) {
+                throw new ParserException(
+                    'Unexpected token `blockcode` expected `text`, `interpolated-code` or `code`'
+                );
+            }
+            $node->setValue($token->getValue());
             $state->getCurrentNode()->appendChild($node);
-        } else {
-            $state->setCurrentNode($node);
+
+            return;
         }
+
+        $state->setCurrentNode($node);
     }
 }
