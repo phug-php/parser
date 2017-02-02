@@ -291,11 +291,11 @@ class State implements OptionInterface
     {
         while ($this->hasTokens()) {
             $token = $this->getToken();
-            if (in_array(get_class($token), $types, true)) {
-                yield $token;
-            } else {
+            if (!in_array(get_class($token), $types, true)) {
                 break;
             }
+
+            yield $token;
 
             $this->nextToken();
         }
