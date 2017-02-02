@@ -30,10 +30,8 @@ class CodeTokenHandler implements TokenHandlerInterface
                     'Unexpected token `blockcode` expected `text`, `interpolated-code` or `code`'
                 );
             }
+            $node->setValue($token->getValue());
             $state->getCurrentNode()->appendChild($node);
-            $state->store();
-            $state->setCurrentNode($node);
-            $state->enter();
 
             return;
         }

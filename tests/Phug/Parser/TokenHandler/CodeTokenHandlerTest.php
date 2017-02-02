@@ -24,14 +24,19 @@ class CodeTokenHandlerTest extends AbstractParserTest
             '  [CodeNode]',
             '    [TextNode]',
         ]);
-        $this->assertNodes("code- do_something();\n  | foo\n| bar", [
+        $this->assertNodes("code- do_something()\n  | foo\n| bar", [
             '[DocumentNode]',
             '  [ElementNode]',
             '    [CodeNode]',
-            '      [TextNode]',
             '    [TextNode]',
             '  [TextNode]',
         ]);
+        $documentNodes = $this->parser->parse("code- do_something()\n  | foo\n| bar")->getChildren();
+        self::assertSame('code', $documentNodes[0]->getName());
+        self::assertSame('bar', $documentNodes[1]->getValue());
+        $elementNodes = $documentNodes[0]->getChildren();
+        self::assertSame('do_something()', $elementNodes[0]->getValue());
+        self::assertSame('foo', $elementNodes[1]->getValue());
     }
     /**
      * @covers ::<public>
@@ -51,14 +56,14 @@ class CodeTokenHandlerTest extends AbstractParserTest
      */
     public function testHandleCodeValue()
     {
-        $document = $this->parser->parse('- do_something();');
+        $document = $this->parser->parse('- do_something()');
         $element = $document->getChildren()[0];
 
         self::assertInstanceOf(CodeNode::class, $element);
 
         $text = $element->getChildren()[0];
 
-        self::assertSame('do_something();', $text->getValue());
+        self::assertSame('do_something()', $text->getValue());
     }
 
     /**
@@ -72,5 +77,15 @@ class CodeTokenHandlerTest extends AbstractParserTest
         $state = new State($lexer->lex('div- do_something()'));
         $handler = new CodeTokenHandler();
         $handler->handleToken(new TagToken(), $state);
+    }
+
+    /**
+     * @covers                   ::<public>
+     * @expectedException        \Phug\ParserException
+     * @expectedExceptionMessage Unexpected token `blockcode` expected `text`, `interpolated-code` or `code`
+     */
+    public function testHandleTokenUnexpectedBlock()
+    {
+        $this->parser->parse('div-');
     }
 }
