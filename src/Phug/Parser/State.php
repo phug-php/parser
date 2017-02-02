@@ -313,7 +313,9 @@ class State implements OptionInterface
      */
     public function lookUpNext(array $types)
     {
-        return $this->nextToken()->lookUp($types);
+        return $this->hasTokens()
+            ? $this->nextToken()->lookUp($types)
+            : [];
     }
 
     /**
