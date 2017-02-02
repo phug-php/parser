@@ -8,11 +8,12 @@ use Phug\Lexer\Token\TagToken;
 use Phug\Parser\Node\DocumentNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\TagTokenHandler;
+use Phug\Test\AbstractParserTest;
 
 /**
  * @coversDefaultClass Phug\Parser\TokenHandler\TagTokenHandler
  */
-class TagTokenHandlerTest extends \PHPUnit_Framework_TestCase
+class TagTokenHandlerTest extends AbstractParserTest
 {
     /**
      * @covers ::<public>
@@ -31,6 +32,12 @@ class TagTokenHandlerTest extends \PHPUnit_Framework_TestCase
         $state->handleToken($tag);
 
         self::assertSame('foo', $state->getCurrentNode()->getName());
+
+        $elements = $this->parser->parse("foo:bar\nfoo-bar\nA:B")->getChildren();
+
+        self::assertSame('foo:bar', $elements[0]->getName());
+        self::assertSame('foo-bar', $elements[1]->getName());
+        self::assertSame('A:B', $elements[2]->getName());
     }
 
     /**

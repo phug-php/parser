@@ -26,27 +26,6 @@ class ExpansionTokenHandler implements TokenHandlerInterface
             );
         }
 
-        if (!$state->currentNodeIs([ElementNode::class]) && !$token->hasSpace()) {
-            if (!$state->expectNext([TagToken::class])) {
-                $state->throwException(
-                    sprintf(
-                        'Expected tag name or expansion after double colon, '
-                        .'%s received',
-                        basename(get_class($state->getToken()), 'Token')
-                    ),
-                    $token
-                );
-            }
-
-            /** @var TagToken $token */
-            $token = $state->getToken();
-            /** @var ElementNode $current */
-            $current = $state->getCurrentNode();
-            $current->setName($current->getName().':'.$token->getName());
-
-            return;
-        }
-
         //Make sure to keep the expansion saved
         if ($state->getOuterNode()) {
             $state->getCurrentNode()->setOuterNode($state->getOuterNode());
