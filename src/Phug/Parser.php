@@ -125,7 +125,7 @@ class Parser implements OptionInterface
      */
     public function __construct(array $options = null)
     {
-        $this->options = array_replace_recursive([
+        $this->setOptionsRecursive([
             'lexer_class_name' => Lexer::class,
             'lexer_options'    => [],
             'state_class_name' => State::class,
@@ -162,7 +162,7 @@ class Parser implements OptionInterface
             ],
         ], $options ?: []);
 
-        $lexerClassName = $this->options['lexer_class_name'];
+        $lexerClassName = $this->getOption('lexer_class_name');
         if (!is_a($lexerClassName, Lexer::class, true)) {
             throw new ParserException(
                 "Passed lexer class $lexerClassName is ".
@@ -170,11 +170,11 @@ class Parser implements OptionInterface
             );
         }
 
-        $this->lexer = new $lexerClassName($this->options['lexer_options']);
+        $this->lexer = new $lexerClassName($this->getOption('lexer_options'));
         $this->state = null;
         $this->tokenHandlers = [];
 
-        foreach ($this->options['token_handlers'] as $className => $handler) {
+        foreach ($this->getOption('token_handlers') as $className => $handler) {
             $this->setTokenHandler($className, $handler);
         }
     }
@@ -219,7 +219,7 @@ class Parser implements OptionInterface
      */
     public function parse($input)
     {
-        $stateClassName = $this->options['state_class_name'];
+        $stateClassName = $this->getOption('state_class_name');
         if (!is_a($stateClassName, State::class, true)) {
             throw new \InvalidArgumentException(
                 'state_class_name needs to be a valid '.State::class.' sub class'

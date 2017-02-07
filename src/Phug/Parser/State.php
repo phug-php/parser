@@ -82,7 +82,7 @@ class State implements OptionInterface
         $this->currentNode = null;
         $this->lastNode = null;
         $this->outerNode = null;
-        $this->options = array_replace_recursive([
+        $this->setOptionsRecursive([
             'token_handlers' => [],
         ], $options ?: []);
 
@@ -276,15 +276,16 @@ class State implements OptionInterface
     {
         $token = $token ?: $this->getToken();
         $className = get_class($token);
+        $tokenHanlders = $this->getOption('token_handlers');
 
-        if (!isset($this->options['token_handlers'][$className])) {
+        if (!isset($tokenHanlders[$className])) {
             $this->throwException(
                 "Unexpected token `$className`, no token handler registered",
                 $token
             );
         }
 
-        $handler = $this->options['token_handlers'][$className];
+        $handler = $tokenHanlders[$className];
         $handler = $handler instanceof TokenHandlerInterface
             ? $handler
             : $this->getNamedHandler($handler);
