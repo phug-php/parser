@@ -4,6 +4,7 @@ namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\AttributeToken;
 use Phug\Lexer\TokenInterface;
+use Phug\Parser\Node\AssignmentNode;
 use Phug\Parser\Node\AttributeNode;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\Node\MixinCallNode;
@@ -33,8 +34,12 @@ class AttributeTokenHandler implements TokenHandlerInterface
         $node->setIsEscaped($token->isEscaped());
         $node->setIsChecked($token->isChecked());
 
-        //Mixin calls take the first expression set as the name as the value
-        if ($state->currentNodeIs([MixinCallNode::class]) && ($value === '' || $value === null)) {
+        // Mixin calls and assignments take the first
+        // expression set as the name as the value
+        if (
+            $state->currentNodeIs([MixinCallNode::class, AssignmentNode::class]) &&
+            ($value === '' || $value === null)
+        ) {
             $node->setValue($name);
             $node->setName(null);
         }
