@@ -26,12 +26,12 @@ class IdTokenHandlerTest extends AbstractParserTest
         $element = $this->parser->parse('#foo')->getChildren()[0];
 
         self::assertSame(null, $element->getName());
-        self::assertSame('foo', $element->getAttribute('id'));
+        self::assertSame("'foo'", $element->getAttribute('id'));
 
         $element = $this->parser->parse('p#bar-baz')->getChildren()[0];
 
         self::assertSame('p', $element->getName());
-        self::assertSame('bar-baz', $element->getAttribute('id'));
+        self::assertSame("'bar-baz'", $element->getAttribute('id'));
     }
 
     /**

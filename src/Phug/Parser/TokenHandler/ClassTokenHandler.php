@@ -35,7 +35,7 @@ class ClassTokenHandler implements TokenHandlerInterface
         /** @var AttributeNode $attr */
         $attr = $state->createNode(AttributeNode::class, $token);
         $attr->setName('class');
-        $attr->setValue($token->getName());
+        $attr->setValue(var_export($token->getName(), true));
         $attr->unescape()->uncheck();
 
         /** @var ElementNode|MixinCallNode $current */

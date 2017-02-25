@@ -34,7 +34,7 @@ class IdTokenHandler implements TokenHandlerInterface
         /** @var AttributeNode $attr */
         $attr = $state->createNode(AttributeNode::class, $token);
         $attr->setName('id');
-        $attr->setValue($token->getName());
+        $attr->setValue(var_export($token->getName(), true));
         $attr->unescape()->uncheck();
 
         /** @var ElementNode|MixinCallNode $current */

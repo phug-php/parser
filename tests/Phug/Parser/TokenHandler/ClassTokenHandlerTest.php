@@ -44,7 +44,7 @@ class ClassTokenHandlerTest extends AbstractParserTest
             }
         }
 
-        self::assertSame('foo', $className);
+        self::assertSame("'foo'", $className);
     }
 
     /**
