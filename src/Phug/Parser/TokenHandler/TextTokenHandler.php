@@ -23,6 +23,7 @@ class TextTokenHandler implements TokenHandlerInterface
         $node->setValue($token->getValue());
         $node->setLevel($token->getLevel());
         $node->setIsEscaped($token->isEscaped());
+        $node->setIndent($token->getIndent());
 
         $state->append($node);
     }

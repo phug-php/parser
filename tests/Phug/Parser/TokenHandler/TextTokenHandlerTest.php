@@ -28,6 +28,8 @@ class TextTokenHandlerTest extends AbstractParserTest
             '  [ElementNode]',
             '    [TextNode]',
         ]);
+        $document = $this->parser->parse("p\n  | foo");
+        self::assertSame('  ', $document->getChildAt(0)->getChildAt(0)->getIndent());
     }
 
     /**

@@ -13,6 +13,18 @@ class TextNode extends Node
 
     private $level = null;
 
+    private $indent = '  ';
+
+    public function setIndent($indent)
+    {
+        $this->indent = $indent;
+    }
+
+    public function getIndent()
+    {
+        return $this->indent;
+    }
+
     public function setLevel($level)
     {
         $this->level = $level;
