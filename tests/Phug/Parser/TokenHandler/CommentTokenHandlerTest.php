@@ -16,7 +16,7 @@ class CommentTokenHandlerTest extends AbstractParserTest
     /**
      * @covers ::<public>
      */
-    public function testhandleToken()
+    public function testHandleToken()
     {
         $this->assertNodes('// foo', [
             '[DocumentNode]',

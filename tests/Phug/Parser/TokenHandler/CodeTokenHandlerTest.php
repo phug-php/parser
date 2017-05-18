@@ -17,7 +17,7 @@ class CodeTokenHandlerTest extends AbstractParserTest
     /**
      * @covers ::<public>
      */
-    public function testhandleSingleLine()
+    public function testHandleSingleLine()
     {
         $this->assertNodes('- do_something();', [
             '[DocumentNode]',
@@ -40,16 +40,18 @@ class CodeTokenHandlerTest extends AbstractParserTest
     }
 
     /**
+     * @group i
      * @covers ::<public>
      */
-    public function testhandleBlock()
+    public function testHandleBlock()
     {
         $this->assertNodes("-\n  foo();\n  bar();", [
             '[DocumentNode]',
             '  [CodeNode]',
             '    [TextNode]',
-            '    [TextNode]',
         ]);
+        $documentNodes = $this->parser->parse("-\n  foo();\n  bar();")->getChildren();
+        self::assertSame("foo();\nbar();", $documentNodes[0]->getChildren()[0]->getValue());
     }
 
     /**

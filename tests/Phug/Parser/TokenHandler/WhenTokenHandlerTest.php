@@ -16,7 +16,7 @@ class WhenTokenHandlerTest extends AbstractParserTest
     /**
      * @covers ::<public>
      */
-    public function testhandleToken()
+    public function testHandleToken()
     {
         $this->assertNodes("when 42\n  p", [
             '[DocumentNode]',

@@ -16,7 +16,7 @@ class ExpressionTokenHandlerTest extends AbstractParserTest
     /**
      * @covers ::<public>
      */
-    public function testhandleToken()
+    public function testHandleToken()
     {
         $this->assertNodes('p=foo()', [
             '[DocumentNode]',

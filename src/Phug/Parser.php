@@ -240,6 +240,7 @@ class Parser implements OptionInterface
             $this->state->handleToken();
             $this->state->nextToken();
         }
+        $this->state->store();
 
         $document = $this->state->getDocumentNode();
 

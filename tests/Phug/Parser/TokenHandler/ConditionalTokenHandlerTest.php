@@ -16,7 +16,7 @@ class ConditionalTokenHandlerTest extends AbstractParserTest
     /**
      * @covers ::<public>
      */
-    public function testhandleToken()
+    public function testHandleToken()
     {
         $this->assertNodes("if 1\n  p", [
             '[DocumentNode]',

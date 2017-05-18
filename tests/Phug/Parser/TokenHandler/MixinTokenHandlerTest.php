@@ -16,7 +16,7 @@ class MixinTokenHandlerTest extends AbstractParserTest
     /**
      * @covers ::<public>
      */
-    public function testhandleSingleLine()
+    public function testHandleSingleLine()
     {
         $this->assertNodes('mixin foo(a, b)', [
             '[DocumentNode]',

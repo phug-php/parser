@@ -16,7 +16,7 @@ class ForTokenHandlerTest extends AbstractParserTest
     /**
      * @covers ::<public>
      */
-    public function testhandleToken()
+    public function testHandleToken()
     {
         $this->assertNodes("for \$i = 1; \$i < 3; \$i++\n  p=\$i", [
             '[DocumentNode]',

@@ -16,7 +16,7 @@ class EachTokenHandlerTest extends AbstractParserTest
     /**
      * @covers ::<public>
      */
-    public function testhandleToken()
+    public function testHandleToken()
     {
         $this->assertNodes("each \$i in \$foo\n  p=\$i", [
             '[DocumentNode]',

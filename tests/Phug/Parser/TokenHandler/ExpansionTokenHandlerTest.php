@@ -16,7 +16,7 @@ class ExpansionTokenHandlerTest extends AbstractParserTest
     /**
      * @covers ::<public>
      */
-    public function testhandleToken()
+    public function testHandleToken()
     {
         $this->assertNodes('p: p', [
             '[DocumentNode]',
@@ -29,7 +29,7 @@ class ExpansionTokenHandlerTest extends AbstractParserTest
             '    [ElementNode]',
             '      [TextNode]',
         ]);
-        $this->assertNodes("mixin c\n  div\n   block\n+c(): +c()", [
+        $this->assertNodes("mixin c\n  div\n    block\n+c(): +c()", [
             '[DocumentNode]',
             '  [MixinNode]',
             '    [ElementNode]',

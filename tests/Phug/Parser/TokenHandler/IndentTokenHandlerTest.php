@@ -16,7 +16,7 @@ class IndentTokenHandlerTest extends AbstractParserTest
     /**
      * @covers ::<public>
      */
-    public function testhandleSingleLine()
+    public function testHandleSingleLine()
     {
         $this->assertNodes("p\n  p\n\t\t\t\tdiv", [
             '[DocumentNode]',

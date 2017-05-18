@@ -16,7 +16,7 @@ class DoctypeTokenHandlerTest extends AbstractParserTest
     /**
      * @covers ::<public>
      */
-    public function testhandleToken()
+    public function testHandleToken()
     {
         $this->assertNodes('doctype html', [
             '[DocumentNode]',

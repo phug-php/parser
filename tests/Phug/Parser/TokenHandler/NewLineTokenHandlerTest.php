@@ -16,7 +16,7 @@ class NewLineTokenHandlerTest extends AbstractParserTest
     /**
      * @covers ::<public>
      */
-    public function testhandleSingleLine()
+    public function testHandleSingleLine()
     {
         $this->assertNodes("p\n  p\n    div\n  ()\n.foo", [
             '[DocumentNode]',
