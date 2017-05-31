@@ -6,6 +6,7 @@ use Phug\Lexer\Token\AssignmentToken;
 use Phug\Lexer\Token\AttributeEndToken;
 use Phug\Lexer\Token\AttributeStartToken;
 use Phug\Lexer\Token\AttributeToken;
+use Phug\Lexer\Token\AutoCloseToken;
 use Phug\Lexer\Token\BlockToken;
 use Phug\Lexer\Token\CaseToken;
 use Phug\Lexer\Token\ClassToken;
@@ -38,6 +39,7 @@ use Phug\Parser\TokenHandler\AssignmentTokenHandler;
 use Phug\Parser\TokenHandler\AttributeEndTokenHandler;
 use Phug\Parser\TokenHandler\AttributeStartTokenHandler;
 use Phug\Parser\TokenHandler\AttributeTokenHandler;
+use Phug\Parser\TokenHandler\AutoCloseTokenHandler;
 use Phug\Parser\TokenHandler\BlockTokenHandler;
 use Phug\Parser\TokenHandler\CaseTokenHandler;
 use Phug\Parser\TokenHandler\ClassTokenHandler;
@@ -134,6 +136,7 @@ class Parser implements OptionInterface
                 AttributeEndToken::class   => AttributeEndTokenHandler::class,
                 AttributeStartToken::class => AttributeStartTokenHandler::class,
                 AttributeToken::class      => AttributeTokenHandler::class,
+                AutoCloseToken::class      => AutoCloseTokenHandler::class,
                 BlockToken::class          => BlockTokenHandler::class,
                 CaseToken::class           => CaseTokenHandler::class,
                 ClassToken::class          => ClassTokenHandler::class,

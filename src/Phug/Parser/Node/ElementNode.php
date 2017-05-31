@@ -14,6 +14,11 @@ class ElementNode extends Node
     use AssignmentTrait;
 
     /**
+     * @var bool
+     */
+    protected $autoClosed = false;
+
+    /**
      * @return string
      */
     public function getAttribute($name)
@@ -23,5 +28,21 @@ class ElementNode extends Node
                 return $attribute->getValue();
             }
         }
+    }
+
+    /**
+     * For the element to be auto-closed.
+     */
+    public function autoClose()
+    {
+        $this->autoClosed = true;
+    }
+
+    /**
+     * @return bool true if the element is auto-closed
+     */
+    public function isAutoClosed()
+    {
+        return $this->autoClosed;
     }
 }
