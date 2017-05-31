@@ -85,14 +85,6 @@ class State implements OptionInterface
         $this->setOptionsRecursive([
             'token_handlers' => [],
         ], $options ?: []);
-
-        //Fix HHVM generators needing ->next() before ->current()
-        //This will actually work as expected, no node will be skipped
-        //HHVM always needs a first ->next() (I don't know if this is a bug or
-        //expected behaviour)
-        if (defined('HHVM_VERSION') && $this->hasTokens()) {
-            $this->nextToken();
-        }
     }
 
     /**
