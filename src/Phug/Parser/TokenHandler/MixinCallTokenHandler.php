@@ -4,6 +4,7 @@ namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\MixinCallToken;
 use Phug\Lexer\TokenInterface;
+use Phug\Parser\Node\ExpressionNode;
 use Phug\Parser\Node\MixinCallNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
@@ -20,7 +21,14 @@ class MixinCallTokenHandler implements TokenHandlerInterface
 
         /** @var MixinCallNode $node */
         $node = $state->createNode(MixinCallNode::class, $token);
-        $node->setName($token->getName());
+        $name = $token->getName();
+        if (preg_match('/^#\\{(.+)\\}$/', $name, $match)) {
+            $name = new ExpressionNode();
+            $name->setValue($match[1]);
+            $name->setIsChecked(false);
+            $name->setIsEscaped(false);
+        }
+        $node->setName($name);
         $state->setCurrentNode($node);
     }
 }

@@ -18,12 +18,21 @@ class MixinCallTokenHandlerTest extends AbstractParserTest
      */
     public function testHandleSingleLine()
     {
-        $this->assertNodes('+foo(1, 2)', [
+        $template = '+foo(1, 2)';
+        $this->assertNodes($template, [
             '[DocumentNode]',
             '  [MixinCallNode]',
         ]);
-        $mixin = $this->parser->parse('+foo(1, 2)')->getChildren()[0];
+        $mixin = $this->parser->parse($template)->getChildren()[0];
         self::assertSame('foo', $mixin->getName());
+
+        $template = '+#{$foo}(1, 2)';
+        $this->assertNodes($template, [
+            '[DocumentNode]',
+            '  [MixinCallNode]',
+        ]);
+        $mixin = $this->parser->parse($template)->getChildren()[0];
+        self::assertSame('$foo', $mixin->getName()->getValue());
     }
 
     /**
