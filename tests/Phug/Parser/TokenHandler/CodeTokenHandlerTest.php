@@ -40,7 +40,6 @@ class CodeTokenHandlerTest extends AbstractParserTest
     }
 
     /**
-     * @group i
      * @covers ::<public>
      */
     public function testHandleBlock()
