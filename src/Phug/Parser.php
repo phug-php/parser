@@ -25,6 +25,8 @@ use Phug\Lexer\Token\ImportToken;
 use Phug\Lexer\Token\IndentToken;
 use Phug\Lexer\Token\InterpolationEndToken;
 use Phug\Lexer\Token\InterpolationStartToken;
+use Phug\Lexer\Token\TagInterpolationEndToken;
+use Phug\Lexer\Token\TagInterpolationStartToken;
 use Phug\Lexer\Token\MixinCallToken;
 use Phug\Lexer\Token\MixinToken;
 use Phug\Lexer\Token\NewLineToken;
@@ -60,6 +62,8 @@ use Phug\Parser\TokenHandler\ImportTokenHandler;
 use Phug\Parser\TokenHandler\IndentTokenHandler;
 use Phug\Parser\TokenHandler\InterpolationEndTokenHandler;
 use Phug\Parser\TokenHandler\InterpolationStartTokenHandler;
+use Phug\Parser\TokenHandler\TagInterpolationEndTokenHandler;
+use Phug\Parser\TokenHandler\TagInterpolationStartTokenHandler;
 use Phug\Parser\TokenHandler\MixinCallTokenHandler;
 use Phug\Parser\TokenHandler\MixinTokenHandler;
 use Phug\Parser\TokenHandler\NewLineTokenHandler;
@@ -136,38 +140,40 @@ class Parser implements OptionInterface
             'lexer_options'    => [],
             'state_class_name' => State::class,
             'token_handlers'   => [
-                AssignmentToken::class          => AssignmentTokenHandler::class,
-                AttributeEndToken::class        => AttributeEndTokenHandler::class,
-                AttributeStartToken::class      => AttributeStartTokenHandler::class,
-                AttributeToken::class           => AttributeTokenHandler::class,
-                AutoCloseToken::class           => AutoCloseTokenHandler::class,
-                BlockToken::class               => BlockTokenHandler::class,
-                CaseToken::class                => CaseTokenHandler::class,
-                ClassToken::class               => ClassTokenHandler::class,
-                CodeToken::class                => CodeTokenHandler::class,
-                CommentToken::class             => CommentTokenHandler::class,
-                ConditionalToken::class         => ConditionalTokenHandler::class,
-                DoToken::class                  => DoTokenHandler::class,
-                DoctypeToken::class             => DoctypeTokenHandler::class,
-                EachToken::class                => EachTokenHandler::class,
-                ExpansionToken::class           => ExpansionTokenHandler::class,
-                ExpressionToken::class          => ExpressionTokenHandler::class,
-                FilterToken::class              => FilterTokenHandler::class,
-                ForToken::class                 => ForTokenHandler::class,
-                IdToken::class                  => IdTokenHandler::class,
-                InterpolationStartToken::class  => InterpolationStartTokenHandler::class,
-                InterpolationEndToken::class    => InterpolationEndTokenHandler::class,
-                ImportToken::class              => ImportTokenHandler::class,
-                IndentToken::class              => IndentTokenHandler::class,
-                MixinCallToken::class           => MixinCallTokenHandler::class,
-                MixinToken::class               => MixinTokenHandler::class,
-                NewLineToken::class             => NewLineTokenHandler::class,
-                OutdentToken::class             => OutdentTokenHandler::class,
-                TagToken::class                 => TagTokenHandler::class,
-                TextToken::class                => TextTokenHandler::class,
-                VariableToken::class            => VariableTokenHandler::class,
-                WhenToken::class                => WhenTokenHandler::class,
-                WhileToken::class               => WhileTokenHandler::class,
+                AssignmentToken::class             => AssignmentTokenHandler::class,
+                AttributeEndToken::class           => AttributeEndTokenHandler::class,
+                AttributeStartToken::class         => AttributeStartTokenHandler::class,
+                AttributeToken::class              => AttributeTokenHandler::class,
+                AutoCloseToken::class              => AutoCloseTokenHandler::class,
+                BlockToken::class                  => BlockTokenHandler::class,
+                CaseToken::class                   => CaseTokenHandler::class,
+                ClassToken::class                  => ClassTokenHandler::class,
+                CodeToken::class                   => CodeTokenHandler::class,
+                CommentToken::class                => CommentTokenHandler::class,
+                ConditionalToken::class            => ConditionalTokenHandler::class,
+                DoToken::class                     => DoTokenHandler::class,
+                DoctypeToken::class                => DoctypeTokenHandler::class,
+                EachToken::class                   => EachTokenHandler::class,
+                ExpansionToken::class              => ExpansionTokenHandler::class,
+                ExpressionToken::class             => ExpressionTokenHandler::class,
+                FilterToken::class                 => FilterTokenHandler::class,
+                ForToken::class                    => ForTokenHandler::class,
+                IdToken::class                     => IdTokenHandler::class,
+                InterpolationStartToken::class     => InterpolationStartTokenHandler::class,
+                InterpolationEndToken::class       => InterpolationEndTokenHandler::class,
+                ImportToken::class                 => ImportTokenHandler::class,
+                IndentToken::class                 => IndentTokenHandler::class,
+                MixinCallToken::class              => MixinCallTokenHandler::class,
+                MixinToken::class                  => MixinTokenHandler::class,
+                NewLineToken::class                => NewLineTokenHandler::class,
+                OutdentToken::class                => OutdentTokenHandler::class,
+                TagInterpolationStartToken::class  => TagInterpolationStartTokenHandler::class,
+                TagInterpolationEndToken::class    => TagInterpolationEndTokenHandler::class,
+                TagToken::class                    => TagTokenHandler::class,
+                TextToken::class                   => TextTokenHandler::class,
+                VariableToken::class               => VariableTokenHandler::class,
+                WhenToken::class                   => WhenTokenHandler::class,
+                WhileToken::class                  => WhileTokenHandler::class,
             ],
         ], $options ?: []);
 

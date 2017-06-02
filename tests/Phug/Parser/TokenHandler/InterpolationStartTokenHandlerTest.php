@@ -5,13 +5,13 @@ namespace Phug\Test\Parser\TokenHandler;
 use Phug\Lexer;
 use Phug\Lexer\Token\AttributeToken;
 use Phug\Parser\State;
-use Phug\Parser\TokenHandler\InterpolationStartTokenHandler;
+use Phug\Parser\TokenHandler\TagInterpolationStartTokenHandler;
 use Phug\Test\AbstractParserTest;
 
 /**
- * @coversDefaultClass Phug\Parser\TokenHandler\InterpolationEndTokenHandler
+ * @coversDefaultClass Phug\Parser\TokenHandler\TagInterpolationEndTokenHandler
  */
-class InterpolationStartTokenHandlerTest extends AbstractParserTest
+class TagInterpolationStartTokenHandlerTest extends AbstractParserTest
 {
     /**
      * @covers ::<public>
@@ -51,7 +51,7 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
     {
         $lexer = new Lexer();
         $state = new State($lexer->lex('div'));
-        $handler = new InterpolationStartTokenHandler();
+        $handler = new TagInterpolationStartTokenHandler();
         $handler->handleToken(new AttributeToken(), $state);
     }
 }
