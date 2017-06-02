@@ -45,6 +45,8 @@ class ImportTokenHandlerTest extends AbstractParserTest
      */
     public function testHandleTokenElementException()
     {
-        $this->parser->parse("div\nextends foo");
+        $doc = $this->parser->parse("div\nextends foo");
+        var_dump($doc);
+        exit;
     }
 }
