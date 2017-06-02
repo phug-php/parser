@@ -4,7 +4,6 @@ namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\InterpolationStartToken;
 use Phug\Lexer\TokenInterface;
-use Phug\Parser\Node\DocumentNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
 
