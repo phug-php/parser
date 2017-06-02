@@ -9,12 +9,13 @@ use Phug\Parser\TokenHandler\InterpolationStartTokenHandler;
 use Phug\Test\AbstractParserTest;
 
 /**
- * @coversDefaultClass Phug\Parser\TokenHandler\InterpolationEndTokenHandler
+ * @coversDefaultClass Phug\Parser\TokenHandler\InterpolationStartTokenHandler
  */
 class InterpolationStartTokenHandlerTest extends AbstractParserTest
 {
     /**
      * @covers ::<public>
+     * @covers \Phug\Parser\TokenHandler\InterpolationEndTokenHandler::<public>
      */
     public function testHandleToken()
     {
@@ -38,7 +39,7 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
             '    [TextNode]',
         ]);
         $document = $this->parser->parse($template);
-        self::assertSame("'hi'", $document->getChildAt(0)->getChildAt(1)->getName());
+        self::assertSame("'hi'", $document->getChildAt(0)->getChildAt(1)->getValue());
     }
 
     /**

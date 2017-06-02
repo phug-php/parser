@@ -9,12 +9,13 @@ use Phug\Parser\TokenHandler\TagInterpolationStartTokenHandler;
 use Phug\Test\AbstractParserTest;
 
 /**
- * @coversDefaultClass Phug\Parser\TokenHandler\TagInterpolationEndTokenHandler
+ * @coversDefaultClass Phug\Parser\TokenHandler\TagInterpolationStartTokenHandler
  */
 class TagInterpolationStartTokenHandlerTest extends AbstractParserTest
 {
     /**
      * @covers ::<public>
+     * @covers \Phug\Parser\TokenHandler\TagInterpolationEndTokenHandler::<public>
      */
     public function testHandleToken()
     {

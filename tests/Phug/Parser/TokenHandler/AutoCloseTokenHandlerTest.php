@@ -4,6 +4,7 @@ namespace Phug\Test\Parser\TokenHandler;
 
 use Phug\Lexer;
 use Phug\Lexer\Token\AutoCloseToken;
+use Phug\Lexer\Token\TagToken;
 use Phug\Parser\Node\TextNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\AutoCloseTokenHandler;
@@ -37,6 +38,19 @@ class AutoCloseTokenHandlerTest extends AbstractParserTest
         $element = $document->getChildren()[0];
 
         self::assertTrue($element->isAutoClosed());
+    }
+
+    /**
+     * @covers                   ::<public>
+     * @expectedException        \RuntimeException
+     * @expectedExceptionMessage You can only pass auto-close tokens to this token handler
+     */
+    public function testHandleTokenTokenException()
+    {
+        $lexer = new Lexer();
+        $state = new State($lexer->lex('div/'));
+        $handler = new AutoCloseTokenHandler();
+        $handler->handleToken(new TagToken(), $state);
     }
 
     /**

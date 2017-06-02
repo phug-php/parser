@@ -17,6 +17,7 @@ class TagTokenHandlerTest extends AbstractParserTest
 {
     /**
      * @covers ::<public>
+     * @covers \Phug\Parser\Node\ElementNode::<public>
      */
     public function testHandleToken()
     {
@@ -38,6 +39,12 @@ class TagTokenHandlerTest extends AbstractParserTest
         self::assertSame('foo:bar', $elements[0]->getName());
         self::assertSame('foo-bar', $elements[1]->getName());
         self::assertSame('A:B', $elements[2]->getName());
+
+        $document = $this->parser->parse('img');
+        self::assertFalse($document->getChildAt(0)->isAutoClosed());
+
+        $document = $this->parser->parse('img/');
+        self::assertTrue($document->getChildAt(0)->isAutoClosed());
     }
 
     /**

@@ -16,5 +16,7 @@ class InterpolationEndTokenHandler implements TokenHandlerInterface
                 'You can only pass interpolation end tokens to this token handler'
             );
         }
+
+        $state->store();
     }
 }

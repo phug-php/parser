@@ -14,7 +14,7 @@ class AutoCloseTokenHandler implements TokenHandlerInterface
     {
         if (!($token instanceof AutoCloseToken)) {
             throw new \RuntimeException(
-                'You can only pass class tokens to this token handler'
+                'You can only pass auto-close tokens to this token handler'
             );
         }
 

@@ -13,6 +13,8 @@ class TextNodeTest extends AbstractParserTest
     /**
      * @covers ::setLevel
      * @covers ::getLevel
+     * @covers ::setIndent
+     * @covers ::getIndent
      */
     public function testLevel()
     {
@@ -23,5 +25,9 @@ class TextNodeTest extends AbstractParserTest
         $text->setLevel(2);
 
         self::assertSame(2, $text->getLevel());
+
+        $text->setIndent('  ');
+
+        self::assertSame('  ', $text->getIndent());
     }
 }
