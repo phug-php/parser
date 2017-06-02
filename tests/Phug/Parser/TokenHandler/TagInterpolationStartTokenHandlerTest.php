@@ -5,52 +5,53 @@ namespace Phug\Test\Parser\TokenHandler;
 use Phug\Lexer;
 use Phug\Lexer\Token\AttributeToken;
 use Phug\Parser\State;
-use Phug\Parser\TokenHandler\InterpolationStartTokenHandler;
+use Phug\Parser\TokenHandler\TagInterpolationStartTokenHandler;
 use Phug\Test\AbstractParserTest;
 
 /**
- * @coversDefaultClass Phug\Parser\TokenHandler\InterpolationEndTokenHandler
+ * @coversDefaultClass Phug\Parser\TokenHandler\TagInterpolationEndTokenHandler
  */
-class InterpolationStartTokenHandlerTest extends AbstractParserTest
+class TagInterpolationStartTokenHandlerTest extends AbstractParserTest
 {
     /**
      * @covers ::<public>
      */
     public function testHandleToken()
     {
-        $template = "p\n  |#{\$var} foo\n  | bar";
+        $template = "p\n  |#[.i i] foo\n  | bar";
         $this->assertNodes($template, [
             '[DocumentNode]',
             '  [ElementNode]',
-            '    [ExpressionNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
             '    [TextNode]',
             '    [TextNode]',
         ]);
         $document = $this->parser->parse($template);
-        self::assertSame('$var', $document->getChildAt(0)->getChildAt(0)->getValue());
+        self::assertSame('i', $document->getChildAt(0)->getChildAt(0)->getChildAt(0)->getValue());
 
-        $template = "p.\n  foo\n  #{'hi'}";
+        $template = "p.\n  foo\n  #[a]";
         $this->assertNodes($template, [
             '[DocumentNode]',
             '  [ElementNode]',
             '    [TextNode]',
-            '    [ExpressionNode]',
+            '    [ElementNode]',
             '    [TextNode]',
         ]);
         $document = $this->parser->parse($template);
-        self::assertSame("'hi'", $document->getChildAt(0)->getChildAt(1)->getName());
+        self::assertSame('a', $document->getChildAt(0)->getChildAt(1)->getName());
     }
 
     /**
      * @covers                   ::<public>
      * @expectedException        \RuntimeException
-     * @expectedExceptionMessage You can only pass interpolation start tokens to this token handler
+     * @expectedExceptionMessage You can only pass tag interpolation start tokens to this token handler
      */
     public function testHandleTokenTokenException()
     {
         $lexer = new Lexer();
         $state = new State($lexer->lex('div'));
-        $handler = new InterpolationStartTokenHandler();
+        $handler = new TagInterpolationStartTokenHandler();
         $handler->handleToken(new AttributeToken(), $state);
     }
 }

@@ -13,7 +13,7 @@ class TagInterpolationEndTokenHandler implements TokenHandlerInterface
     {
         if (!($token instanceof TagInterpolationEndToken)) {
             throw new \RuntimeException(
-                'You can only passtag interpolation end tokens to this token handler'
+                'You can only pass tag interpolation end tokens to this token handler'
             );
         }
 
