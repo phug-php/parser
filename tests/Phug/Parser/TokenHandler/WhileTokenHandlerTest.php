@@ -29,8 +29,7 @@ class WhileTokenHandlerTest extends AbstractParserTest
             "ul\n".
             "  while x < 10\n".
             "    - x++;\n".
-            "    li= x\n"
-        , [
+            "    li= x\n", [
             '[DocumentNode]',
             '  [CodeNode]',
             '    [TextNode]',
