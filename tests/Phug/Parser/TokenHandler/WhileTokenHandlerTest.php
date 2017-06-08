@@ -24,13 +24,12 @@ class WhileTokenHandlerTest extends AbstractParserTest
             '    [ElementNode]',
             '      [ExpressionNode]',
         ]);
-        $this->assertNodes(
-            "- var x = 1;\n".
+        $pug = "- var x = 1;\n".
             "ul\n".
             "  while x < 10\n".
             "    - x++;\n".
-            "    li= x\n"
-        , [
+            "    li= x\n";
+        $this->assertNodes($pug, [
             '[DocumentNode]',
             '  [CodeNode]',
             '    [TextNode]',
