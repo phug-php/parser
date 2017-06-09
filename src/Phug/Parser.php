@@ -74,7 +74,9 @@ use Phug\Parser\TokenHandler\VariableTokenHandler;
 use Phug\Parser\TokenHandler\WhenTokenHandler;
 use Phug\Parser\TokenHandler\WhileTokenHandler;
 use Phug\Parser\TokenHandlerInterface;
+use Phug\Util\ModulesContainerInterface;
 use Phug\Util\OptionInterface;
+use Phug\Util\Partial\ModuleTrait;
 use Phug\Util\Partial\OptionTrait;
 
 /**
@@ -98,8 +100,9 @@ use Phug\Util\Partial\OptionTrait;
  *
  * </code>
  */
-class Parser implements OptionInterface
+class Parser implements ModulesContainerInterface, OptionInterface
 {
+    use ModuleTrait;
     use OptionTrait;
 
     /**
@@ -139,6 +142,7 @@ class Parser implements OptionInterface
             'lexer_class_name' => Lexer::class,
             'lexer_options'    => [],
             'state_class_name' => State::class,
+            'modules'          => [],
             'token_handlers'   => [
                 AssignmentToken::class             => AssignmentTokenHandler::class,
                 AttributeEndToken::class           => AttributeEndTokenHandler::class,
@@ -192,6 +196,9 @@ class Parser implements OptionInterface
         foreach ($this->getOption('token_handlers') as $className => $handler) {
             $this->setTokenHandler($className, $handler);
         }
+
+        $this->setExpectedModuleType(ParserModuleInterface::class);
+        $this->addModules($this->getOption('modules'));
     }
 
     /**
