@@ -181,6 +181,9 @@ class Parser implements ModulesContainerInterface, OptionInterface
             ],
         ], $options ?: []);
 
+        $this->setExpectedModuleType(ParserModuleInterface::class);
+        $this->addModules($this->getOption('modules'));
+
         $lexerClassName = $this->getOption('lexer_class_name');
         if (!is_a($lexerClassName, Lexer::class, true)) {
             throw new ParserException(
@@ -196,9 +199,6 @@ class Parser implements ModulesContainerInterface, OptionInterface
         foreach ($this->getOption('token_handlers') as $className => $handler) {
             $this->setTokenHandler($className, $handler);
         }
-
-        $this->setExpectedModuleType(ParserModuleInterface::class);
-        $this->addModules($this->getOption('modules'));
     }
 
     /**
