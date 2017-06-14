@@ -29,6 +29,13 @@ class ExpansionTokenHandlerTest extends AbstractParserTest
             '    [ElementNode]',
             '      [TextNode]',
         ]);
+        $this->assertNodes("ul\n  li.list-item: .foo: #bar baz", [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [ElementNode outer=ElementNode]',
+            '      [ElementNode]',
+            '        [TextNode]',
+        ]);
         $this->assertNodes("mixin c\n  div\n    block\n+c(): +c()", [
             '[DocumentNode]',
             '  [MixinNode]',
