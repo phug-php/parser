@@ -49,15 +49,15 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
      */
     public function testInterpolationInNestedBlock()
     {
-        $template = "html\n" .
-            "  body\n" .
-            "    - var friends = 1\n" .
-            "    case friends\n" .
-            "      when 0\n" .
-            "        p you have no friends\n" .
-            "      when 1\n" .
-            "        p you have a friend\n" .
-            "      default\n" .
+        $template = "html\n".
+            "  body\n".
+            "    - var friends = 1\n".
+            "    case friends\n".
+            "      when 0\n".
+            "        p you have no friends\n".
+            "      when 1\n".
+            "        p you have a friend\n".
+            "      default\n".
             '        p you have #{friends} friends';
         $this->assertNodes($template, [
             '[DocumentNode]',
