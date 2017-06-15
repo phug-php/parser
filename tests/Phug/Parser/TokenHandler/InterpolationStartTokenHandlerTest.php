@@ -43,6 +43,44 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
     }
 
     /**
+     * @group i
+     * @covers ::<public>
+     * @covers \Phug\Parser\TokenHandler\InterpolationEndTokenHandler::<public>
+     */
+    public function testInterpolationInNestedBlock()
+    {
+        $template = "html\n" .
+            "  body\n" .
+            "    - var friends = 1\n" .
+            "    case friends\n" .
+            "      when 0\n" .
+            "        p you have no friends\n" .
+            "      when 1\n" .
+            "        p you have a friend\n" .
+            "      default\n" .
+            '        p you have #{friends} friends';
+        $this->assertNodes($template, [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [ElementNode]',
+            '      [CodeNode]',
+            '        [TextNode]',
+            '      [CaseNode]',
+            '        [WhenNode]',
+            '          [ElementNode]',
+            '            [TextNode]',
+            '        [WhenNode]',
+            '          [ElementNode]',
+            '            [TextNode]',
+            '        [WhenNode]',
+            '          [ElementNode]',
+            '            [TextNode]',
+            '            [ExpressionNode]',
+            '            [TextNode]',
+        ]);
+    }
+
+    /**
      * @covers                   ::<public>
      * @expectedException        \RuntimeException
      * @expectedExceptionMessage You can only pass interpolation start tokens to this token handler
