@@ -14,6 +14,7 @@ use Phug\Test\AbstractParserTest;
 class ExpansionTokenHandlerTest extends AbstractParserTest
 {
     /**
+     * @group i
      * @covers ::<public>
      */
     public function testHandleToken()
@@ -43,6 +44,31 @@ class ExpansionTokenHandlerTest extends AbstractParserTest
             '      [BlockNode]',
             '  [MixinCallNode]',
             '    [MixinCallNode]',
+        ]);
+        $template = "- var friends = 1\n".
+            "case friends\n".
+            "  when 0: p you have no friends\n".
+            "  when 1: p you have a friend\n".
+            "  default: p you have #{friends} friends\n".
+            '- var friends = 0';
+        $this->assertNodes($template, [
+            '[DocumentNode]',
+            '  [CodeNode]',
+            '    [TextNode]',
+            '  [CaseNode]',
+            '    [WhenNode]',
+            '      [ElementNode]',
+            '        [TextNode]',
+            '    [WhenNode]',
+            '      [ElementNode]',
+            '        [TextNode]',
+            '    [WhenNode]',
+            '      [ElementNode]',
+            '        [TextNode]',
+            '        [ExpressionNode]',
+            '        [TextNode]',
+            '  [CodeNode]',
+            '    [TextNode]',
         ]);
     }
 

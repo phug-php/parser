@@ -17,6 +17,9 @@ class OutdentTokenHandler implements TokenHandlerInterface
             );
         }
 
+        if ($state->getParentNode()->getOuterNode()) {
+            $state->leave();
+        }
         $state->leave();
     }
 }
