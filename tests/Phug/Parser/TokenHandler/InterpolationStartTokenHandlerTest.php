@@ -43,7 +43,6 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
     }
 
     /**
-     * @group i
      * @covers ::<public>
      * @covers \Phug\Parser\TokenHandler\InterpolationEndTokenHandler::<public>
      */
