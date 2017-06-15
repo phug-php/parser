@@ -26,7 +26,7 @@ class State implements OptionInterface
     /**
      * The root node of the currently parsed document.
      *
-     * @var Node
+     * @var DocumentNode
      */
     private $documentNode;
 
@@ -73,6 +73,20 @@ class State implements OptionInterface
      */
     private $namedHandlers;
 
+    /**
+     * Stack of interpolation to enter/leave.
+     *
+     * @var array
+     */
+    private $interpolationStack;
+
+    /**
+     * Post-pone stack of interpolation to leaves.
+     *
+     * @var array
+     */
+    private $endInterpolationBuffer;
+
     public function __construct(\Generator $tokens, array $options = null)
     {
         $this->level = 0;
@@ -82,6 +96,8 @@ class State implements OptionInterface
         $this->currentNode = null;
         $this->lastNode = null;
         $this->outerNode = null;
+        $this->interpolationStack = [];
+        $this->endInterpolationBuffer = [];
         $this->setOptionsRecursive([
             'token_handlers' => [],
         ], $options ?: []);
@@ -499,6 +515,27 @@ class State implements OptionInterface
         }
 
         $this->parentNode = $this->parentNode->getParent();
+    }
+
+    public function startInterpolation($enter)
+    {
+        $this->interpolationStack[] = $enter;
+        if ($enter) {
+            $this->enter();
+        }
+    }
+
+    public function endInterpolation()
+    {
+        $this->endInterpolationBuffer[] = array_pop($this->interpolationStack);
+    }
+
+    public function flushEndInterpolations()
+    {
+        for ($i = count(array_filter($this->endInterpolationBuffer)); $i; $i--) {
+            $this->leave();
+        }
+        $this->endInterpolationBuffer = [];
     }
 
     public function store()

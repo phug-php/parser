@@ -14,6 +14,7 @@ use Phug\Test\AbstractParserTest;
 class WhenTokenHandlerTest extends AbstractParserTest
 {
     /**
+     * @group i
      * @covers ::<public>
      */
     public function testHandleToken()
@@ -22,6 +23,28 @@ class WhenTokenHandlerTest extends AbstractParserTest
             '[DocumentNode]',
             '  [WhenNode]',
             '    [ElementNode]',
+        ]);
+        $template = "case friends\n".
+            "  when 0\n".
+            "  when 1\n".
+            "    p you have very few friends\n".
+            "  when 2\n".
+            "    p you have #{friends} friends\n\n".
+            "- var friend = 'Tim:G'";
+        $this->assertNodes($template, [
+            '[DocumentNode]',
+            '  [CaseNode]',
+            '    [WhenNode]',
+            '    [WhenNode]',
+            '      [ElementNode]',
+            '        [TextNode]',
+            '    [WhenNode]',
+            '      [ElementNode]',
+            '        [TextNode]',
+            '        [ExpressionNode]',
+            '        [TextNode]',
+            '  [CodeNode]',
+            '    [TextNode]',
         ]);
     }
 

@@ -14,7 +14,6 @@ use Phug\Test\AbstractParserTest;
 class ExpansionTokenHandlerTest extends AbstractParserTest
 {
     /**
-     * @group i
      * @covers ::<public>
      */
     public function testHandleToken()

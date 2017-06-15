@@ -18,5 +18,6 @@ class InterpolationEndTokenHandler implements TokenHandlerInterface
         }
 
         $state->store();
+        $state->endInterpolation();
     }
 }

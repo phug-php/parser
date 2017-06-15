@@ -19,8 +19,6 @@ class InterpolationStartTokenHandler implements TokenHandlerInterface
         }
 
         $state->store();
-        if (!($state->getLastNode() instanceof TextNode)) {
-            $state->enter();
-        }
+        $state->startInterpolation(!($state->getLastNode() instanceof TextNode));
     }
 }
