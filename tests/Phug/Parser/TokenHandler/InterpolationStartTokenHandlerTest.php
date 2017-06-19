@@ -40,6 +40,28 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
         ]);
         $document = $this->parser->parse($template);
         self::assertSame("'hi'", $document->getChildAt(0)->getChildAt(1)->getValue());
+
+        $template = "p #{'hi'}";
+        $this->assertNodes($template, [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [TextNode]',
+            '    [ExpressionNode]',
+        ]);
+        $document = $this->parser->parse($template);
+        self::assertSame('', $document->getChildAt(0)->getChildAt(0)->getValue());
+        self::assertSame("'hi'", $document->getChildAt(0)->getChildAt(1)->getValue());
+
+        $template = "p  #{'hi'}";
+        $this->assertNodes($template, [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [TextNode]',
+            '    [ExpressionNode]',
+        ]);
+        $document = $this->parser->parse($template);
+        self::assertSame(' ', $document->getChildAt(0)->getChildAt(0)->getValue());
+        self::assertSame("'hi'", $document->getChildAt(0)->getChildAt(1)->getValue());
     }
 
     /**
