@@ -20,7 +20,7 @@ class TextTokenHandler implements TokenHandlerInterface
 
         /** @var TextNode $node */
         $node = $state->createNode(TextNode::class, $token);
-        $value = $token->getValue();
+        $value = strval($token->getValue());
         if (substr($value, 0, 1) === ' ') {
             $value = substr($value, 1);
         }
