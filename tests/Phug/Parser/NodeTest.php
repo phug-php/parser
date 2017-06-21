@@ -34,7 +34,7 @@ class NodeTest extends AbstractParserTest
         self::assertInstanceOf(ElementNode::class, $p);
         self::assertSame(2, $p->getLine());
         self::assertSame(3, $p->getOffset());
-        self::assertSame(1, $p->getLevel());
+        self::assertSame(2, $p->getLevel());
         self::assertSame(null, $p->getOuterNode());
 
         $p->setOuterNode($div);

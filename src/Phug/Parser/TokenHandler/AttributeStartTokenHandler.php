@@ -8,6 +8,7 @@ use Phug\Lexer\Token\AttributeToken;
 use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\AssignmentNode;
 use Phug\Parser\Node\ElementNode;
+use Phug\Parser\Node\FilterNode;
 use Phug\Parser\Node\ImportNode;
 use Phug\Parser\Node\MixinCallNode;
 use Phug\Parser\Node\MixinNode;
@@ -33,10 +34,11 @@ class AttributeStartTokenHandler implements TokenHandlerInterface
             ElementNode::class, AssignmentNode::class,
             ImportNode::class, VariableNode::class,
             MixinNode::class, MixinCallNode::class,
+            FilterNode::class,
         ])) {
             $state->throwException(
                 'Attributes can only be placed on element, assignment, '
-                .'import, variable, mixin and mixinCall',
+                .'import, variable, filter, mixin and mixinCall',
                 $token
             );
         }
