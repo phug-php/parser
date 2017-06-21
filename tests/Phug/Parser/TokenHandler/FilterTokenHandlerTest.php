@@ -50,10 +50,9 @@ class FilterTokenHandlerTest extends AbstractParserTest
         ]);
         $document = $this->parser->parse($template);
         /** @var FilterNode $filter1 */
-        /** @var FilterNode $filter2 */
         $filter1 = $document->getChildAt(0)->getFilter();
+        /** @var FilterNode $filter2 */
         $filter2 = $document->getChildAt(1);
-        /** @var AttributeElement $attribute */
         $attribute = null;
         foreach ($filter1->getAttributes() as $item) {
             if ($item->getName() === 'biz') {
