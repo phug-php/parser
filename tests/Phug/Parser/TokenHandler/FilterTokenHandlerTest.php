@@ -41,6 +41,27 @@ class FilterTokenHandlerTest extends AbstractParserTest
         }
         self::assertSame('"bar"', $attribute->getValue());
         self::assertSame('baz', $attribute->getName());
+
+        $template = 'include:coffee(foo=1 bar biz=9) file.coffee';
+        $this->assertNodes($template, [
+            '[DocumentNode]',
+            '  [ImportNode]',
+            '  [FilterNode]',
+        ]);
+        $document = $this->parser->parse($template);
+        /** @var FilterNode $filter1 */
+        /** @var FilterNode $filter2 */
+        $filter1 = $document->getChildAt(0)->getFilter();
+        $filter2 = $document->getChildAt(1);
+        /** @var AttributeElement $attribute */
+        $attribute = null;
+        foreach ($filter1->getAttributes() as $item) {
+            if ($item->getName() === 'biz') {
+                $attribute = $item->getValue();
+            }
+        }
+        self::assertSame('9', $attribute);
+        self::assertSame($filter1, $filter2);
     }
 
     /**

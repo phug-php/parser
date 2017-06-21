@@ -29,7 +29,6 @@ class ImportTokenHandler implements TokenHandlerInterface
         $node = $state->createNode(ImportNode::class, $token);
         $node->setName($token->getName());
         $node->setPath($token->getPath());
-        $node->setFilter($token->getFilter());
         $state->setCurrentNode($node);
     }
 }
