@@ -4,6 +4,7 @@ namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\TagInterpolationStartToken;
 use Phug\Lexer\TokenInterface;
+use Phug\Parser\Node\TextNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
 
@@ -18,5 +19,6 @@ class TagInterpolationStartTokenHandler implements TokenHandlerInterface
         }
 
         $state->store();
+        $state->startInterpolation(!($state->getLastNode() instanceof TextNode));
     }
 }
