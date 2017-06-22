@@ -10,4 +10,25 @@ class FilterNode extends Node
 {
     use NameTrait;
     use AttributeTrait;
+
+    /**
+     * @var ImportNode
+     */
+    protected $import;
+
+    /**
+     * @return ImportNode
+     */
+    public function getImport()
+    {
+        return $this->import;
+    }
+
+    /**
+     * @param ImportNode $import
+     */
+    public function setImport($import)
+    {
+        $this->import = $import;
+    }
 }

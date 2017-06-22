@@ -25,6 +25,7 @@ class FilterTokenHandler implements TokenHandlerInterface
         $current = $state->getCurrentNode();
         if ($current instanceof ImportNode) {
             $current->setFilter($node);
+            $node->setImport($current);
             $state->store();
         }
         $state->setCurrentNode($node);
