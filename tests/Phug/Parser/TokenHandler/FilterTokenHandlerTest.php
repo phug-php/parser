@@ -5,8 +5,8 @@ namespace Phug\Test\Parser\TokenHandler;
 use Phug\Formatter\Element\AttributeElement;
 use Phug\Lexer;
 use Phug\Lexer\Token\TagToken;
-use Phug\Parser\Node\DocumentNode;
 use Phug\Parser\Node\FilterNode;
+use Phug\Parser\Node\ImportNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\FilterTokenHandler;
 use Phug\Test\AbstractParserTest;
@@ -18,6 +18,7 @@ class FilterTokenHandlerTest extends AbstractParserTest
 {
     /**
      * @covers ::<public>
+     * @covers \Phug\Parser\TokenHandler\ImportTokenHandler::<public>
      */
     public function testHandleToken()
     {
@@ -49,8 +50,10 @@ class FilterTokenHandlerTest extends AbstractParserTest
             '  [FilterNode]',
         ]);
         $document = $this->parser->parse($template);
+        /** @var ImportNode $import */
+        $import = $document->getChildAt(0);
         /** @var FilterNode $filter1 */
-        $filter1 = $document->getChildAt(0)->getFilter();
+        $filter1 = $import->getFilter();
         /** @var FilterNode $filter2 */
         $filter2 = $document->getChildAt(1);
         $attribute = null;
@@ -59,6 +62,7 @@ class FilterTokenHandlerTest extends AbstractParserTest
                 $attribute = $item->getValue();
             }
         }
+        self::assertSame('file.coffee', $import->getPath());
         self::assertSame('9', $attribute);
         self::assertSame($filter1, $filter2);
     }
