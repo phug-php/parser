@@ -9,6 +9,7 @@ use Phug\Parser\Node\DocumentNode;
 use Phug\ParserException;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial\OptionTrait;
+use SplObjectStorage;
 
 class State implements OptionInterface
 {
@@ -76,16 +77,16 @@ class State implements OptionInterface
     /**
      * Stack of interpolation to enter/leave.
      *
-     * @var array
+     * @var SplObjectStorage
      */
     private $interpolationStack;
 
     /**
-     * Post-pone stack of interpolation to leaves.
+     * Stack level for interpolations to enter/leave.
      *
-     * @var array
+     * @var int
      */
-    private $endInterpolationBuffer;
+    private $stackLevel = 0;
 
     public function __construct(\Generator $tokens, array $options = null)
     {
@@ -284,16 +285,16 @@ class State implements OptionInterface
     {
         $token = $token ?: $this->getToken();
         $className = get_class($token);
-        $tokenHanlders = $this->getOption('token_handlers');
+        $tokenHandlers = $this->getOption('token_handlers');
 
-        if (!isset($tokenHanlders[$className])) {
+        if (!isset($tokenHandlers[$className])) {
             $this->throwException(
                 "Unexpected token `$className`, no token handler registered",
                 $token
             );
         }
 
-        $handler = $tokenHanlders[$className];
+        $handler = $tokenHandlers[$className];
         $handler = $handler instanceof TokenHandlerInterface
             ? $handler
             : $this->getNamedHandler($handler);
@@ -509,33 +510,24 @@ class State implements OptionInterface
 
         if (!$this->parentNode->getParent()) {
             $this->throwException(
-                'Failed to outdent: No parent to outdent to. '
-                .'Seems the parser moved out too many levels.'
+                'Failed to outdent: No parent to outdent to. '.
+                'Seems the parser moved out too many levels.'
             );
         }
 
         $this->parentNode = $this->parentNode->getParent();
     }
 
-    public function startInterpolation($enter)
+    /**
+     * @return SplObjectStorage
+     */
+    public function getInterpolationStack()
     {
-        $this->interpolationStack[] = $enter;
-        if ($enter) {
-            $this->enter();
+        if (!$this->interpolationStack) {
+            $this->interpolationStack = new SplObjectStorage();
         }
-    }
 
-    public function endInterpolation()
-    {
-        $this->endInterpolationBuffer[] = array_pop($this->interpolationStack);
-    }
-
-    public function flushEndInterpolations()
-    {
-        for ($i = count(array_filter($this->endInterpolationBuffer)); $i; $i--) {
-            $this->leave();
-        }
-        $this->endInterpolationBuffer = [];
+        return $this->interpolationStack;
     }
 
     public function store()

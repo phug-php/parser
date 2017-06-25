@@ -18,6 +18,5 @@ class OutdentTokenHandler implements TokenHandlerInterface
         }
 
         $state->leave();
-        $state->flushEndInterpolations();
     }
 }

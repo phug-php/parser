@@ -19,7 +19,7 @@ class TagInterpolationStartTokenHandlerTest extends AbstractParserTest
      */
     public function testHandleToken()
     {
-        $template = "p\n  |#[.i i] foo\n  | bar";
+        $template = "p\n  |#[.i i] foo\n  | bar\n| biz";
         $this->assertNodes($template, [
             '[DocumentNode]',
             '  [ElementNode]',
@@ -27,6 +27,7 @@ class TagInterpolationStartTokenHandlerTest extends AbstractParserTest
             '      [TextNode]',
             '    [TextNode]',
             '    [TextNode]',
+            '  [TextNode]',
         ]);
         $document = $this->parser->parse($template);
         self::assertSame('i', $document->getChildAt(0)->getChildAt(0)->getChildAt(0)->getValue());
@@ -41,6 +42,27 @@ class TagInterpolationStartTokenHandlerTest extends AbstractParserTest
         ]);
         $document = $this->parser->parse($template);
         self::assertSame('a', $document->getChildAt(0)->getChildAt(1)->getName());
+
+        $template = "p bing #[strong foo]#[strong bar] bong\n\np.\n  bing\n  #[strong foo]\n  bong #[strong bar]\nfooter";
+        $this->assertNodes($template, [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [TextNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
+            '    [TextNode]',
+            '  [ElementNode]',
+            '    [TextNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
+            '    [TextNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
+            '    [TextNode]',
+            '  [ElementNode]',
+        ]);
     }
 
     /**

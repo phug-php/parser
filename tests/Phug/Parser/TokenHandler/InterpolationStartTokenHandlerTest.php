@@ -4,6 +4,7 @@ namespace Phug\Test\Parser\TokenHandler;
 
 use Phug\Lexer;
 use Phug\Lexer\Token\AttributeToken;
+use Phug\Parser\Node\ExpressionNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\InterpolationStartTokenHandler;
 use Phug\Test\AbstractParserTest;
@@ -14,6 +15,7 @@ use Phug\Test\AbstractParserTest;
 class InterpolationStartTokenHandlerTest extends AbstractParserTest
 {
     /**
+     * @group i
      * @covers ::<public>
      * @covers \Phug\Parser\TokenHandler\InterpolationEndTokenHandler::<public>
      */
@@ -28,7 +30,9 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
             '    [TextNode]',
         ]);
         $document = $this->parser->parse($template);
-        self::assertSame('$var', $document->getChildAt(0)->getChildAt(0)->getValue());
+        /** @var ExpressionNode $expression */
+        $expression = $document->getChildAt(0)->getChildAt(0);
+        self::assertSame('$var', $expression->getValue());
 
         $template = "p.\n  foo\n  #{'hi'}";
         $this->assertNodes($template, [
@@ -39,7 +43,9 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
             '    [TextNode]',
         ]);
         $document = $this->parser->parse($template);
-        self::assertSame("'hi'", $document->getChildAt(0)->getChildAt(1)->getValue());
+        /** @var ExpressionNode $expression */
+        $expression = $document->getChildAt(0)->getChildAt(1);
+        self::assertSame("'hi'", $expression->getValue());
 
         $template = "p #{'hi'}";
         $this->assertNodes($template, [
@@ -49,8 +55,9 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
             '    [ExpressionNode]',
         ]);
         $document = $this->parser->parse($template);
-        self::assertSame('', $document->getChildAt(0)->getChildAt(0)->getValue());
-        self::assertSame("'hi'", $document->getChildAt(0)->getChildAt(1)->getValue());
+        $element = $document->getChildAt(0);
+        self::assertSame('', $element->getChildAt(0)->getValue());
+        self::assertSame("'hi'", $element->getChildAt(1)->getValue());
 
         $template = "p  #{'hi'}";
         $this->assertNodes($template, [
@@ -60,8 +67,14 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
             '    [ExpressionNode]',
         ]);
         $document = $this->parser->parse($template);
-        self::assertSame(' ', $document->getChildAt(0)->getChildAt(0)->getValue());
-        self::assertSame("'hi'", $document->getChildAt(0)->getChildAt(1)->getValue());
+        $element = $document->getChildAt(0);
+        self::assertSame(
+            "' '",
+            var_export($element->getChildAt(0)->getValue(), true));
+        self::assertSame(
+            "'hi'",
+            $element->getChildAt(1)->getValue()
+        );
     }
 
     /**
