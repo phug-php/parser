@@ -459,7 +459,7 @@ class State implements OptionInterface
 
     public function getLastNodeBeforeNewLine()
     {
-       return $this->lastNodeBeforeNewLine;
+        return $this->lastNodeBeforeNewLine;
     }
 
     public function recordLastNodeBeforeNewLine()
