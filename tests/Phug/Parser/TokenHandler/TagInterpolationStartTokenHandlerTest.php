@@ -43,7 +43,9 @@ class TagInterpolationStartTokenHandlerTest extends AbstractParserTest
         $document = $this->parser->parse($template);
         self::assertSame('a', $document->getChildAt(0)->getChildAt(1)->getName());
 
-        $template = "p bing #[strong foo]#[strong bar] bong\n\np.\n  bing\n  #[strong foo]\n  bong #[strong bar]\nfooter";
+        $template =
+            "p bing #[strong foo]#[strong bar] bong\n\n".
+            "p.\n  bing\n  #[strong foo]\n  bong #[strong bar]\nfooter";
         $this->assertNodes($template, [
             '[DocumentNode]',
             '  [ElementNode]',
