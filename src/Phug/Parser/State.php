@@ -2,9 +2,7 @@
 
 namespace Phug\Parser;
 
-use Phug\Lexer;
 use Phug\Lexer\TokenInterface;
-use Phug\Parser;
 use Phug\Parser\Node\DocumentNode;
 use Phug\ParserException;
 use Phug\Util\OptionInterface;
@@ -82,11 +80,11 @@ class State implements OptionInterface
     private $interpolationStack;
 
     /**
-     * Stack level for interpolations to enter/leave.
+     * Buffer for last node followed by a new line.
      *
-     * @var int
+     * @var Node
      */
-    private $stackLevel = 0;
+    private $lastNodeBeforeNewLine;
 
     public function __construct(\Generator $tokens, array $options = null)
     {
@@ -457,6 +455,16 @@ class State implements OptionInterface
         }
 
         return $this->is($this->parentNode, $classNames);
+    }
+
+    public function getLastNodeBeforeNewLine()
+    {
+       return $this->lastNodeBeforeNewLine;
+    }
+
+    public function recordLastNodeBeforeNewLine()
+    {
+        $this->lastNodeBeforeNewLine = $this->lastNode;
     }
 
     /**

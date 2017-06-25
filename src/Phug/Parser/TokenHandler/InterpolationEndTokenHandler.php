@@ -22,6 +22,7 @@ class InterpolationEndTokenHandler implements TokenHandlerInterface
         $state->setCurrentNode($nodes->currentNode);
         $state->setParentNode($nodes->parentNode);
         if ($node) {
+            $state->getInterpolationStack()->attach($node, $token);
             $state->append($node);
         }
         $state->store();
