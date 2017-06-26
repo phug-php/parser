@@ -13,6 +13,25 @@ use Phug\Parser\TokenHandlerInterface;
 
 class NewLineTokenHandler implements TokenHandlerInterface
 {
+    protected function appendNewLineAsText(State $state)
+    {
+        $currentNode = $state->getCurrentNode();
+
+        if ($state->currentNodeIs([TextNode::class])) {
+            /** @var TextNode $currentNode */
+            $currentNode->setValue($currentNode->getValue()."\n");
+
+            return;
+        }
+
+        if ($currentNode && $currentNode->hasChildren()) {
+            /** @var TextNode $node */
+            $node = $state->createNode(TextNode::class);
+            $node->setValue("\n");
+            $state->append($node);
+        }
+    }
+
     public function handleToken(TokenInterface $token, State $state)
     {
         if (!($token instanceof NewLineToken)) {
@@ -33,10 +52,7 @@ class NewLineTokenHandler implements TokenHandlerInterface
             $linkedInterpolation instanceof TagInterpolationEndToken ||
             $linkedInterpolation instanceof InterpolationEndToken
         ) {
-            /** @var TextNode $node */
-            $node = $state->createNode(TextNode::class);
-            $node->setValue("\n");
-            $state->append($node);
+            $this->appendNewLineAsText($state);
         }
         $state->store();
     }
