@@ -79,13 +79,6 @@ class State implements OptionInterface
      */
     private $interpolationStack;
 
-    /**
-     * Buffer for last node followed by a new line.
-     *
-     * @var Node
-     */
-    private $lastNodeBeforeNewLine;
-
     public function __construct(\Generator $tokens, array $options = null)
     {
         $this->level = 0;
@@ -455,16 +448,6 @@ class State implements OptionInterface
         }
 
         return $this->is($this->parentNode, $classNames);
-    }
-
-    public function getLastNodeBeforeNewLine()
-    {
-        return $this->lastNodeBeforeNewLine;
-    }
-
-    public function recordLastNodeBeforeNewLine()
-    {
-        $this->lastNodeBeforeNewLine = $this->lastNode;
     }
 
     /**

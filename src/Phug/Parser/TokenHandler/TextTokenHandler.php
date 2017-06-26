@@ -20,12 +20,7 @@ class TextTokenHandler implements TokenHandlerInterface
 
         /** @var TextNode $node */
         $node = $state->createNode(TextNode::class, $token);
-        $value = $token->getValue();
-        $previousNode = $state->getLastNode();
-        if ($previousNode instanceof TextNode && $previousNode === $state->getLastNodeBeforeNewLine()) {
-            $value = "\n".$value;
-        }
-        $node->setValue($value);
+        $node->setValue($token->getValue());
         $node->setLevel($token->getLevel());
         $node->setIsEscaped($token->isEscaped());
         $node->setIndent($token->getIndent());
