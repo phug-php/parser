@@ -15,7 +15,6 @@ use Phug\Test\AbstractParserTest;
 class InterpolationStartTokenHandlerTest extends AbstractParserTest
 {
     /**
-     * @group i
      * @covers ::<public>
      * @covers \Phug\Parser\TokenHandler\InterpolationEndTokenHandler::<public>
      */
@@ -53,6 +52,7 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
             '  [ElementNode]',
             '    [TextNode]',
             '    [ExpressionNode]',
+            '    [TextNode]',
         ]);
         $document = $this->parser->parse($template);
         $element = $document->getChildAt(0);
@@ -65,6 +65,7 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
             '  [ElementNode]',
             '    [TextNode]',
             '    [ExpressionNode]',
+            '    [TextNode]',
         ]);
         $document = $this->parser->parse($template);
         $element = $document->getChildAt(0);

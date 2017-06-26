@@ -15,6 +15,7 @@ class TagInterpolationStartTokenHandlerTest extends AbstractParserTest
 {
     /**
      * @covers ::<public>
+     * @covers \Phug\Parser\State::getInterpolationStack
      * @covers \Phug\Parser\TokenHandler\TagInterpolationEndTokenHandler::<public>
      */
     public function testHandleToken()

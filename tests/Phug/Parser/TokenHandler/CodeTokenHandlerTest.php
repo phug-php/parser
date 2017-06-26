@@ -33,7 +33,7 @@ class CodeTokenHandlerTest extends AbstractParserTest
         ]);
         $documentNodes = $this->parser->parse("code- do_something()\n  | foo\n| bar")->getChildren();
         self::assertSame('code', $documentNodes[0]->getName());
-        self::assertSame("bar\n", $documentNodes[1]->getValue());
+        self::assertSame('bar', $documentNodes[1]->getValue());
         $elementNodes = $documentNodes[0]->getChildren();
         self::assertSame('do_something()', $elementNodes[0]->getValue());
         self::assertSame('foo', $elementNodes[1]->getValue());
@@ -50,7 +50,7 @@ class CodeTokenHandlerTest extends AbstractParserTest
             '    [TextNode]',
         ]);
         $documentNodes = $this->parser->parse("-\n  foo();\n  bar();")->getChildren();
-        self::assertSame("foo();\nbar();", $documentNodes[0]->getChildren()[0]->getValue());
+        self::assertSame("foo();\nbar();\n", $documentNodes[0]->getChildren()[0]->getValue());
     }
 
     /**
