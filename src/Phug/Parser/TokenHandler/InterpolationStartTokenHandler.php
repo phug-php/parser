@@ -2,9 +2,12 @@
 
 namespace Phug\Parser\TokenHandler;
 
+use Phug\Lexer\Token\ExpressionToken;
+use Phug\Lexer\Token\InterpolationEndToken;
 use Phug\Lexer\Token\InterpolationStartToken;
 use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\CodeNode;
+use Phug\Parser\Node\ElementNode;
 use Phug\Parser\Node\ExpressionNode;
 use Phug\Parser\Node\TextNode;
 use Phug\Parser\State;
@@ -21,6 +24,29 @@ class InterpolationStartTokenHandler implements TokenHandlerInterface
         }
 
         $node = $state->getCurrentNode();
+        if (!$node) {
+            /** @var ElementNode $element */
+            $element = $state->createNode(ElementNode::class, $token);
+            $state->setCurrentNode($element);
+
+            foreach ($state->lookUpNext([ExpressionToken::class]) as $expression) {
+                /** @var ExpressionNode $expressionNode */
+                $expressionNode = $state->createNode(ExpressionNode::class, $expression);
+                $expressionNode->check();
+                $expressionNode->unescape();
+                $expressionNode->setValue($expression->getValue());
+                $element->setName($expressionNode);
+            }
+
+            if (!$state->expect([InterpolationEndToken::class])) {
+                $state->throwException(
+                    'Interpolation not properly closed',
+                    $token
+                );
+            }
+
+            return;
+        }
         if ($state->currentNodeIs([
             TextNode::class,
             CodeNode::class,
