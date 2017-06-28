@@ -4,6 +4,7 @@ namespace Phug\Test\Parser\TokenHandler;
 
 use Phug\Lexer;
 use Phug\Lexer\Token\AttributeToken;
+use Phug\Parser\Node\ElementNode;
 use Phug\Parser\Node\ExpressionNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\InterpolationStartTokenHandler;
@@ -24,13 +25,28 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
         $this->assertNodes($template, [
             '[DocumentNode]',
             '  [ElementNode]',
+            '    [TextNode]',
             '    [ExpressionNode]',
             '    [TextNode]',
             '    [TextNode]',
         ]);
         $document = $this->parser->parse($template);
         /** @var ExpressionNode $expression */
-        $expression = $document->getChildAt(0)->getChildAt(0);
+        $expression = $document->getChildAt(0)->getChildAt(1);
+        self::assertSame('$var', $expression->getValue());
+
+        $template = "p: #{\$var} foo";
+        $this->assertNodes($template, [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
+        ]);
+        $document = $this->parser->parse($template);
+        /** @var ElementNode $element */
+        $element = $document->getChildAt(0)->getChildAt(0);
+        /** @var ExpressionNode $expression */
+        $expression = $element->getName();
         self::assertSame('$var', $expression->getValue());
 
         $template = "p.\n  foo\n  #{'hi'}";

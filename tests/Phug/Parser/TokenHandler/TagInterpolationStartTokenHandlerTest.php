@@ -24,6 +24,7 @@ class TagInterpolationStartTokenHandlerTest extends AbstractParserTest
         $this->assertNodes($template, [
             '[DocumentNode]',
             '  [ElementNode]',
+            '    [TextNode]',
             '    [ElementNode]',
             '      [TextNode]',
             '    [TextNode]',
@@ -31,7 +32,7 @@ class TagInterpolationStartTokenHandlerTest extends AbstractParserTest
             '  [TextNode]',
         ]);
         $document = $this->parser->parse($template);
-        self::assertSame('i', $document->getChildAt(0)->getChildAt(0)->getChildAt(0)->getValue());
+        self::assertSame('i', $document->getChildAt(0)->getChildAt(1)->getChildAt(0)->getValue());
 
         $template = "p.\n  foo\n  #[a]";
         $this->assertNodes($template, [
