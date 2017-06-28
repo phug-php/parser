@@ -35,7 +35,7 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
         $expression = $document->getChildAt(0)->getChildAt(1);
         self::assertSame('$var', $expression->getValue());
 
-        $template = "p: #{\$var} foo";
+        $template = 'p: #{$var} foo';
         $this->assertNodes($template, [
             '[DocumentNode]',
             '  [ElementNode]',
