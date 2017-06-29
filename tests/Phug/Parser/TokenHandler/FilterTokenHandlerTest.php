@@ -25,6 +25,7 @@ class FilterTokenHandlerTest extends AbstractParserTest
         $this->assertNodes(':foo', [
             '[DocumentNode]',
             '  [FilterNode]',
+            '    [TextNode]',
         ]);
         $template = ':foo(baz="bar") Bla';
         $this->assertNodes($template, [
@@ -65,6 +66,24 @@ class FilterTokenHandlerTest extends AbstractParserTest
         self::assertSame('file.coffee', $import->getPath());
         self::assertSame('9', $attribute);
         self::assertSame($filter1, $filter2);
+
+        $template = "html\n".
+            "  head\n".
+            "    style(type=\"text/css\")\n".
+            "      :stylus\n".
+            "        body\n".
+            "          padding: 50px\n".
+            "  body\n";
+
+        $this->assertNodes($template, [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [ElementNode]',
+            '      [ElementNode]',
+            '        [FilterNode]',
+            '          [TextNode]',
+            '    [ElementNode]',
+        ]);
     }
 
     /**
