@@ -31,7 +31,7 @@ class CommentTokenHandlerTest extends AbstractParserTest
         ]);
 
         $documentNodes = $this->parser->parse('// foo')->getChildren();
-        self::assertSame(" foo", $documentNodes[0]->getChildren()[0]->getValue());
+        self::assertSame(' foo', $documentNodes[0]->getChildren()[0]->getValue());
 
         $documentNodes = $this->parser->parse("//-\n  foo")->getChildren();
         self::assertSame("\n  foo", $documentNodes[0]->getChildren()[0]->getValue());
