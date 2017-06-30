@@ -38,6 +38,52 @@ class AutoCloseTokenHandlerTest extends AbstractParserTest
         $element = $document->getChildren()[0];
 
         self::assertTrue($element->isAutoClosed());
+        
+        $template = "body\n".
+            "  foo\n".
+            "  foo(bar='baz')\n".
+            "  foo/\n".
+            "  foo(bar='baz')/\n".
+            "  foo /\n".
+            "  foo(bar='baz') /\n".
+            "  #{'foo'}/\n".
+            "  #{'foo'}(bar='baz')/\n".
+            "  #{'foo'} /\n".
+            "  #{'foo'}(bar='baz') /\n".
+            "  //- can have a single space after them\n".
+            "  img \n".
+            "  //- can have lots of white space after them\n".
+            "  img    \n".
+            "  #{\n".
+            "    'foo'\n".
+            "  }/\n";
+        $this->assertNodes($template, [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [ElementNode]',
+            '    [ElementNode]',
+            '    [ElementNode]',
+            '    [ElementNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
+            '    [ElementNode]',
+            '    [ElementNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
+            '    [CommentNode]',
+            '      [TextNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
+            '    [CommentNode]',
+            '      [TextNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
+            '    [ElementNode]',
+        ]);
     }
 
     /**
