@@ -38,7 +38,7 @@ class AutoCloseTokenHandlerTest extends AbstractParserTest
         $element = $document->getChildren()[0];
 
         self::assertTrue($element->isAutoClosed());
-        
+
         $template = "body\n".
             "  foo\n".
             "  foo(bar='baz')\n".
