@@ -33,7 +33,7 @@ class NodeTest extends AbstractParserTest
         self::assertSame(0, $div->getLevel());
         self::assertSame(null, $div->getOuterNode());
         self::assertInstanceOf(TagToken::class, $div->getToken());
-        self::assertInstanceOf('source.pug', $div->getFile());
+        self::assertSame('source.pug', $div->getFile());
 
         /** @var ElementNode $p */
         $p = $div->getChildren()[0];
@@ -44,18 +44,18 @@ class NodeTest extends AbstractParserTest
         self::assertSame(2, $p->getLevel());
         self::assertSame(null, $p->getOuterNode());
         self::assertInstanceOf(TagToken::class, $p->getToken());
-        self::assertInstanceOf('source.pug', $p->getFile());
+        self::assertSame('source.pug', $p->getFile());
 
         /** @var TextNode $text */
         $text = $div->getChildren()[0]->getChildren()[0];
 
         self::assertInstanceOf(TextNode::class, $text);
         self::assertSame(2, $text->getLine());
-        self::assertSame(3, $text->getOffset());
+        self::assertSame(4, $text->getOffset());
         self::assertSame(2, $text->getLevel());
         self::assertSame(null, $text->getOuterNode());
         self::assertInstanceOf(TextToken::class, $text->getToken());
-        self::assertInstanceOf('source.pug', $text->getFile());
+        self::assertSame('source.pug', $text->getFile());
 
         $p->setOuterNode($div);
 
