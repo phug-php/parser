@@ -13,7 +13,15 @@ class State implements OptionInterface
 {
     use OptionTrait;
 
+    /**
+     * @var int
+     */
     private $level;
+
+    /**
+     * @var string
+     */
+    private $file;
 
     /**
      * The Generator returned by the ->lex() method of the lexer.
@@ -79,8 +87,9 @@ class State implements OptionInterface
      */
     private $interpolationStack;
 
-    public function __construct(\Generator $tokens, array $options = null)
+    public function __construct(\Generator $tokens, array $options = null, $file = null)
     {
+        $this->file = $file;
         $this->level = 0;
         $this->tokens = $tokens;
         $this->documentNode = $this->createNode(DocumentNode::class);
@@ -478,7 +487,11 @@ class State implements OptionInterface
         return new $className(
             $token ? $token->getLine() : null,
             $token ? $token->getOffset() : null,
-            $token ? $token->getLevel() : null
+            $token ? $token->getLevel() : null,
+            null,
+            null,
+            $token,
+            $this->file
         );
     }
 

@@ -19,7 +19,7 @@ class VariableTokenHandler implements TokenHandlerInterface
         }
 
         /** @var VariableNode $node */
-        $node = $state->createNode(VariableNode::class);
+        $node = $state->createNode(VariableNode::class, $token);
         $node->setName($token->getName());
         $state->setCurrentNode($node);
     }

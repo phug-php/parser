@@ -3,6 +3,7 @@
 namespace Phug\Parser;
 
 use Phug\Ast\Node as AstNode;
+use Phug\Lexer\TokenInterface;
 
 /**
  * Represents a node in the AST the parser generates.
@@ -13,10 +14,12 @@ use Phug\Ast\Node as AstNode;
  */
 class Node extends AstNode implements NodeInterface
 {
+    private $file;
     private $line;
     private $offset;
     private $level;
     private $outerNode;
+    private $token;
 
     /**
      * Creates a new, detached node without children or a parent.
@@ -28,13 +31,16 @@ class Node extends AstNode implements NodeInterface
      * @param int|null        $level    the level of indentation this node is at
      * @param NodeInterface   $parent   the parent of this node
      * @param NodeInterface[] $children the children of this node
+     * @param TokenInterface  $token    the token that created the node
      */
     public function __construct(
         $line = null,
         $offset = null,
         $level = null,
         NodeInterface $parent = null,
-        array $children = null
+        array $children = null,
+        TokenInterface $token = null,
+        $file = null
     ) {
         parent::__construct($parent, $children);
 
@@ -42,6 +48,8 @@ class Node extends AstNode implements NodeInterface
         $this->offset = $offset ?: 0;
         $this->level = $level ?: 0;
         $this->outerNode = null;
+        $this->token = $token;
+        $this->file = $file;
     }
 
     /**
@@ -74,6 +82,22 @@ class Node extends AstNode implements NodeInterface
     public function getOuterNode()
     {
         return $this->outerNode;
+    }
+
+    /**
+     * @return TokenInterface
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 
     /**

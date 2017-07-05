@@ -236,10 +236,11 @@ class Parser implements ModulesContainerInterface, OptionInterface
      * from there on it can contain several kinds of nodes
      *
      * @param string $input the input jade string that is to be parsed
+     * @param string $file  optional path of file the input comes from
      *
      * @return Node the root-node of the parsed AST
      */
-    public function parse($input)
+    public function parse($input, $file = null)
     {
         $stateClassName = $this->getOption('state_class_name');
         if (!is_a($stateClassName, State::class, true)) {
@@ -253,7 +254,8 @@ class Parser implements ModulesContainerInterface, OptionInterface
             $this->lexer->lex($input."\n"),
             [
                 'token_handlers' => $this->tokenHandlers,
-            ]
+            ],
+            $file
         );
 
         //While we have tokens, handle current token, then go to next token

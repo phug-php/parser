@@ -21,7 +21,7 @@ class IdTokenHandler implements TokenHandlerInterface
         }
 
         if (!$state->getCurrentNode()) {
-            $state->setCurrentNode($state->createNode(ElementNode::class));
+            $state->setCurrentNode($state->createNode(ElementNode::class, $token));
         }
 
         if (!$state->currentNodeIs([ElementNode::class, MixinCallNode::class])) {
