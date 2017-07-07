@@ -7,11 +7,11 @@ use Phug\Parser\NodeInterface;
 
 class NodeEvent extends Event
 {
-
     private $node;
 
     /**
      * NodeEvent constructor.
+     *
      * @param $name
      * @param NodeInterface $node
      */
