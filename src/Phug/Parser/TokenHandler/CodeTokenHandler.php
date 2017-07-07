@@ -26,8 +26,9 @@ class CodeTokenHandler implements TokenHandlerInterface
         if ($state->getCurrentNode()) {
             $token = $state->expectNext([TextToken::class]);
             if (!$token) {
-                throw new ParserException(
-                    'Unexpected token `blockcode` expected `text`, `interpolated-code` or `code`'
+                $state->throwException(
+                    'Unexpected token `blockcode` expected `text`, `interpolated-code` or `code`',
+                    $token
                 );
             }
             $node->setValue($token->getValue());

@@ -570,11 +570,18 @@ class State implements OptionInterface
     {
         $pattern = "Failed to parse: %s \nToken: %s \nLine: %s \nOffset: %s";
 
-        throw new ParserException(vsprintf($pattern, [
+        $exception = new ParserException(vsprintf($pattern, [
             $message,
             $relatedToken ? get_class($relatedToken) : null,
             $relatedToken ? $relatedToken->getLine() : '',
             $relatedToken ? $relatedToken->getOffset() : '',
         ]));
+
+        if ($relatedToken) {
+            $exception->setPugOffset($relatedToken->getOffset());
+            $exception->setPugLine($relatedToken->getLine());
+        }
+
+        throw $exception;
     }
 }
