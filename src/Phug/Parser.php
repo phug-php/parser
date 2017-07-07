@@ -346,4 +346,10 @@ class Parser implements ModuleContainerInterface
 
         return $text;
     }
+
+    public function getModuleBaseClassName()
+    {
+
+        return ParserModuleInterface::class;
+    }
 }
