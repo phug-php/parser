@@ -178,6 +178,13 @@ class Parser implements ModuleContainerInterface
                 WhenToken::class                   => WhenTokenHandler::class,
                 WhileToken::class                  => WhileTokenHandler::class,
             ],
+
+            //Events
+            'on_parse' => null,
+            'on_document' => null,
+            'on_state_enter' => null,
+            'on_state_leave' => null,
+            'on_state_store' => null,
         ], $options ?: []);
 
         $this->addModules($this->getOption('modules'));
@@ -196,6 +203,26 @@ class Parser implements ModuleContainerInterface
 
         foreach ($this->getOption('token_handlers') as $className => $handler) {
             $this->setTokenHandler($className, $handler);
+        }
+
+        if ($onParse = $this->getOption('on_parse')) {
+            $this->attach(ParserEvent::PARSE, $onParse);
+        }
+
+        if ($onDocument = $this->getOption('on_document')) {
+            $this->attach(ParserEvent::DOCUMENT, $onDocument);
+        }
+
+        if ($onStateEnter = $this->getOption('on_state_enter')) {
+            $this->attach(ParserEvent::STATE_ENTER, $onStateEnter);
+        }
+
+        if ($onStateLeave = $this->getOption('on_state_leave')) {
+            $this->attach(ParserEvent::STATE_LEAVE, $onStateLeave);
+        }
+
+        if ($onStateStore = $this->getOption('on_state_store')) {
+            $this->attach(ParserEvent::STATE_STORE, $onStateStore);
         }
     }
 
