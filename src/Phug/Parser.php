@@ -77,11 +77,7 @@ use Phug\Parser\TokenHandler\WhenTokenHandler;
 use Phug\Parser\TokenHandler\WhileTokenHandler;
 use Phug\Parser\TokenHandlerInterface;
 use Phug\Util\ModuleContainerInterface;
-use Phug\Util\ModulesContainerInterface;
-use Phug\Util\OptionInterface;
 use Phug\Util\Partial\ModuleContainerTrait;
-use Phug\Util\Partial\ModuleTrait;
-use Phug\Util\Partial\OptionTrait;
 
 /**
  * Takes tokens from the Lexer and creates an AST out of it.

@@ -156,6 +156,7 @@ class State implements OptionInterface, EventManagerInterface
 
     /**
      * @param string $path
+     *
      * @return State
      */
     public function setPath($path)
@@ -538,7 +539,6 @@ class State implements OptionInterface, EventManagerInterface
 
     public function enter()
     {
-
         $this->level++;
 
         if (!$this->lastNode) {
