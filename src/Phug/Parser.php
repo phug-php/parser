@@ -36,6 +36,8 @@ use Phug\Lexer\Token\TextToken;
 use Phug\Lexer\Token\VariableToken;
 use Phug\Lexer\Token\WhenToken;
 use Phug\Lexer\Token\WhileToken;
+use Phug\Parser\Event\NodeEvent;
+use Phug\Parser\Event\ParseEvent;
 use Phug\Parser\Node;
 use Phug\Parser\NodeInterface;
 use Phug\Parser\State;
@@ -74,8 +76,10 @@ use Phug\Parser\TokenHandler\VariableTokenHandler;
 use Phug\Parser\TokenHandler\WhenTokenHandler;
 use Phug\Parser\TokenHandler\WhileTokenHandler;
 use Phug\Parser\TokenHandlerInterface;
+use Phug\Util\ModuleContainerInterface;
 use Phug\Util\ModulesContainerInterface;
 use Phug\Util\OptionInterface;
+use Phug\Util\Partial\ModuleContainerTrait;
 use Phug\Util\Partial\ModuleTrait;
 use Phug\Util\Partial\OptionTrait;
 
@@ -100,10 +104,9 @@ use Phug\Util\Partial\OptionTrait;
  *
  * </code>
  */
-class Parser implements ModulesContainerInterface, OptionInterface
+class Parser implements ModuleContainerInterface
 {
-    use ModuleTrait;
-    use OptionTrait;
+    use ModuleContainerTrait;
 
     /**
      * The lexer used in this parser instance.
@@ -181,7 +184,6 @@ class Parser implements ModulesContainerInterface, OptionInterface
             ],
         ], $options ?: []);
 
-        $this->setExpectedModuleType(ParserModuleInterface::class);
         $this->addModules($this->getOption('modules'));
 
         $lexerClassName = $this->getOption('lexer_class_name');
@@ -236,13 +238,24 @@ class Parser implements ModulesContainerInterface, OptionInterface
      * from there on it can contain several kinds of nodes
      *
      * @param string $input the input jade string that is to be parsed
-     * @param string $file  optional path of file the input comes from
+     * @param string $path  optional path of file the input comes from
      *
-     * @return Node the root-node of the parsed AST
+     * @return NodeInterface the root-node of the parsed AST
      */
-    public function parse($input, $file = null)
+    public function parse($input, $path = null)
     {
         $stateClassName = $this->getOption('state_class_name');
+        $e = new ParseEvent($input, $path, $stateClassName, [
+            'token_handlers' => $this->tokenHandlers,
+        ]);
+
+        $this->trigger($e);
+
+        $input = $e->getInput();
+        $path = $e->getPath();
+        $stateClassName = $e->getStateClassName();
+        $stateOptions = $e->getStateOptions();
+
         if (!is_a($stateClassName, State::class, true)) {
             throw new \InvalidArgumentException(
                 'state_class_name needs to be a valid '.State::class.' sub class'
@@ -250,12 +263,11 @@ class Parser implements ModulesContainerInterface, OptionInterface
         }
 
         $this->state = new $stateClassName(
+            $this,
             //Append a new line to get last outdents and tag if not ending with \n
             $this->lexer->lex($input."\n"),
-            [
-                'token_handlers' => $this->tokenHandlers,
-            ],
-            $file
+            $stateOptions,
+            $path
         );
 
         //While we have tokens, handle current token, then go to next token
@@ -270,6 +282,7 @@ class Parser implements ModulesContainerInterface, OptionInterface
 
         //Some work after parsing needed
         //Resolve expansions/outer nodes
+        /** @var NodeInterface[] $expandingNodes */
         $expandingNodes = $document->find(function (NodeInterface $node) {
             return $node->getOuterNode() !== null;
         });
@@ -290,8 +303,11 @@ class Parser implements ModulesContainerInterface, OptionInterface
 
         $this->state = null;
 
+        $e = new NodeEvent(ParserEvent::DOCUMENT, $document);
+        $this->trigger($e);
+
         //Return the final document node with all its awesome child nodes
-        return $document;
+        return $e->getNode();
     }
 
     /**

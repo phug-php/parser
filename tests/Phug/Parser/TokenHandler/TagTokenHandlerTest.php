@@ -5,6 +5,7 @@ namespace Phug\Test\Parser\TokenHandler;
 use Phug\Lexer;
 use Phug\Lexer\Token\AttributeToken;
 use Phug\Lexer\Token\TagToken;
+use Phug\Parser;
 use Phug\Parser\Node\DocumentNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\TagTokenHandler;
@@ -22,7 +23,7 @@ class TagTokenHandlerTest extends AbstractParserTest
     public function testHandleToken()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div'), [
+        $state = new State(new Parser(), $lexer->lex('div'), [
             'token_handlers'   => [
                 TagToken::class => TagTokenHandler::class,
             ],
@@ -55,7 +56,7 @@ class TagTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenTokenException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div'));
+        $state = new State(new Parser(), $lexer->lex('div'));
         $handler = new TagTokenHandler();
         $handler->handleToken(new AttributeToken(), $state);
     }
@@ -68,7 +69,7 @@ class TagTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenElementTagsException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div'), [
+        $state = new State(new Parser(), $lexer->lex('div'), [
             'token_handlers'   => [
                 TagToken::class => TagTokenHandler::class,
             ],
@@ -88,7 +89,7 @@ class TagTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenTagNameException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div'), [
+        $state = new State(new Parser(), $lexer->lex('div'), [
             'token_handlers'   => [
                 TagToken::class => TagTokenHandler::class,
             ],

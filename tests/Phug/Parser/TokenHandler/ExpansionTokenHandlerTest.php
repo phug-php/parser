@@ -4,6 +4,7 @@ namespace Phug\Test\Parser\TokenHandler;
 
 use Phug\Lexer;
 use Phug\Lexer\Token\TagToken;
+use Phug\Parser;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\ExpansionTokenHandler;
 use Phug\Test\AbstractParserTest;
@@ -79,7 +80,7 @@ class ExpansionTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenTokenException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex(''));
+        $state = new State(new Parser(), $lexer->lex(''));
         $handler = new ExpansionTokenHandler();
         $handler->handleToken(new TagToken(), $state);
     }

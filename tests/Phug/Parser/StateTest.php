@@ -6,6 +6,7 @@ use Phug\Lexer;
 use Phug\Lexer\Token\AttributeToken;
 use Phug\Lexer\Token\NewLineToken;
 use Phug\Lexer\Token\TagToken;
+use Phug\Parser;
 use Phug\Parser\Node\AttributeNode;
 use Phug\Parser\Node\DocumentNode;
 use Phug\Parser\Node\ElementNode;
@@ -23,7 +24,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     public function testGettersAndSetters()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div'));
+        $state = new State(new Parser(), $lexer->lex('div'));
 
         $state->setLevel(3);
 
@@ -66,7 +67,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     public function testTokensCrawler()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex("div\np"));
+        $state = new State(new Parser(), $lexer->lex("div\np"));
 
         self::assertTrue($state->hasTokens());
         self::assertSame($state, $state->nextToken());
@@ -81,7 +82,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     public function testHandleToken()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div'), [
+        $state = new State(new Parser(), $lexer->lex('div'), [
             'token_handlers'   => [
                 TagToken::class => TagTokenHandler::class,
             ],
@@ -101,7 +102,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     public function testHandleTokenTwice()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div Hello'), [
+        $state = new State(new Parser(), $lexer->lex('div Hello'), [
             'token_handlers'   => [
                 TagToken::class => TagTokenHandler::class,
             ],
@@ -133,7 +134,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     public function testHandleTokenException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div'));
+        $state = new State(new Parser(), $lexer->lex('div'));
 
         $tag = new TagToken();
         $state->handleToken($tag);
@@ -146,7 +147,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     {
         $lexer = new Lexer();
         $handler = new TagTokenHandler();
-        $state = new State($lexer->lex('div'), [
+        $state = new State(new Parser(), $lexer->lex('div'), [
             'token_handlers'   => [
                 TagToken::class => $handler,
             ],
@@ -167,7 +168,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $tokens = [];
         $lexer = new Lexer();
         $handler = new TagTokenHandler();
-        $state = new State($lexer->lex('div'));
+        $state = new State(new Parser(), $lexer->lex('div'));
 
         foreach ($state->lookUp([TagToken::class]) as $token) {
             $tokens[] = $token;
@@ -179,7 +180,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $tokens = [];
         $lexer = new Lexer();
         $handler = new TagTokenHandler();
-        $state = new State($lexer->lex('div'));
+        $state = new State(new Parser(), $lexer->lex('div'));
 
         foreach ($state->lookUp([AttributeToken::class]) as $token) {
             $tokens[] = $token;
@@ -196,7 +197,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $tokens = [];
         $lexer = new Lexer();
         $handler = new TagTokenHandler();
-        $state = new State($lexer->lex("\ndiv\np"));
+        $state = new State(new Parser(), $lexer->lex("\ndiv\np"));
         $types = [TagToken::class, NewLineToken::class];
 
         foreach ($state->lookUpNext($types) as $token) {
@@ -220,7 +221,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $tokens = [];
         $lexer = new Lexer();
         $handler = new TagTokenHandler();
-        $state = new State($lexer->lex("\ndiv\n+p"));
+        $state = new State(new Parser(), $lexer->lex("\ndiv\n+p"));
         $types = [TagToken::class, NewLineToken::class];
 
         self::assertInstanceOf(TagToken::class, $state->expectNext($types));
@@ -236,7 +237,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $tokens = [];
         $lexer = new Lexer();
         $handler = new TagTokenHandler();
-        $state = new State($lexer->lex(''));
+        $state = new State(new Parser(), $lexer->lex(''));
         $types = [DocumentNode::class, ElementNode::class];
         $element = new ElementNode();
         $attribute = new AttributeNode();
@@ -253,7 +254,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $tokens = [];
         $lexer = new Lexer();
         $handler = new TagTokenHandler();
-        $state = new State($lexer->lex(''));
+        $state = new State(new Parser(), $lexer->lex(''));
         $types = [DocumentNode::class, ElementNode::class];
         $element = new ElementNode();
         $attribute = new AttributeNode();
@@ -275,7 +276,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $tokens = [];
         $lexer = new Lexer();
         $handler = new TagTokenHandler();
-        $state = new State($lexer->lex(''));
+        $state = new State(new Parser(), $lexer->lex(''));
         $a = new ElementNode();
         $b = new ElementNode();
 
@@ -301,7 +302,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $tokens = [];
         $lexer = new Lexer();
         $handler = new TagTokenHandler();
-        $state = new State($lexer->lex(''));
+        $state = new State(new Parser(), $lexer->lex(''));
         $types = [DocumentNode::class, ElementNode::class];
         $element = new ElementNode();
         $attribute = new AttributeNode();
@@ -323,7 +324,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $tokens = [];
         $lexer = new Lexer();
         $handler = new TagTokenHandler();
-        $state = new State($lexer->lex(''));
+        $state = new State(new Parser(), $lexer->lex(''));
         $types = [DocumentNode::class, ElementNode::class];
         $element = new ElementNode();
         $attribute = new AttributeNode();
@@ -347,7 +348,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     {
         $tokens = [];
         $lexer = new Lexer();
-        $state = new State($lexer->lex(''));
+        $state = new State(new Parser(), $lexer->lex(''));
 
         $state->createNode(\ErrorException::class);
     }
@@ -359,7 +360,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     {
         $tokens = [];
         $lexer = new Lexer();
-        $state = new State($lexer->lex(''));
+        $state = new State(new Parser(), $lexer->lex(''));
 
         $element = new ElementNode();
         $state->setLevel(42)->setParentNode($element)->enter();
@@ -381,7 +382,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     {
         $tokens = [];
         $lexer = new Lexer();
-        $state = new State($lexer->lex(''));
+        $state = new State(new Parser(), $lexer->lex(''));
 
         $element = new ElementNode();
         $state->setLevel(42)->setParentNode($element)->enter();
@@ -408,7 +409,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     {
         $tokens = [];
         $lexer = new Lexer();
-        $state = new State($lexer->lex(''));
+        $state = new State(new Parser(), $lexer->lex(''));
 
         $element = new ElementNode();
         $state->setLevel(42)->setParentNode($element)->leave();
@@ -421,7 +422,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     {
         $tokens = [];
         $lexer = new Lexer();
-        $state = new State($lexer->lex(''));
+        $state = new State(new Parser(), $lexer->lex(''));
         $element = new ElementNode();
         $state->setParentNode($element);
 
@@ -460,7 +461,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     {
         $tokens = [];
         $lexer = new Lexer();
-        $state = new State($lexer->lex(''));
+        $state = new State(new Parser(), $lexer->lex(''));
         $token = new TagToken(12, 5);
         $state->handleToken($token);
     }

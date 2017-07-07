@@ -6,6 +6,7 @@ use Phug\Lexer;
 use Phug\Lexer\Token\AttributeEndToken;
 use Phug\Lexer\Token\AttributeStartToken;
 use Phug\Lexer\Token\AttributeToken;
+use Phug\Parser;
 use Phug\Parser\Node\AttributeNode;
 use Phug\Parser\Node\DocumentNode;
 use Phug\Parser\Node\ElementNode;
@@ -27,7 +28,7 @@ class AttributeStartTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenEmpty()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('()'), [
+        $state = new State(new Parser(), $lexer->lex('()'), [
             'token_handlers'   => [
                 AttributeStartToken::class => AttributeStartTokenHandler::class,
                 AttributeEndToken::class   => AttributeEndTokenHandler::class,
@@ -69,7 +70,7 @@ class AttributeStartTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenTokenException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div'));
+        $state = new State(new Parser(), $lexer->lex('div'));
         $handler = new AttributeStartTokenHandler();
         $handler->handleToken(new AttributeToken(), $state);
     }
@@ -85,7 +86,7 @@ class AttributeStartTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenElementTagsException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('('), [
+        $state = new State(new Parser(), $lexer->lex('('), [
             'token_handlers'   => [
                 AttributeStartToken::class      => AttributeStartTokenHandler::class,
                 AttributeEndTokenHandler::class => AttributeEndTokenHandler::class,
@@ -106,7 +107,7 @@ class AttributeStartTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenListNotClosedException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex(''), [
+        $state = new State(new Parser(), $lexer->lex(''), [
             'token_handlers'   => [
                 AttributeStartToken::class => AttributeStartTokenHandler::class,
             ],

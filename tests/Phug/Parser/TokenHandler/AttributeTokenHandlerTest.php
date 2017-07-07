@@ -7,10 +7,12 @@ use Phug\Lexer\Token\AttributeEndToken;
 use Phug\Lexer\Token\AttributeStartToken;
 use Phug\Lexer\Token\AttributeToken;
 use Phug\Lexer\Token\TagToken;
+use Phug\Parser;
 use Phug\Parser\Node\AttributeNode;
 use Phug\Parser\Node\DocumentNode;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\State;
+use Phug\Parser\TokenHandler\AttributeEndTokenHandler;
 use Phug\Parser\TokenHandler\AttributeStartTokenHandler;
 use Phug\Parser\TokenHandler\AttributeTokenHandler;
 use Phug\Test\AbstractParserTest;
@@ -26,7 +28,7 @@ class AttributeTokenHandlerTest extends AbstractParserTest
     public function testNoCurrentNode()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('(a)'), [
+        $state = new State(new Parser(), $lexer->lex('(a)'), [
             'token_handlers'   => [
                 AttributeStartToken::class => AttributeStartTokenHandler::class,
                 AttributeEndToken::class   => AttributeEndTokenHandler::class,
@@ -50,7 +52,7 @@ class AttributeTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenTokenException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div'));
+        $state = new State(new Parser(), $lexer->lex('div'));
         $handler = new AttributeTokenHandler();
         $handler->handleToken(new TagToken(), $state);
     }

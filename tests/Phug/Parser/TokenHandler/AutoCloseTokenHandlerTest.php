@@ -5,6 +5,7 @@ namespace Phug\Test\Parser\TokenHandler;
 use Phug\Lexer;
 use Phug\Lexer\Token\AutoCloseToken;
 use Phug\Lexer\Token\TagToken;
+use Phug\Parser;
 use Phug\Parser\Node\TextNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\AutoCloseTokenHandler;
@@ -94,7 +95,7 @@ class AutoCloseTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenTokenException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div/'));
+        $state = new State(new Parser(), $lexer->lex('div/'));
         $handler = new AutoCloseTokenHandler();
         $handler->handleToken(new TagToken(), $state);
     }
@@ -107,7 +108,7 @@ class AutoCloseTokenHandlerTest extends AbstractParserTest
     public function testHandleClassOnWrongNode()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('| foo'));
+        $state = new State(new Parser(), $lexer->lex('| foo'));
         $state->setCurrentNode(new TextNode());
         $handler = new AutoCloseTokenHandler();
         $handler->handleToken(new AutoCloseToken(), $state);

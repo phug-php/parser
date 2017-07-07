@@ -4,6 +4,7 @@ namespace Phug\Test\Parser\TokenHandler;
 
 use Phug\Lexer;
 use Phug\Lexer\Token\TagToken;
+use Phug\Parser;
 use Phug\Parser\Node\CodeNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\CodeTokenHandler;
@@ -76,7 +77,7 @@ class CodeTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenTokenException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div- do_something()'));
+        $state = new State(new Parser(), $lexer->lex('div- do_something()'));
         $handler = new CodeTokenHandler();
         $handler->handleToken(new TagToken(), $state);
     }

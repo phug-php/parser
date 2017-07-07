@@ -5,6 +5,7 @@ namespace Phug\Test\Parser\TokenHandler;
 use Phug\Formatter\Element\AttributeElement;
 use Phug\Lexer;
 use Phug\Lexer\Token\TagToken;
+use Phug\Parser;
 use Phug\Parser\Node\FilterNode;
 use Phug\Parser\Node\ImportNode;
 use Phug\Parser\State;
@@ -94,7 +95,7 @@ class FilterTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenTokenException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex(''));
+        $state = new State(new Parser(), $lexer->lex(''));
         $handler = new FilterTokenHandler();
         $handler->handleToken(new TagToken(), $state);
     }

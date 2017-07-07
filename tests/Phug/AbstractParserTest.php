@@ -16,13 +16,15 @@ abstract class AbstractParserTest extends \PHPUnit_Framework_TestCase
         $this->parser = new Parser();
     }
 
-    public function assertNodes($expression, $expected)
+    public function assertNodes($expression, $expected, Parser $parser = null)
     {
         if (is_array($expected)) {
             $expected = implode("\n", $expected);
         }
 
-        $dump = str_replace('Phug\\Parser\\Node\\', '', $this->parser->dump($expression));
+        $parser = $parser ?: $this->parser;
+
+        $dump = str_replace('Phug\\Parser\\Node\\', '', $parser->dump($expression));
 
         self::assertSame($expected, $dump);
     }

@@ -4,6 +4,7 @@ namespace Phug\Test\Parser\TokenHandler;
 
 use Phug\Lexer;
 use Phug\Lexer\Token\AttributeToken;
+use Phug\Parser;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\Node\ExpressionNode;
 use Phug\Parser\State;
@@ -134,7 +135,7 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenTokenException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div'));
+        $state = new State(new Parser(), $lexer->lex('div'));
         $handler = new InterpolationStartTokenHandler();
         $handler->handleToken(new AttributeToken(), $state);
     }

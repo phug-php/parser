@@ -2,16 +2,27 @@
 
 namespace Phug\Parser;
 
+use Phug\EventManagerInterface;
+use Phug\EventManagerTrait;
 use Phug\Lexer\TokenInterface;
+use Phug\Parser;
+use Phug\Parser\Event\NodeEvent;
 use Phug\Parser\Node\DocumentNode;
+use Phug\ParserEvent;
 use Phug\ParserException;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial\OptionTrait;
 use SplObjectStorage;
 
-class State implements OptionInterface
+class State implements OptionInterface, EventManagerInterface
 {
     use OptionTrait;
+    use EventManagerTrait;
+
+    /**
+     * @var Parser
+     */
+    private $parser;
 
     /**
      * @var int
@@ -21,7 +32,7 @@ class State implements OptionInterface
     /**
      * @var string
      */
-    private $file;
+    private $path;
 
     /**
      * The Generator returned by the ->lex() method of the lexer.
@@ -87,9 +98,12 @@ class State implements OptionInterface
      */
     private $interpolationStack;
 
-    public function __construct(\Generator $tokens, array $options = null, $file = null)
+    private $endInterpolationBuffer;
+
+    public function __construct(Parser $parser, \Generator $tokens, array $options = null, $path = null)
     {
-        $this->file = $file;
+        $this->parser = $parser;
+        $this->path = $path;
         $this->level = 0;
         $this->tokens = $tokens;
         $this->documentNode = $this->createNode(DocumentNode::class);
@@ -102,6 +116,14 @@ class State implements OptionInterface
         $this->setOptionsRecursive([
             'token_handlers' => [],
         ], $options ?: []);
+    }
+
+    /**
+     * @return Parser
+     */
+    public function getParser()
+    {
+        return $this->parser;
     }
 
     /**
@@ -120,6 +142,25 @@ class State implements OptionInterface
     public function setLevel($level)
     {
         $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param string $path
+     * @return State
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
 
         return $this;
     }
@@ -491,12 +532,13 @@ class State implements OptionInterface
             null,
             null,
             $token,
-            $this->file
+            $this->path
         );
     }
 
     public function enter()
     {
+
         $this->level++;
 
         if (!$this->lastNode) {
@@ -504,6 +546,9 @@ class State implements OptionInterface
         }
 
         $this->parentNode = $this->lastNode;
+
+        $e = new NodeEvent(ParserEvent::STATE_ENTER, $this->lastNode);
+        $this->trigger($e);
 
         return $this;
     }
@@ -519,7 +564,13 @@ class State implements OptionInterface
             );
         }
 
+        $node = $this->parentNode;
         $this->parentNode = $this->parentNode->getParent();
+
+        $e = new NodeEvent(ParserEvent::STATE_LEAVE, $node);
+        $this->trigger($e);
+
+        return $this;
     }
 
     /**
@@ -549,8 +600,11 @@ class State implements OptionInterface
 
         //Append to current parent
         $this->parentNode->appendChild($this->currentNode);
-        $this->lastNode = $this->getCurrentNode();
+        $this->lastNode = $this->currentNode;
         $this->currentNode = null;
+
+        $e = new NodeEvent(ParserEvent::STATE_STORE, $this->lastNode);
+        $this->trigger($e);
 
         return $this;
     }

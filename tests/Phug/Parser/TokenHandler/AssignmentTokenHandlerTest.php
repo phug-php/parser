@@ -7,6 +7,7 @@ use Phug\Lexer\Token\AssignmentToken;
 use Phug\Lexer\Token\AttributeEndToken;
 use Phug\Lexer\Token\AttributeStartToken;
 use Phug\Lexer\Token\AttributeToken;
+use Phug\Parser;
 use Phug\Parser\Node\DocumentNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\AssignmentTokenHandler;
@@ -25,7 +26,7 @@ class AssignmentTokenHandlerTest extends \PHPUnit_Framework_TestCase
     public function testHandleToken()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('&attributes($a)'), [
+        $state = new State(new Parser(), $lexer->lex('&attributes($a)'), [
             'token_handlers'   => [
                 AssignmentToken::class     => AssignmentTokenHandler::class,
                 AttributeStartToken::class => AttributeStartTokenHandler::class,
@@ -50,7 +51,7 @@ class AssignmentTokenHandlerTest extends \PHPUnit_Framework_TestCase
     public function testHandleTokenWithNothingNext()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('&attributes'), [
+        $state = new State(new Parser(), $lexer->lex('&attributes'), [
             'token_handlers'   => [
                 AssignmentToken::class     => AssignmentTokenHandler::class,
                 AttributeStartToken::class => AttributeStartTokenHandler::class,
@@ -77,7 +78,7 @@ class AssignmentTokenHandlerTest extends \PHPUnit_Framework_TestCase
     public function testHandleTokenTokenException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div'));
+        $state = new State(new Parser(), $lexer->lex('div'));
         $handler = new AssignmentTokenHandler();
         $handler->handleToken(new AttributeToken(), $state);
     }
@@ -90,7 +91,7 @@ class AssignmentTokenHandlerTest extends \PHPUnit_Framework_TestCase
     public function testHandleTokenElementTagsException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div'), [
+        $state = new State(new Parser(), $lexer->lex('div'), [
             'token_handlers'   => [
                 AssignmentToken::class     => AssignmentTokenHandler::class,
                 AttributeStartToken::class => AttributeStartTokenHandler::class,

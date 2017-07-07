@@ -4,6 +4,7 @@ namespace Phug\Test\Parser\TokenHandler;
 
 use Phug\Lexer;
 use Phug\Lexer\Token\AttributeToken;
+use Phug\Parser;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\TagInterpolationStartTokenHandler;
 use Phug\Test\AbstractParserTest;
@@ -77,7 +78,7 @@ class TagInterpolationStartTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenTokenException()
     {
         $lexer = new Lexer();
-        $state = new State($lexer->lex('div'));
+        $state = new State(new Parser(), $lexer->lex('div'));
         $handler = new TagInterpolationStartTokenHandler();
         $handler->handleToken(new AttributeToken(), $state);
     }

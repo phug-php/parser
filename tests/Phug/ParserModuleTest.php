@@ -2,27 +2,53 @@
 
 namespace Phug\Test;
 
+use Phug\AbstractParserModule;
 use Phug\Parser;
-use Phug\ParserModule;
+use Phug\Parser\Event\NodeEvent;
+use Phug\Parser\Node\TextNode;
+use Phug\ParserEvent;
+
+//@codingStandardsIgnoreStart
+class ParserTestModule extends AbstractParserModule
+{
+    public function getEventListeners()
+    {
+        return [
+            ParserEvent::DOCUMENT => function (NodeEvent $e) {
+
+                $node = new TextNode();
+                $node->setValue('Listener was here!');
+                $e->getNode()->prependChild($node);
+            },
+        ];
+    }
+}
+
 
 /**
- * @coversDefaultClass Phug\ParserModule
+ * @coversDefaultClass Phug\AbstractParserModule
  */
-class ParserModuleTest extends \PHPUnit_Framework_TestCase
+class ParserModuleTest extends AbstractParserTest
 {
     /**
      * @covers ::<public>
      */
-    public function testModule()
+    public function testTokenEvent()
     {
-        $copy = null;
-        $module = new ParserModule();
-        $module->onPlug(function ($_parser) use (&$copy) {
-            $copy = $_parser;
-        });
-        $parser = new Parser([
-            'modules' => [$module],
+        self::assertNodes('p Test', [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [TextNode]',
         ]);
-        self::assertSame($parser, $copy);
+
+        $parser = new Parser(['modules' => [ParserTestModule::class]]);
+
+        self::assertNodes('p Test', [
+            '[DocumentNode]',
+            '  [TextNode]',
+            '  [ElementNode]',
+            '    [TextNode]',
+        ], $parser);
     }
 }
+//@codingStandardsIgnoreEnd
