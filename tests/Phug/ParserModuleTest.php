@@ -15,7 +15,6 @@ class ParserTestModule extends AbstractParserModule
     {
         return [
             ParserEvent::DOCUMENT => function (NodeEvent $e) {
-
                 $node = new TextNode();
                 $node->setValue('Listener was here!');
                 $e->getNode()->prependChild($node);
@@ -23,7 +22,6 @@ class ParserTestModule extends AbstractParserModule
         ];
     }
 }
-
 
 /**
  * @coversDefaultClass Phug\AbstractParserModule

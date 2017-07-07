@@ -8,7 +8,6 @@ use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\CodeNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
-use Phug\ParserException;
 
 class CodeTokenHandler implements TokenHandlerInterface
 {
