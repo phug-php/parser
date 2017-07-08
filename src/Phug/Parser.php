@@ -294,7 +294,6 @@ class Parser implements ModuleContainerInterface
         );
 
         $forward = function (NodeEvent $e) {
-
             return $this->trigger($e);
         };
 
