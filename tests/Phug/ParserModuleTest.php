@@ -8,7 +8,6 @@ use Phug\Parser\Event\NodeEvent;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\Node\TextNode;
 use Phug\ParserEvent;
-use Phug\Test\Parser\Node\ElementNodeTest;
 
 //@codingStandardsIgnoreStart
 class ParserTestModule extends AbstractParserModule
@@ -17,7 +16,6 @@ class ParserTestModule extends AbstractParserModule
     {
         return [
             ParserEvent::DOCUMENT => function (NodeEvent $e) {
-
                 $e->getNode()->prependChild(new TextNode());
             },
         ];
@@ -30,26 +28,20 @@ class StateEnterLeaveStoreTestModule extends AbstractParserModule
     {
         return [
             ParserEvent::STATE_ENTER => function (NodeEvent $e) {
-
                 $node = $e->getNode();
                 if ($node instanceof ElementNode && $node->getName() === 'div') {
-
                     $node->prependChild(new TextNode());
                 }
             },
             ParserEvent::STATE_LEAVE => function (NodeEvent $e) {
-
                 $node = $e->getNode();
                 if ($node instanceof ElementNode && $node->getName() === 'div') {
-
                     $node->appendChild(new TextNode());
                 }
             },
             ParserEvent::STATE_STORE => function (NodeEvent $e) {
-
                 $node = $e->getNode();
                 if ($node instanceof ElementNode && $node->getName() === 'div') {
-
                     $node->append(new TextNode());
                 }
             },
@@ -82,6 +74,7 @@ class ParserModuleTest extends AbstractParserTest
             '    [TextNode]',
         ], $parser);
     }
+
     /**
      * @covers ::<public>
      */
