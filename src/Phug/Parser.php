@@ -180,8 +180,8 @@ class Parser implements ModuleContainerInterface
             ],
 
             //Events
-            'on_parse' => null,
-            'on_document' => null,
+            'on_parse'       => null,
+            'on_document'    => null,
             'on_state_enter' => null,
             'on_state_leave' => null,
             'on_state_store' => null,
@@ -385,7 +385,6 @@ class Parser implements ModuleContainerInterface
 
     public function getModuleBaseClassName()
     {
-
         return ParserModuleInterface::class;
     }
 }
