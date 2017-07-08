@@ -5,8 +5,10 @@ namespace Phug\Test;
 use Phug\AbstractParserModule;
 use Phug\Parser;
 use Phug\Parser\Event\NodeEvent;
+use Phug\Parser\Node\ElementNode;
 use Phug\Parser\Node\TextNode;
 use Phug\ParserEvent;
+use Phug\Test\Parser\Node\ElementNodeTest;
 
 //@codingStandardsIgnoreStart
 class ParserTestModule extends AbstractParserModule
@@ -15,9 +17,41 @@ class ParserTestModule extends AbstractParserModule
     {
         return [
             ParserEvent::DOCUMENT => function (NodeEvent $e) {
-                $node = new TextNode();
-                $node->setValue('Listener was here!');
-                $e->getNode()->prependChild($node);
+
+                $e->getNode()->prependChild(new TextNode());
+            },
+        ];
+    }
+}
+
+class StateEnterLeaveStoreTestModule extends AbstractParserModule
+{
+    public function getEventListeners()
+    {
+        return [
+            ParserEvent::STATE_ENTER => function (NodeEvent $e) {
+
+                $node = $e->getNode();
+                if ($node instanceof ElementNode && $node->getName() === 'div') {
+
+                    $node->prependChild(new TextNode());
+                }
+            },
+            ParserEvent::STATE_LEAVE => function (NodeEvent $e) {
+
+                $node = $e->getNode();
+                if ($node instanceof ElementNode && $node->getName() === 'div') {
+
+                    $node->appendChild(new TextNode());
+                }
+            },
+            ParserEvent::STATE_STORE => function (NodeEvent $e) {
+
+                $node = $e->getNode();
+                if ($node instanceof ElementNode && $node->getName() === 'div') {
+
+                    $node->append(new TextNode());
+                }
             },
         ];
     }
@@ -46,6 +80,32 @@ class ParserModuleTest extends AbstractParserTest
             '  [TextNode]',
             '  [ElementNode]',
             '    [TextNode]',
+        ], $parser);
+    }
+    /**
+     * @covers ::<public>
+     */
+    public function testStateEnterLeaveStoreEvents()
+    {
+        self::assertNodes("div\n\tp= \$test\na", [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [ElementNode]',
+            '      [ExpressionNode]',
+            '  [ElementNode]',
+        ]);
+
+        $parser = new Parser(['modules' => [StateEnterLeaveStoreTestModule::class]]);
+
+        self::assertNodes("div\n\tp= \$test\na", [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [TextNode]',
+            '    [ElementNode]',
+            '      [ExpressionNode]',
+            '    [TextNode]',
+            '  [TextNode]',
+            '  [ElementNode]',
         ], $parser);
     }
 }

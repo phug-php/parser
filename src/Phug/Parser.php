@@ -293,6 +293,16 @@ class Parser implements ModuleContainerInterface
             $path
         );
 
+        $forward = function (NodeEvent $e) {
+
+            return $this->trigger($e);
+        };
+
+        //Forward events from the state
+        $this->state->attach(ParserEvent::STATE_ENTER, $forward);
+        $this->state->attach(ParserEvent::STATE_LEAVE, $forward);
+        $this->state->attach(ParserEvent::STATE_STORE, $forward);
+
         //While we have tokens, handle current token, then go to next token
         //rinse and repeat
         while ($this->state->hasTokens()) {
@@ -324,6 +334,9 @@ class Parser implements ModuleContainerInterface
             }
         }
 
+        $this->state->clearListeners(ParserEvent::STATE_ENTER);
+        $this->state->clearListeners(ParserEvent::STATE_LEAVE);
+        $this->state->clearListeners(ParserEvent::STATE_STORE);
         $this->state = null;
 
         $e = new NodeEvent(ParserEvent::DOCUMENT, $document);
