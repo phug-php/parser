@@ -6,6 +6,8 @@ use Phug\Ast\NodeInterface as AstNodeInterface;
 
 interface NodeInterface extends AstNodeInterface
 {
+    public function getFile();
+
     public function getLine();
 
     public function getOffset();
