@@ -5,7 +5,6 @@ namespace Phug\Parser;
 use Phug\Ast\Node as AstNode;
 use Phug\Lexer\TokenInterface;
 use Phug\Util\Partial\LevelGetTrait;
-use Phug\Util\Partial\SourceLocationTrait;
 use Phug\Util\SourceLocationInterface;
 
 /**
@@ -29,10 +28,10 @@ class Node extends AstNode implements NodeInterface
      * It can be appended to any node after that
      *
      * @param SourceLocationInterface|null $sourceLocation
-     * @param int|null $level the level of indentation this node is at
-     * @param NodeInterface $parent the parent of this node
-     * @param NodeInterface[] $children the children of this node
-     * @param TokenInterface $token the token that created the node
+     * @param int|null                     $level          the level of indentation this node is at
+     * @param NodeInterface                $parent         the parent of this node
+     * @param NodeInterface[]              $children       the children of this node
+     * @param TokenInterface               $token          the token that created the node
      */
     public function __construct(
         TokenInterface $token = null,
@@ -42,7 +41,6 @@ class Node extends AstNode implements NodeInterface
         array $children = null
     ) {
         parent::__construct($parent, $children);
-
 
         $this->token = $token;
         $this->sourceLocation = $sourceLocation ?: ($token ? $token->getSourceLocation() : null);

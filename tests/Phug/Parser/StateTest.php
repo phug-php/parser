@@ -19,10 +19,8 @@ use Phug\Util\SourceLocation;
  */
 class StateTest extends \PHPUnit_Framework_TestCase
 {
-
     private function generateTokens()
     {
-
         yield 1;
         yield 2;
     }

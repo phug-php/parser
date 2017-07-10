@@ -11,7 +11,6 @@ use Phug\Util\SourceLocation;
  */
 class ParserException extends LocatedException
 {
-
     private $relatedToken;
 
     public function __construct(
@@ -21,7 +20,6 @@ class ParserException extends LocatedException
         TokenInterface $relatedToken = null,
         $previous = null
     ) {
-    
         parent::__construct($location, $message, $code, $previous);
 
         $this->relatedToken = $relatedToken;
