@@ -20,6 +20,7 @@ class ExpansionTokenHandler implements TokenHandlerInterface
         if (!$state->getCurrentNode()) {
             $state->throwException(
                 'Expansion needs an element to work on',
+                0,
                 $token
             );
         }

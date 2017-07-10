@@ -13,6 +13,7 @@ use Phug\ParserException;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial\OptionTrait;
 use SplObjectStorage;
+use Phug\Util\SourceLocation;
 
 class State implements OptionInterface, EventManagerInterface
 {
@@ -28,11 +29,6 @@ class State implements OptionInterface, EventManagerInterface
      * @var int
      */
     private $level;
-
-    /**
-     * @var string
-     */
-    private $path;
 
     /**
      * The Generator returned by the ->lex() method of the lexer.
@@ -100,10 +96,9 @@ class State implements OptionInterface, EventManagerInterface
 
     private $endInterpolationBuffer;
 
-    public function __construct(Parser $parser, \Generator $tokens, array $options = null, $path = null)
+    public function __construct(Parser $parser, \Generator $tokens, array $options = null)
     {
         $this->parser = $parser;
-        $this->path = $path;
         $this->level = 0;
         $this->tokens = $tokens;
         $this->documentNode = $this->createNode(DocumentNode::class);
@@ -115,6 +110,7 @@ class State implements OptionInterface, EventManagerInterface
         $this->endInterpolationBuffer = [];
         $this->setOptionsRecursive([
             'token_handlers' => [],
+            'path' => null,
         ], $options ?: []);
     }
 
@@ -142,26 +138,6 @@ class State implements OptionInterface, EventManagerInterface
     public function setLevel($level)
     {
         $this->level = $level;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    /**
-     * @param string $path
-     *
-     * @return State
-     */
-    public function setPath($path)
-    {
-        $this->path = $path;
 
         return $this;
     }
@@ -332,6 +308,7 @@ class State implements OptionInterface, EventManagerInterface
         if (!isset($tokenHandlers[$className])) {
             $this->throwException(
                 "Unexpected token `$className`, no token handler registered",
+                0,
                 $token
             );
         }
@@ -383,9 +360,11 @@ class State implements OptionInterface, EventManagerInterface
      */
     public function lookUpNext(array $types)
     {
-        return $this->hasTokens()
-            ? $this->nextToken()->lookUp($types)
-            : [];
+        if ($this->hasTokens()) {
+            foreach ($this->nextToken()->lookUp($types) as $token) {
+                yield $token;
+            }
+        }
     }
 
     /**
@@ -526,15 +505,7 @@ class State implements OptionInterface, EventManagerInterface
             );
         }
 
-        return new $className(
-            $token ? $token->getLine() : null,
-            $token ? $token->getOffset() : null,
-            $token ? $token->getLevel() : null,
-            null,
-            null,
-            $token,
-            $this->path
-        );
+        return new $className($token, null, $this->level);
     }
 
     public function enter()
@@ -615,27 +586,53 @@ class State implements OptionInterface, EventManagerInterface
      * The current line and offset of the exception
      * get automatically appended to the message
      *
-     * @param string         $message      A meaningful error message
+     * @param string $message A meaningful error message
+     * @param int $code
      * @param TokenInterface $relatedToken
      *
+     * @param null $previous
      * @throws ParserException
      */
-    public function throwException($message, TokenInterface $relatedToken = null)
+    public function throwException($message, $code = 0, TokenInterface $relatedToken = null, $previous = null)
     {
-        $pattern = "Failed to parse: %s \nToken: %s \nLine: %s \nOffset: %s";
 
-        $exception = new ParserException(vsprintf($pattern, [
-            $message,
-            $relatedToken ? get_class($relatedToken) : null,
-            $relatedToken ? $relatedToken->getLine() : '',
-            $relatedToken ? $relatedToken->getOffset() : '',
-        ]));
+        $pattern = "Failed to parse: %s \nNear: %s \nLine: %s \nOffset: %s";
 
-        if ($relatedToken) {
-            $exception->setPugOffset($relatedToken->getOffset());
-            $exception->setPugLine($relatedToken->getLine());
+        $lexer = $this->parser->getLexer();
+        //This will basically check for a source location for this Node. The process is like:
+        //- If there's a related token, we use the cloned token's source location
+        //- If not, we check if we're still lexing right now, so we can assume the node is somewhere
+        //  around the current lexing location, we get it from the lexer state directly
+        //- If none is found, we create an empty source location
+        $location = $relatedToken && $relatedToken->getSourceLocation()
+            ? clone $relatedToken->getSourceLocation()
+            : ($lexer->hasState()
+                ? $lexer->getState()->createCurrentSourceLocation()
+                : new SourceLocation(null, 0, 0)
+            );
+
+        $near = $lexer->hasState()
+            ? $lexer->getState()->getReader()->peek(20)
+            : '[No clue]';
+
+        //We know where it occured!
+        $path = $location->getPath();
+
+        if ($path) {
+            $pattern .= "\nPath: $path";
         }
 
-        throw $exception;
+        throw new ParserException(
+            $location,
+            vsprintf($pattern, [
+                $message,
+                $near,
+                $location->getLine(),
+                $location->getOffset()
+            ]),
+            $code,
+            $relatedToken,
+            $previous
+        );
     }
 }

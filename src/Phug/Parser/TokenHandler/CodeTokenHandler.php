@@ -27,6 +27,7 @@ class CodeTokenHandler implements TokenHandlerInterface
             if (!$token) {
                 $state->throwException(
                     'Unexpected token `blockcode` expected `text`, `interpolated-code` or `code`',
+                    0,
                     $token
                 );
             }

@@ -4,6 +4,9 @@ namespace Phug\Parser;
 
 use Phug\Ast\Node as AstNode;
 use Phug\Lexer\TokenInterface;
+use Phug\Util\Partial\LevelGetTrait;
+use Phug\Util\Partial\SourceLocationTrait;
+use Phug\Util\SourceLocationInterface;
 
 /**
  * Represents a node in the AST the parser generates.
@@ -14,10 +17,9 @@ use Phug\Lexer\TokenInterface;
  */
 class Node extends AstNode implements NodeInterface
 {
-    private $file;
-    private $line;
-    private $offset;
-    private $level;
+    use LevelGetTrait;
+
+    private $sourceLocation;
     private $outerNode;
     private $token;
 
@@ -26,46 +28,34 @@ class Node extends AstNode implements NodeInterface
      *
      * It can be appended to any node after that
      *
-     * @param int|null        $line     the line at which we found this node
-     * @param int|null        $offset   the offset in a line we found this node at
-     * @param int|null        $level    the level of indentation this node is at
-     * @param NodeInterface   $parent   the parent of this node
+     * @param SourceLocationInterface|null $sourceLocation
+     * @param int|null $level the level of indentation this node is at
+     * @param NodeInterface $parent the parent of this node
      * @param NodeInterface[] $children the children of this node
-     * @param TokenInterface  $token    the token that created the node
+     * @param TokenInterface $token the token that created the node
      */
     public function __construct(
-        $line = null,
-        $offset = null,
+        TokenInterface $token = null,
+        SourceLocationInterface $sourceLocation = null,
         $level = null,
         NodeInterface $parent = null,
-        array $children = null,
-        TokenInterface $token = null,
-        $file = null
+        array $children = null
     ) {
         parent::__construct($parent, $children);
 
-        $this->line = $line ?: 0;
-        $this->offset = $offset ?: 0;
+
+        $this->token = $token;
+        $this->sourceLocation = $sourceLocation ?: ($token ? $token->getSourceLocation() : null);
         $this->level = $level ?: 0;
         $this->outerNode = null;
-        $this->token = $token;
-        $this->file = $file;
     }
 
     /**
-     * @return int
+     * @return SourceLocationInterface|null
      */
-    public function getLine()
+    public function getSourceLocation()
     {
-        return $this->line;
-    }
-
-    /**
-     * @return int
-     */
-    public function getOffset()
-    {
-        return $this->offset;
+        return $this->sourceLocation;
     }
 
     /**

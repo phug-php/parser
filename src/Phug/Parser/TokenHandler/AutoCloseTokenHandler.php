@@ -21,6 +21,7 @@ class AutoCloseTokenHandler implements TokenHandlerInterface
         if (!$state->currentNodeIs([ElementNode::class])) {
             $state->throwException(
                 'Auto-close operators can only be used on elements',
+                0,
                 $token
             );
         }

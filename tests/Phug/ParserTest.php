@@ -22,7 +22,7 @@ class ParserTest extends AbstractParserTest
 
     /**
      * @covers                   ::<public>
-     * @expectedException        \Phug\ParserException
+     * @expectedException        \InvalidArgumentException
      * @expectedExceptionMessage Passed lexer class ErrorException is not a valid Phug\Lexer
      */
     public function testWrongLexerClassNameOption()

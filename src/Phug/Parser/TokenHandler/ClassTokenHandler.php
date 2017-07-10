@@ -27,6 +27,7 @@ class ClassTokenHandler implements TokenHandlerInterface
         if (!$state->currentNodeIs([ElementNode::class, MixinCallNode::class])) {
             $state->throwException(
                 'Classes can only be used on elements and mixin calls',
+                0,
                 $token
             );
         }

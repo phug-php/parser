@@ -187,11 +187,9 @@ class Parser implements ModuleContainerInterface
             'on_state_store' => null,
         ], $options ?: []);
 
-        $this->addModules($this->getOption('modules'));
-
         $lexerClassName = $this->getOption('lexer_class_name');
         if (!is_a($lexerClassName, Lexer::class, true)) {
-            throw new ParserException(
+            throw new \InvalidArgumentException(
                 "Passed lexer class $lexerClassName is ".
                 'not a valid '.Lexer::class
             );
@@ -224,6 +222,8 @@ class Parser implements ModuleContainerInterface
         if ($onStateStore = $this->getOption('on_state_store')) {
             $this->attach(ParserEvent::STATE_STORE, $onStateStore);
         }
+
+        $this->addModules($this->getOption('modules'));
     }
 
     /**
@@ -279,6 +279,8 @@ class Parser implements ModuleContainerInterface
         $stateClassName = $e->getStateClassName();
         $stateOptions = $e->getStateOptions();
 
+        $stateOptions['path'] = $path;
+
         if (!is_a($stateClassName, State::class, true)) {
             throw new \InvalidArgumentException(
                 'state_class_name needs to be a valid '.State::class.' sub class'
@@ -288,9 +290,8 @@ class Parser implements ModuleContainerInterface
         $this->state = new $stateClassName(
             $this,
             //Append a new line to get last outdents and tag if not ending with \n
-            $this->lexer->lex($input."\n"),
-            $stateOptions,
-            $path
+            $this->lexer->lex($input."\n", $path),
+            $stateOptions
         );
 
         $forward = function (NodeEvent $e) {

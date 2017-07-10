@@ -27,6 +27,7 @@ class IdTokenHandler implements TokenHandlerInterface
         if (!$state->currentNodeIs([ElementNode::class, MixinCallNode::class])) {
             $state->throwException(
                 'IDs can only be used on elements and mixin calls',
+                0,
                 $token
             );
         }

@@ -12,12 +12,21 @@ use Phug\Parser\Node\DocumentNode;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\TagTokenHandler;
+use Phug\Util\SourceLocation;
 
 /**
  * @coversDefaultClass Phug\Parser\State
  */
 class StateTest extends \PHPUnit_Framework_TestCase
 {
+
+    private function generateTokens()
+    {
+
+        yield 1;
+        yield 2;
+    }
+
     /**
      * @covers ::<public>
      */
@@ -30,9 +39,9 @@ class StateTest extends \PHPUnit_Framework_TestCase
 
         self::assertSame(3, $state->getLevel());
 
-        $state->setTokens([1, 2]);
+        $state->setTokens($this->generateTokens());
 
-        self::assertSame([1, 2], $state->getTokens());
+        self::assertSame([1, 2], iterator_to_array($state->getTokens()));
 
         self::assertInstanceOf(DocumentNode::class, $state->getDocumentNode());
 
@@ -462,7 +471,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $tokens = [];
         $lexer = new Lexer();
         $state = new State(new Parser(), $lexer->lex(''));
-        $token = new TagToken(12, 5);
+        $token = new TagToken(new SourceLocation(null, 0, 0), 12, 5);
         $state->handleToken($token);
     }
 }

@@ -23,7 +23,8 @@ class MixinCallTokenHandler implements TokenHandlerInterface
         $node = $state->createNode(MixinCallNode::class, $token);
         $name = $token->getName();
         if (preg_match('/^#\\{(.+)\\}$/', $name, $match)) {
-            $name = new ExpressionNode();
+            /** @var ExpressionNode $name */
+            $name = $state->createNode(ExpressionNode::class);
             $name->setValue($match[1]);
             $name->setIsChecked(false);
             $name->setIsEscaped(false);

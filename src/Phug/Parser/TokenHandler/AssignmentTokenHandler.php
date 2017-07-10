@@ -28,6 +28,7 @@ class AssignmentTokenHandler implements TokenHandlerInterface
         if (!$state->currentNodeIs([ElementNode::class, MixinCallNode::class])) {
             $state->throwException(
                 'Assignments can only happen on elements and mixinCalls',
+                0,
                 $token
             );
         }

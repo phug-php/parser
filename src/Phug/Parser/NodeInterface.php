@@ -3,14 +3,15 @@
 namespace Phug\Parser;
 
 use Phug\Ast\NodeInterface as AstNodeInterface;
+use Phug\Util\SourceLocationInterface;
 
 interface NodeInterface extends AstNodeInterface
 {
-    public function getFile();
 
-    public function getLine();
-
-    public function getOffset();
+    /**
+     * @return SourceLocationInterface|null
+     */
+    public function getSourceLocation();
 
     public function getLevel();
 

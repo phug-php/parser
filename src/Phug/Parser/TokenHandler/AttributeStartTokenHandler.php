@@ -39,6 +39,7 @@ class AttributeStartTokenHandler implements TokenHandlerInterface
             $state->throwException(
                 'Attributes can only be placed on element, assignment, '
                 .'import, variable, filter, mixin and mixinCall',
+                0,
                 $token
             );
         }
@@ -50,6 +51,7 @@ class AttributeStartTokenHandler implements TokenHandlerInterface
         if (!$state->expect([AttributeEndToken::class])) {
             $state->throwException(
                 'Attribute list not closed',
+                0,
                 $token
             );
         }

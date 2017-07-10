@@ -21,6 +21,7 @@ class ImportTokenHandler implements TokenHandlerInterface
         if ($token->getName() === 'extend' && $state->getDocumentNode()->hasChildren()) {
             $state->throwException(
                 'extends should be the very first statement in a document',
+                0,
                 $token
             );
         }

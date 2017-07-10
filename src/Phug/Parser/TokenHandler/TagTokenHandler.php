@@ -25,6 +25,7 @@ class TagTokenHandler implements TokenHandlerInterface
         if (!$state->currentNodeIs([ElementNode::class])) {
             $state->throwException(
                 'Tags can only be used on elements',
+                0,
                 $token
             );
         }
@@ -35,6 +36,7 @@ class TagTokenHandler implements TokenHandlerInterface
         if ($current->getName()) {
             $state->throwException(
                 'The element already has a tag name',
+                0,
                 $token
             );
         }

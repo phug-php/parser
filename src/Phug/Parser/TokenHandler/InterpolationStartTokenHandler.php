@@ -41,6 +41,7 @@ class InterpolationStartTokenHandler implements TokenHandlerInterface
             if (!$state->expect([InterpolationEndToken::class])) {
                 $state->throwException(
                     'Interpolation not properly closed',
+                    0,
                     $token
                 );
             }
