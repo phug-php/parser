@@ -12,8 +12,8 @@ use Phug\ParserEvent;
 use Phug\ParserException;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial\OptionTrait;
-use SplObjectStorage;
 use Phug\Util\SourceLocation;
+use SplObjectStorage;
 
 class State implements OptionInterface, EventManagerInterface
 {
@@ -110,7 +110,7 @@ class State implements OptionInterface, EventManagerInterface
         $this->endInterpolationBuffer = [];
         $this->setOptionsRecursive([
             'token_handlers' => [],
-            'path' => null,
+            'path'           => null,
         ], $options ?: []);
     }
 
@@ -586,16 +586,15 @@ class State implements OptionInterface, EventManagerInterface
      * The current line and offset of the exception
      * get automatically appended to the message
      *
-     * @param string $message A meaningful error message
-     * @param int $code
+     * @param string         $message      A meaningful error message
+     * @param int            $code
      * @param TokenInterface $relatedToken
+     * @param null           $previous
      *
-     * @param null $previous
      * @throws ParserException
      */
     public function throwException($message, $code = 0, TokenInterface $relatedToken = null, $previous = null)
     {
-
         $pattern = "Failed to parse: %s \nNear: %s \nLine: %s \nOffset: %s";
 
         $lexer = $this->parser->getLexer();
@@ -628,7 +627,7 @@ class State implements OptionInterface, EventManagerInterface
                 $message,
                 $near,
                 $location->getLine(),
-                $location->getOffset()
+                $location->getOffset(),
             ]),
             $code,
             $relatedToken,

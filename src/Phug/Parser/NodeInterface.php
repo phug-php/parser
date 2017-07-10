@@ -7,7 +7,6 @@ use Phug\Util\SourceLocationInterface;
 
 interface NodeInterface extends AstNodeInterface
 {
-
     /**
      * @return SourceLocationInterface|null
      */
