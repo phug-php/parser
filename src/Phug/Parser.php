@@ -135,14 +135,13 @@ class Parser implements ModuleContainerInterface
      *
      * @throws ParserException
      */
-    public function __construct(array $options = null)
+    public function __construct($options = null)
     {
-        $this->setOptionsRecursive([
-            'lexer_class_name' => Lexer::class,
-            'lexer_options'    => [],
-            'state_class_name' => State::class,
-            'modules'          => [],
-            'token_handlers'   => [
+        $this->setOptionsDefaults($options ?: [], [
+            'lexer_class_name'        => Lexer::class,
+            'parser_state_class_name' => State::class,
+            'parser_modules'          => [],
+            'token_handlers'          => [
                 AssignmentToken::class             => AssignmentTokenHandler::class,
                 AttributeEndToken::class           => AttributeEndTokenHandler::class,
                 AttributeStartToken::class         => AttributeStartTokenHandler::class,
@@ -185,7 +184,7 @@ class Parser implements ModuleContainerInterface
             'on_state_enter' => null,
             'on_state_leave' => null,
             'on_state_store' => null,
-        ], $options ?: []);
+        ]);
 
         $lexerClassName = $this->getOption('lexer_class_name');
         if (!is_a($lexerClassName, Lexer::class, true)) {
@@ -195,7 +194,7 @@ class Parser implements ModuleContainerInterface
             );
         }
 
-        $this->lexer = new $lexerClassName($this->getOption('lexer_options'));
+        $this->lexer = new $lexerClassName($this->getOptions());
         $this->state = null;
         $this->tokenHandlers = [];
 
@@ -223,7 +222,7 @@ class Parser implements ModuleContainerInterface
             $this->attach(ParserEvent::STATE_STORE, $onStateStore);
         }
 
-        $this->addModules($this->getOption('modules'));
+        $this->addModules($this->getOption('parser_modules'));
     }
 
     /**
@@ -267,7 +266,8 @@ class Parser implements ModuleContainerInterface
      */
     public function parse($input, $path = null)
     {
-        $stateClassName = $this->getOption('state_class_name');
+        $stateClassName = $this->getOption('parser_state_class_name');
+
         $e = new ParseEvent($input, $path, $stateClassName, [
             'token_handlers' => $this->tokenHandlers,
         ]);
@@ -283,7 +283,7 @@ class Parser implements ModuleContainerInterface
 
         if (!is_a($stateClassName, State::class, true)) {
             throw new \InvalidArgumentException(
-                'state_class_name needs to be a valid '.State::class.' sub class'
+                'parser_state_class_name needs to be a valid '.State::class.' sub class'
             );
         }
 

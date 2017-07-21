@@ -46,12 +46,12 @@ class ParserTest extends AbstractParserTest
      * @covers                   ::<public>
      * @covers                   ::dumpNode
      * @expectedException        \InvalidArgumentException
-     * @expectedExceptionMessage state_class_name needs to be a valid Phug\Parser\State sub class
+     * @expectedExceptionMessage parser_state_class_name needs to be a valid Phug\Parser\State sub class
      */
     public function testWrongStateClassNameOption()
     {
         $parser = new Parser([
-            'state_class_name' => \ErrorException::class,
+            'parser_state_class_name' => \ErrorException::class,
         ]);
         $parser->parse('');
     }
