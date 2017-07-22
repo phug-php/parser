@@ -65,7 +65,7 @@ class ParserModuleTest extends AbstractParserTest
             '    [TextNode]',
         ]);
 
-        $parser = new Parser(['modules' => [ParserTestModule::class]]);
+        $parser = new Parser(['parser_modules' => [ParserTestModule::class]]);
 
         self::assertNodes('p Test', [
             '[DocumentNode]',
@@ -88,7 +88,7 @@ class ParserModuleTest extends AbstractParserTest
             '  [ElementNode]',
         ]);
 
-        $parser = new Parser(['modules' => [StateEnterLeaveStoreTestModule::class]]);
+        $parser = new Parser(['parser_modules' => [StateEnterLeaveStoreTestModule::class]]);
 
         self::assertNodes("div\n\tp= \$test\na", [
             '[DocumentNode]',
