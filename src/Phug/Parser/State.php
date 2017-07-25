@@ -518,8 +518,8 @@ class State implements OptionInterface, EventManagerInterface
 
         $this->parentNode = $this->lastNode;
 
-        $e = new NodeEvent(ParserEvent::STATE_ENTER, $this->lastNode);
-        $this->trigger($e);
+        $event = new NodeEvent(ParserEvent::STATE_ENTER, $this->lastNode);
+        $this->trigger($event);
 
         return $this;
     }
@@ -538,8 +538,8 @@ class State implements OptionInterface, EventManagerInterface
         $node = $this->parentNode;
         $this->parentNode = $this->parentNode->getParent();
 
-        $e = new NodeEvent(ParserEvent::STATE_LEAVE, $node);
-        $this->trigger($e);
+        $event = new NodeEvent(ParserEvent::STATE_LEAVE, $node);
+        $this->trigger($event);
 
         return $this;
     }
@@ -574,8 +574,8 @@ class State implements OptionInterface, EventManagerInterface
         $this->lastNode = $this->currentNode;
         $this->currentNode = null;
 
-        $e = new NodeEvent(ParserEvent::STATE_STORE, $this->lastNode);
-        $this->trigger($e);
+        $event = new NodeEvent(ParserEvent::STATE_STORE, $this->lastNode);
+        $this->trigger($event);
 
         return $this;
     }

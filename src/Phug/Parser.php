@@ -268,16 +268,16 @@ class Parser implements ModuleContainerInterface
     {
         $stateClassName = $this->getOption('parser_state_class_name');
 
-        $e = new ParseEvent($input, $path, $stateClassName, [
+        $event = new ParseEvent($input, $path, $stateClassName, [
             'token_handlers' => $this->tokenHandlers,
         ]);
 
-        $this->trigger($e);
+        $this->trigger($event);
 
-        $input = $e->getInput();
-        $path = $e->getPath();
-        $stateClassName = $e->getStateClassName();
-        $stateOptions = $e->getStateOptions();
+        $input = $event->getInput();
+        $path = $event->getPath();
+        $stateClassName = $event->getStateClassName();
+        $stateOptions = $event->getStateOptions();
 
         $stateOptions['path'] = $path;
 
@@ -294,8 +294,8 @@ class Parser implements ModuleContainerInterface
             $stateOptions
         );
 
-        $forward = function (NodeEvent $e) {
-            return $this->trigger($e);
+        $forward = function (NodeEvent $event) {
+            return $this->trigger($event);
         };
 
         //Forward events from the state
@@ -339,11 +339,11 @@ class Parser implements ModuleContainerInterface
         $this->state->clearListeners(ParserEvent::STATE_STORE);
         $this->state = null;
 
-        $e = new NodeEvent(ParserEvent::DOCUMENT, $document);
-        $this->trigger($e);
+        $event = new NodeEvent(ParserEvent::DOCUMENT, $document);
+        $this->trigger($event);
 
         //Return the final document node with all its awesome child nodes
-        return $e->getNode();
+        return $event->getNode();
     }
 
     /**
