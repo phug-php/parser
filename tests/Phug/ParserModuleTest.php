@@ -15,8 +15,8 @@ class ParserTestModule extends AbstractParserModule
     public function getEventListeners()
     {
         return [
-            ParserEvent::DOCUMENT => function (NodeEvent $e) {
-                $e->getNode()->prependChild(new TextNode());
+            ParserEvent::DOCUMENT => function (NodeEvent $event) {
+                $event->getNode()->prependChild(new TextNode());
             },
         ];
     }
@@ -27,20 +27,20 @@ class StateEnterLeaveStoreTestModule extends AbstractParserModule
     public function getEventListeners()
     {
         return [
-            ParserEvent::STATE_ENTER => function (NodeEvent $e) {
-                $node = $e->getNode();
+            ParserEvent::STATE_ENTER => function (NodeEvent $event) {
+                $node = $event->getNode();
                 if ($node instanceof ElementNode && $node->getName() === 'div') {
                     $node->prependChild(new TextNode());
                 }
             },
-            ParserEvent::STATE_LEAVE => function (NodeEvent $e) {
-                $node = $e->getNode();
+            ParserEvent::STATE_LEAVE => function (NodeEvent $event) {
+                $node = $event->getNode();
                 if ($node instanceof ElementNode && $node->getName() === 'div') {
                     $node->appendChild(new TextNode());
                 }
             },
-            ParserEvent::STATE_STORE => function (NodeEvent $e) {
-                $node = $e->getNode();
+            ParserEvent::STATE_STORE => function (NodeEvent $event) {
+                $node = $event->getNode();
                 if ($node instanceof ElementNode && $node->getName() === 'div') {
                     $node->append(new TextNode());
                 }
