@@ -12,6 +12,8 @@ interface NodeInterface extends AstNodeInterface
      */
     public function getSourceLocation();
 
+    public function getToken();
+
     public function getLevel();
 
     public function getOuterNode();
