@@ -145,7 +145,7 @@ class ParserModuleTest extends AbstractParserTest
     }
 
     /**
-     * @covers ::getModuleBaseClassName
+     * @covers \Phug\Parser::getModuleBaseClassName
      */
     public function testCetModuleBaseClassName()
     {
