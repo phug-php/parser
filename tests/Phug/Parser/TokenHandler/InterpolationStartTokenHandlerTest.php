@@ -139,4 +139,32 @@ class InterpolationStartTokenHandlerTest extends AbstractParserTest
         $handler = new InterpolationStartTokenHandler();
         $handler->handleToken(new AttributeToken(), $state);
     }
+
+    private function getBadEndingExceptionTokens()
+    {
+        $tokens = [
+            new Lexer\Token\InterpolationStartToken(),
+            new Lexer\Token\ExpressionToken(),
+            new Lexer\Token\TagToken(),
+        ];
+
+        foreach ($tokens as $token) {
+            yield $token;
+        }
+    }
+
+    /**
+     * @covers                   ::<public>
+     * @expectedException        \Phug\ParserException
+     * @expectedExceptionMessage Interpolation not properly closed
+     */
+    public function testBadEndingException()
+    {
+        $tokens = $this->getBadEndingExceptionTokens();
+        $state = new State(new Parser(), $tokens);
+        $handler = new InterpolationStartTokenHandler();
+        foreach ($tokens as $token) {
+            $handler->handleToken($token, $state);
+        }
+    }
 }

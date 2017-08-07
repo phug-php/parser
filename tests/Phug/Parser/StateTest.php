@@ -12,6 +12,7 @@ use Phug\Parser\Node\DocumentNode;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\TagTokenHandler;
+use Phug\ParserException;
 use Phug\Util\SourceLocation;
 
 /**
@@ -145,6 +146,36 @@ class StateTest extends \PHPUnit_Framework_TestCase
 
         $tag = new TagToken();
         $state->handleToken($tag);
+    }
+
+    /**
+     * @covers ::handleToken
+     * @covers ::getParser
+     * @covers \Phug\ParserException::<public>
+     */
+    public function testMissingTokenHandlerException()
+    {
+        $lexer = new Lexer();
+        $parser = new Parser();
+        $state = new State($parser, $lexer->lex('div'), [
+            'token_handlers' => [
+                TagToken::class => null,
+            ],
+        ]);
+
+        self::assertSame($parser, $state->getParser());
+
+        $tag = new TagToken();
+        $exception = null;
+        try {
+            $state->handleToken($tag);
+        } catch (ParserException $caught) {
+            $exception = $caught;
+        }
+
+        self::assertInstanceOf(ParserException::class, $exception);
+        self::assertInstanceOf(TagToken::class, $exception->getRelatedToken());
+        self::assertSame($tag, $exception->getRelatedToken());
     }
 
     /**
