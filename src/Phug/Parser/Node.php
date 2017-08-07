@@ -57,14 +57,6 @@ class Node extends AstNode implements NodeInterface
     }
 
     /**
-     * @return int
-     */
-    public function getLevel()
-    {
-        return $this->level;
-    }
-
-    /**
      * @return NodeInterface
      */
     public function getOuterNode()
@@ -78,14 +70,6 @@ class Node extends AstNode implements NodeInterface
     public function getToken()
     {
         return $this->token;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getFile()
-    {
-        return $this->file;
     }
 
     /**
