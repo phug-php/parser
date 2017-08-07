@@ -5,9 +5,12 @@ namespace Phug\Test;
 use Phug\AbstractParserModule;
 use Phug\Parser;
 use Phug\Parser\Event\NodeEvent;
+use Phug\Parser\Event\ParseEvent;
 use Phug\Parser\Node\ElementNode;
+use Phug\Parser\Node\ImportNode;
 use Phug\Parser\Node\TextNode;
 use Phug\ParserEvent;
+use Phug\ParserModuleInterface;
 
 //@codingStandardsIgnoreStart
 class ParserTestModule extends AbstractParserModule
@@ -100,6 +103,55 @@ class ParserModuleTest extends AbstractParserTest
             '  [TextNode]',
             '  [ElementNode]',
         ], $parser);
+    }
+
+    /**
+     * @group events
+     * @covers ::__construct
+     * @covers \Phug\Parser\Event\ParseEvent::<public>
+     */
+    public function testOnParse()
+    {
+        $parser = new Parser([
+            'on_parse' => function (ParseEvent $event) {
+                $event->setInput(str_replace('replacement', 'test.pug', $event->getInput()));
+                $event->setPath(
+                    dirname(dirname($event->getPath())).DIRECTORY_SEPARATOR.
+                    'utils'.DIRECTORY_SEPARATOR.
+                    'base.pug'
+                );
+            },
+        ]);
+
+        $document = $parser->parse('include replacement', __FILE__);
+        /* @var ImportNode $include */
+        $include = $document->getChildAt(0);
+        self::assertSame('test.pug', $include->getPath());
+        self::assertFileExists($include->getSourceLocation()->getPath());
+        self::assertSame('div Test', trim(file_get_contents($include->getSourceLocation()->getPath())));
+
+        include_once __DIR__.'/TestState.php';
+
+        $parser = new Parser([
+            'on_state_enter' => function (ParseEvent $event) {
+                if ($event->getStateClassName() !== TestState::class) {
+                    $event->setStateClassName(TestState::class);
+                    $event->setStateOptions(array_merge($event->getStateOptions(), [
+                        'custom' => 42,
+                    ]));
+                }
+            },
+        ]);
+    }
+
+    /**
+     * @covers ::getModuleBaseClassName
+     */
+    public function testCetModuleBaseClassName()
+    {
+        $parser = new Parser();
+
+        self::assertSame(ParserModuleInterface::class, $parser->getModuleBaseClassName());
     }
 }
 //@codingStandardsIgnoreEnd
