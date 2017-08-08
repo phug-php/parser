@@ -6,6 +6,8 @@ use Phug\AbstractParserModule;
 use Phug\Parser;
 use Phug\Parser\Event\NodeEvent;
 use Phug\Parser\Event\ParseEvent;
+use Phug\Parser\Node\CommentNode;
+use Phug\Parser\Node\ConditionalNode;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\Node\ImportNode;
 use Phug\Parser\Node\TextNode;
@@ -109,6 +111,7 @@ class ParserModuleTest extends AbstractParserTest
      * @group events
      * @covers \Phug\Parser::__construct
      * @covers \Phug\Parser\Event\ParseEvent::<public>
+     * @covers \Phug\Parser\Event\NodeEvent::<public>
      */
     public function testOnParse()
     {
@@ -133,7 +136,7 @@ class ParserModuleTest extends AbstractParserTest
         include_once __DIR__.'/TestState.php';
 
         $parser = new Parser([
-            'on_state_enter' => function (ParseEvent $event) {
+            'on_parse' => function (ParseEvent $event) {
                 if ($event->getStateClassName() !== TestState::class) {
                     $event->setStateClassName(TestState::class);
                     $event->setStateOptions(array_merge($event->getStateOptions(), [
@@ -142,6 +145,48 @@ class ParserModuleTest extends AbstractParserTest
                 }
             },
         ]);
+
+        $parser->parse('div');
+
+        self::assertSame(42, TestState::getLastOptions()['custom']);
+
+        $enter = [];
+        $leave = [];
+        $parser = new Parser([
+            'on_state_enter' => function (NodeEvent $event) use (&$enter) {
+                $enter[] = get_class($event->getNode());
+            },
+            'on_state_leave' => function (NodeEvent $event) use (&$leave) {
+                $leave[] = get_class($event->getNode());
+            },
+            'on_state_store' => function (NodeEvent $event){
+                if ($event->getNode() instanceof ConditionalNode) {
+                    $event->setNode(new TextNode());
+                }
+            },
+        ]);
+        $store = [];
+        $parser->attach(ParserEvent::STATE_STORE, function (NodeEvent $event) use (&$store) {
+            $store[] = get_class($event->getNode());
+        });
+        $parser->parse("div\n  if true\n    p Hello\n// foo");
+
+        self::assertSame([ElementNode::class, ConditionalNode::class], $enter);
+        self::assertSame([ConditionalNode::class, ElementNode::class], $leave);
+        self::assertSame([ElementNode::class, TextNode::class, ElementNode::class, CommentNode::class], $store);
+
+        $parser = new Parser([
+            'on_document' => function (NodeEvent $event) {
+                /* @var Parser\NodeInterface $child */
+                $child = $event->getNode()->getChildAt(0);
+                $event->setNode($child);
+            },
+        ]);
+        /* @var ElementNode $div */
+        $div = $parser->parse('div');
+
+        self::assertInstanceOf(ElementNode::class, $div);
+        self::assertSame('div', $div->getName());
     }
 
     /**

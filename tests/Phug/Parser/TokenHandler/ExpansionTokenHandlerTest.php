@@ -86,12 +86,19 @@ class ExpansionTokenHandlerTest extends AbstractParserTest
     }
 
     /**
-     * @covers                   ::<public>
-     * @expectedException        \Phug\ParserException
-     * @expectedExceptionMessage Expansion needs an element to work on
+     * @covers ::<public>
+     * @covers \Phug\Parser\State::throwException
      */
     public function testHandleTokenElementException()
     {
-        $this->parser->parse(':');
+        $message = null;
+        try {
+            $this->parser->parse(':', 'my-path');
+        } catch (\Phug\ParserException $exp) {
+            $message = $exp->getMessage();
+        }
+
+        self::assertContains('Expansion needs an element to work on', $message);
+        self::assertContains('Path: my-path', $message);
     }
 }
