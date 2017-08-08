@@ -159,7 +159,7 @@ class ParserModuleTest extends AbstractParserTest
             'on_state_leave' => function (NodeEvent $event) use (&$leave) {
                 $leave[] = get_class($event->getNode());
             },
-            'on_state_store' => function (NodeEvent $event){
+            'on_state_store' => function (NodeEvent $event) {
                 if ($event->getNode() instanceof ConditionalNode) {
                     $event->setNode(new TextNode());
                 }
