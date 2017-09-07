@@ -33,6 +33,7 @@ class AttributeTokenHandler implements TokenHandlerInterface
         $node->setValue($value);
         $node->setIsEscaped($token->isEscaped());
         $node->setIsChecked($token->isChecked());
+        $node->setIsVariadic($token->isVariadic());
 
         // Mixin calls and assignments take the first
         // expression set as the name as the value

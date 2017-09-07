@@ -40,8 +40,10 @@ class AttributeTokenHandlerTest extends AbstractParserTest
         $state->setCurrentNode(null);
         $handler = new AttributeTokenHandler();
         $handler->handleToken(new AttributeToken(), $state);
+        /** @var ElementNode $element */
+        $element = $state->getCurrentNode();
 
-        self::assertInstanceof(ElementNode::class, $state->getCurrentNode());
+        self::assertInstanceof(ElementNode::class, $element);
     }
 
     /**
@@ -58,23 +60,31 @@ class AttributeTokenHandlerTest extends AbstractParserTest
     }
 
     /**
-     * @covers Phug\Parser\TokenHandler\AttributeEndTokenHandler::<public>
-     * @covers Phug\Parser\TokenHandler\AttributeStartTokenHandler::<public>
+     * @covers \Phug\Parser\TokenHandler\AttributeEndTokenHandler::<public>
+     * @covers \Phug\Parser\TokenHandler\AttributeStartTokenHandler::<public>
      * @covers ::<public>
      */
     public function testHandleTokenFull()
     {
-        $this->assertNodes('+a(a b)', [
+        $code = '+a(a b ...c)';
+        $this->assertNodes($code, [
             '[DocumentNode]',
             '  [MixinCallNode]',
         ]);
-        $document = $this->parser->parse('+a(a b)');
+        $document = $this->parser->parse($code);
         $attributes = [];
-        $storage = $document->getChildren()[0]->getAttributes();
+        $variadicStatuses = [];
+        /** @var ElementNode $element */
+        $element = $document->getChildren()[0];
+        $storage = $element->getAttributes();
         foreach ($storage as $attribute) {
+            /** @var AttributeNode $attribute */
             self::assertInstanceOf(AttributeNode::class, $attribute);
             $attributes[] = $attribute->getValue();
+            $variadicStatuses[] = $attribute->isVariadic();
         }
-        self::assertSame(['a', 'b'], $attributes);
+
+        self::assertSame(['a', 'b', 'c'], $attributes);
+        self::assertSame([false, false, true], $variadicStatuses);
     }
 }
