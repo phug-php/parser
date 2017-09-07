@@ -167,6 +167,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
 
         $tag = new TagToken();
         $exception = null;
+
         try {
             $state->handleToken($tag);
         } catch (ParserException $caught) {

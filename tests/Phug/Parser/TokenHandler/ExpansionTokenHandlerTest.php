@@ -92,6 +92,7 @@ class ExpansionTokenHandlerTest extends AbstractParserTest
     public function testHandleTokenElementException()
     {
         $message = null;
+
         try {
             $this->parser->parse(':', 'my-path');
         } catch (\Phug\ParserException $exp) {

@@ -78,7 +78,7 @@ class AttributeTokenHandlerTest extends AbstractParserTest
         $element = $document->getChildren()[0];
         $storage = $element->getAttributes();
         foreach ($storage as $attribute) {
-            /** @var AttributeNode $attribute */
+            /* @var AttributeNode $attribute */
             self::assertInstanceOf(AttributeNode::class, $attribute);
             $attributes[] = $attribute->getValue();
             $variadicStatuses[] = $attribute->isVariadic();
