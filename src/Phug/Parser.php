@@ -36,9 +36,9 @@ use Phug\Lexer\Token\TextToken;
 use Phug\Lexer\Token\VariableToken;
 use Phug\Lexer\Token\WhenToken;
 use Phug\Lexer\Token\WhileToken;
+use Phug\Lexer\Token\YieldToken;
 use Phug\Parser\Event\NodeEvent;
 use Phug\Parser\Event\ParseEvent;
-use Phug\Parser\Node;
 use Phug\Parser\NodeInterface;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\AssignmentTokenHandler;
@@ -75,6 +75,7 @@ use Phug\Parser\TokenHandler\TextTokenHandler;
 use Phug\Parser\TokenHandler\VariableTokenHandler;
 use Phug\Parser\TokenHandler\WhenTokenHandler;
 use Phug\Parser\TokenHandler\WhileTokenHandler;
+use Phug\Parser\TokenHandler\YieldTokenHandler;
 use Phug\Parser\TokenHandlerInterface;
 use Phug\Util\ModuleContainerInterface;
 use Phug\Util\Partial\ModuleContainerTrait;
@@ -85,7 +86,7 @@ use Phug\Util\Partial\ModuleContainerTrait;
  * This class takes generated tokens from the Lexer sequentially
  * and produces an Abstract Syntax Tree (AST) out of it
  *
- * The AST is an object-tree containing Node-instances
+ * The AST is an object-tree containing Phug\Parser\Node instances
  * with parent/child relations
  *
  * This AST is passed to the compiler to generate PHTML out of it
@@ -148,6 +149,7 @@ class Parser implements ModuleContainerInterface
                 AttributeToken::class              => AttributeTokenHandler::class,
                 AutoCloseToken::class              => AutoCloseTokenHandler::class,
                 BlockToken::class                  => BlockTokenHandler::class,
+                YieldToken::class                  => YieldTokenHandler::class,
                 CaseToken::class                   => CaseTokenHandler::class,
                 ClassToken::class                  => ClassTokenHandler::class,
                 CodeToken::class                   => CodeTokenHandler::class,
