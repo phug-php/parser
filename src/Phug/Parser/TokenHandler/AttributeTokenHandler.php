@@ -37,11 +37,13 @@ class AttributeTokenHandler implements TokenHandlerInterface
 
         // Mixin calls and assignments take the first
         // expression set as the name as the value
-        if ($state->currentNodeIs([MixinCallNode::class, AssignmentNode::class]) &&
-            ($value === '' || $value === null)
+        if (($value === '' || $value === null) &&
+            $state->currentNodeIs([MixinCallNode::class, AssignmentNode::class])
         ) {
-            $node->setValue($name);
-            $node->setName(null);
+            if (!$state->currentNodeIs([MixinCallNode::class]) || !$state->getCurrentNode()->areArgumentsCompleted()) {
+                $node->setValue($name);
+                $node->setName(null);
+            }
         }
 
         /** @var ElementNode|MixinCallNode $current */

@@ -55,5 +55,12 @@ class AttributeStartTokenHandler implements TokenHandlerInterface
                 $token
             );
         }
+
+        if ($state->currentNodeIs([MixinCallNode::class])) {
+            /** @var MixinCallNode $mixinCall */
+            $mixinCall = $state->getCurrentNode();
+
+            $mixinCall->markArgumentsAsComplete();
+        }
     }
 }

@@ -12,4 +12,27 @@ class MixinCallNode extends Node
     use NameTrait;
     use AttributeTrait;
     use AssignmentTrait;
+
+    /**
+     * @var bool
+     */
+    private $argumentsCompleted = false;
+
+    /**
+     * @return mixed
+     */
+    public function areArgumentsCompleted()
+    {
+        return $this->argumentsCompleted;
+    }
+
+    /**
+     * @return $this
+     */
+    public function markArgumentsAsComplete()
+    {
+        $this->argumentsCompleted = true;
+
+        return $this;
+    }
 }
