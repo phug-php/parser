@@ -25,6 +25,7 @@ use Phug\Lexer\Token\ImportToken;
 use Phug\Lexer\Token\IndentToken;
 use Phug\Lexer\Token\InterpolationEndToken;
 use Phug\Lexer\Token\InterpolationStartToken;
+use Phug\Lexer\Token\KeywordToken;
 use Phug\Lexer\Token\MixinCallToken;
 use Phug\Lexer\Token\MixinToken;
 use Phug\Lexer\Token\NewLineToken;
@@ -64,6 +65,7 @@ use Phug\Parser\TokenHandler\ImportTokenHandler;
 use Phug\Parser\TokenHandler\IndentTokenHandler;
 use Phug\Parser\TokenHandler\InterpolationEndTokenHandler;
 use Phug\Parser\TokenHandler\InterpolationStartTokenHandler;
+use Phug\Parser\TokenHandler\KeywordTokenHandler;
 use Phug\Parser\TokenHandler\MixinCallTokenHandler;
 use Phug\Parser\TokenHandler\MixinTokenHandler;
 use Phug\Parser\TokenHandler\NewLineTokenHandler;
@@ -142,6 +144,7 @@ class Parser implements ModuleContainerInterface
             'lexer_class_name'        => Lexer::class,
             'parser_state_class_name' => State::class,
             'parser_modules'          => [],
+            'keywords'                => [],
             'token_handlers'          => [
                 AssignmentToken::class             => AssignmentTokenHandler::class,
                 AttributeEndToken::class           => AttributeEndTokenHandler::class,
@@ -173,6 +176,7 @@ class Parser implements ModuleContainerInterface
                 OutdentToken::class                => OutdentTokenHandler::class,
                 TagInterpolationStartToken::class  => TagInterpolationStartTokenHandler::class,
                 TagInterpolationEndToken::class    => TagInterpolationEndTokenHandler::class,
+                KeywordToken::class                => KeywordTokenHandler::class,
                 TagToken::class                    => TagTokenHandler::class,
                 TextToken::class                   => TextTokenHandler::class,
                 VariableToken::class               => VariableTokenHandler::class,
