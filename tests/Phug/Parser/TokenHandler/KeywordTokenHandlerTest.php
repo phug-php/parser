@@ -3,13 +3,9 @@
 namespace Phug\Test\Parser\TokenHandler;
 
 use Phug\Lexer;
-use Phug\Lexer\Token\ClassToken;
 use Phug\Lexer\Token\TagToken;
 use Phug\Parser;
-use Phug\Parser\Node\ElementNode;
-use Phug\Parser\Node\TextNode;
 use Phug\Parser\State;
-use Phug\Parser\TokenHandler\ClassTokenHandler;
 use Phug\Parser\TokenHandler\KeywordTokenHandler;
 use Phug\Test\AbstractParserTest;
 
