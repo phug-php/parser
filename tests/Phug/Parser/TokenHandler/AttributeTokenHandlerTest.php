@@ -66,7 +66,7 @@ class AttributeTokenHandlerTest extends AbstractParserTest
      */
     public function testHandleTokenFull()
     {
-        $code = '+a(a b ...c)';
+        $code = '+a(a, b, ...c)';
         $this->assertNodes($code, [
             '[DocumentNode]',
             '  [MixinCallNode]',

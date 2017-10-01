@@ -4,6 +4,7 @@ namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\ExpansionToken;
 use Phug\Lexer\TokenInterface;
+use Phug\Parser\Node\ElementNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
 
@@ -23,6 +24,15 @@ class ExpansionTokenHandler implements TokenHandlerInterface
                 0,
                 $token
             );
+        }
+
+        if ($node = $state->getInterpolationNode()) {
+            //Make sure to keep the expansion
+            $newNode = $state->createNode(ElementNode::class, $token);
+            $newNode->setOuterNode($state->getCurrentNode());
+            $state->setCurrentNode($newNode);
+
+            return;
         }
 
         //Make sure to keep the expansion saved

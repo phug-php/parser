@@ -17,6 +17,7 @@ class TagInterpolationEndTokenHandler implements TokenHandlerInterface
             );
         }
 
+        $state->popInterpolationNode();
         $node = $state->getCurrentNode();
         $nodes = $state->getInterpolationStack()->offsetGet($token);
         $state->setCurrentNode($nodes->currentNode);

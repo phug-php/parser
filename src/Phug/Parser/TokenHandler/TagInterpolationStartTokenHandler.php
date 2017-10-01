@@ -28,6 +28,9 @@ class TagInterpolationStartTokenHandler implements TokenHandlerInterface
         ])) {
             $node = $node->getParent();
         }
+        if ($node) {
+            $state->pushInterpolationNode($node);
+        }
         $state->getInterpolationStack()->attach($token->getEnd(), (object) [
             'currentNode' => $node,
             'parentNode'  => $state->getParentNode(),

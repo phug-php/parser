@@ -94,7 +94,12 @@ class State implements OptionInterface, EventManagerInterface
      */
     private $interpolationStack;
 
-    private $endInterpolationBuffer;
+    /**
+     * Stack of interpolation base nodes.
+     *
+     * @var array
+     */
+    private $interpolationNodes;
 
     public function __construct(Parser $parser, \Generator $tokens, array $options = null)
     {
@@ -106,12 +111,37 @@ class State implements OptionInterface, EventManagerInterface
         $this->currentNode = null;
         $this->lastNode = null;
         $this->outerNode = null;
-        $this->interpolationStack = [];
-        $this->endInterpolationBuffer = [];
+        $this->interpolationNodes = [];
         $this->setOptionsRecursive([
             'token_handlers' => [],
             'path'           => null,
         ], $options ?: []);
+    }
+
+    /**
+     * @return NodeInterface|null
+     */
+    public function getInterpolationNode()
+    {
+        return end($this->interpolationNodes);
+    }
+
+    /**
+     * @return NodeInterface
+     */
+    public function popInterpolationNode()
+    {
+        return array_pop($this->interpolationNodes);
+    }
+
+    /**
+     * @param NodeInterface $node
+     *
+     * @return int
+     */
+    public function pushInterpolationNode(NodeInterface $node)
+    {
+        return array_push($this->interpolationNodes, $node);
     }
 
     /**

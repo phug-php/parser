@@ -59,6 +59,7 @@ class ParserTest extends AbstractParserTest
     /**
      * @covers ::<public>
      * @covers ::dumpNode
+     * @covers ::getNodeName
      */
     public function testDump()
     {
@@ -78,5 +79,19 @@ class ParserTest extends AbstractParserTest
             '        [ElementNode]',
             '          [TextNode]',
         ]);
+        $parser = new Parser([
+            'detailed_dump' => true,
+        ]);
+        self::assertSame(implode("\n", [
+            '[Phug\Parser\Node\DocumentNode]',
+            '  [Phug\Parser\Node\ElementNode:div outer=Phug\Parser\Node\ElementNode:section#\'foo\'(bar="9")]',
+            '    [Phug\Parser\Node\MixinCallNode]',
+            '      [Phug\Parser\Node\ElementNode:.\'biz\']',
+            '        [Phug\Parser\Node\ElementNode:a(href="#")]',
+            '          [Phug\Parser\Node\TextNode]',
+        ]), $parser->dump(implode("\n", [
+            'section#foo(bar="9"): div: +mixin-call()',
+            '  .biz: a(href="#") Go',
+        ])));
     }
 }

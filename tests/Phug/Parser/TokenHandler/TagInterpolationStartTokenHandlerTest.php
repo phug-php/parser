@@ -70,6 +70,54 @@ class TagInterpolationStartTokenHandlerTest extends AbstractParserTest
         ]);
     }
 
+    public function testExpansionWithInterpolations()
+    {
+        $template = implode("\n", [
+            '#foo: article#bar #[blockquote#baz: p#foz #]',
+            '  | This is an #[emph example] paragraph. For more information on #[span.foo whatever],',
+            '  | click #[a(href="#") here]!',
+            '  | This line has no tag.',
+        ]);
+        $this->assertNodes($template, [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
+            '      [ElementNode]',
+            '        [ElementNode]',
+            '          [TextNode]',
+            '      [TextNode]',
+            '      [TextNode]',
+            '      [ElementNode]',
+            '        [TextNode]',
+            '      [TextNode]',
+            '      [ElementNode]',
+            '        [TextNode]',
+            '      [TextNode]',
+            '      [TextNode]',
+            '      [ElementNode]',
+            '        [TextNode]',
+            '      [TextNode]',
+            '      [TextNode]',
+        ]);
+        $document = $this->parser->parse($template);
+        /** @var ElementNode $element */
+        $element = $document->getChildAt(0);
+        self::assertSame("'foo'", $element->getAttribute('id'));
+        /** @var ElementNode $element */
+        $element = $element->getChildAt(0);
+        self::assertSame("'bar'", $element->getAttribute('id'));
+        self::assertSame('article', $element->getName());
+        /** @var ElementNode $element */
+        $element = $element->getChildAt(1);
+        self::assertSame("'baz'", $element->getAttribute('id'));
+        self::assertSame('blockquote', $element->getName());
+        /** @var ElementNode $element */
+        $element = $element->getChildAt(0);
+        self::assertSame("'foz'", $element->getAttribute('id'));
+        self::assertSame('p', $element->getName());
+    }
+
     /**
      * @covers                   ::<public>
      * @expectedException        \RuntimeException

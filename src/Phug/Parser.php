@@ -40,6 +40,7 @@ use Phug\Lexer\Token\WhileToken;
 use Phug\Lexer\Token\YieldToken;
 use Phug\Parser\Event\NodeEvent;
 use Phug\Parser\Event\ParseEvent;
+use Phug\Parser\Node\ElementNode;
 use Phug\Parser\NodeInterface;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\AssignmentTokenHandler;
@@ -145,6 +146,7 @@ class Parser implements ModuleContainerInterface
             'parser_state_class_name' => State::class,
             'parser_modules'          => [],
             'keywords'                => [],
+            'detailed_dump'           => false,
             'token_handlers'          => [
                 AssignmentToken::class             => AssignmentTokenHandler::class,
                 AttributeEndToken::class           => AttributeEndTokenHandler::class,
@@ -364,20 +366,59 @@ class Parser implements ModuleContainerInterface
         return $this->dumpNode($this->parse($input));
     }
 
-    protected function dumpNode(NodeInterface $node, $level = null)
+    protected function getNodeName(NodeInterface $node)
     {
-        $level = $level ?: 0;
-        $text = '';
         switch (get_class($node)) {
+            case ElementNode::class:
+                $text = get_class($node);
+                if (!$this->getOption('detailed_dump')) {
+                    if ($outerNode = $node->getOuterNode()) {
+                        $text .= ' outer='.$this->getNodeName($outerNode);
+                    }
+
+                    return $text;
+                }
+
+                $text .= ':'.$node->getName() ?: 'div';
+                $ids = '';
+                $classes = '';
+                $attributes = [];
+                foreach ($node->getAttributes() as $attribute) {
+                    if ($attribute->getName() === 'id') {
+                        $ids .= '#'.$attribute->getValue();
+
+                        continue;
+                    }
+                    if ($attribute->getName() === 'class') {
+                        $classes .= '.'.$attribute->getValue();
+
+                        continue;
+                    }
+                    $attributes[] = $attribute->getName().'='.$attribute->getValue();
+                }
+                $attributes = count($attributes) ? '('.implode(' ', $attributes).')' : '';
+                $text .= $ids.$classes.$attributes;
+
+                if ($outerNode = $node->getOuterNode()) {
+                    $text .= ' outer='.$this->getNodeName($outerNode);
+                }
+
+                return $text;
             default:
                 $text = get_class($node);
 
                 if ($outerNode = $node->getOuterNode()) {
-                    $text .= ' outer='.get_class($outerNode);
+                    $text .= ' outer='.$this->getNodeName($outerNode);
                 }
 
-                break;
+                return $text;
         }
+    }
+
+    protected function dumpNode(NodeInterface $node, $level = null)
+    {
+        $level = $level ?: 0;
+        $text = $this->getNodeName($node);
 
         $text = str_repeat('  ', $level)."[$text]";
         if (count($node) > 0) {
