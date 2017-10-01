@@ -72,6 +72,10 @@ class TagInterpolationStartTokenHandlerTest extends AbstractParserTest
 
     /**
      * @covers ::<public>
+     * @covers \Phug\Parser\State::getInterpolationNode
+     * @covers \Phug\Parser\State::popInterpolationNode
+     * @covers \Phug\Parser\State::pushInterpolationNode
+     * @covers \Phug\Parser\TokenHandler\ExpansionTokenHandler::<public>
      * @covers \Phug\Parser\TokenHandler\TagInterpolationEndTokenHandler::<public>
      */
     public function testExpansionWithInterpolations()
