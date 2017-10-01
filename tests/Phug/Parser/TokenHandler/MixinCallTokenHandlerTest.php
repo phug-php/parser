@@ -15,6 +15,7 @@ use Phug\Test\AbstractParserTest;
 class MixinCallTokenHandlerTest extends AbstractParserTest
 {
     /**
+     * @covers \Phug\Parser\Node\MixinCallNode::<public>
      * @covers ::<public>
      */
     public function testHandleSingleLine()

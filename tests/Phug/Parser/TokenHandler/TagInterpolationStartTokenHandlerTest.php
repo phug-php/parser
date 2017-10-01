@@ -70,6 +70,10 @@ class TagInterpolationStartTokenHandlerTest extends AbstractParserTest
         ]);
     }
 
+    /**
+     * @covers ::<public>
+     * @covers \Phug\Parser\TokenHandler\TagInterpolationEndTokenHandler::<public>
+     */
     public function testExpansionWithInterpolations()
     {
         $template = implode("\n", [
