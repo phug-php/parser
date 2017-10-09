@@ -87,4 +87,30 @@ class AttributeTokenHandlerTest extends AbstractParserTest
         self::assertSame(['a', 'b', 'c'], $attributes);
         self::assertSame([false, false, true], $variadicStatuses);
     }
+
+    /**
+     * @covers \Phug\Parser\TokenHandler\AttributeEndTokenHandler::<public>
+     * @covers \Phug\Parser\TokenHandler\AttributeStartTokenHandler::<public>
+     * @covers ::<public>
+     */
+    public function testAttributePhpConcat()
+    {
+        $code = 'a(a=b . c)';
+        $this->assertNodes($code, [
+            '[DocumentNode]',
+            '  [ElementNode]',
+        ]);
+        $document = $this->parser->parse($code);
+        $attributes = [];
+        /** @var ElementNode $element */
+        $element = $document->getChildren()[0];
+        $storage = $element->getAttributes();
+        foreach ($storage as $attribute) {
+            /* @var AttributeNode $attribute */
+            self::assertInstanceOf(AttributeNode::class, $attribute);
+            $attributes[] = $attribute->getValue();
+        }
+
+        self::assertSame(['b . c'], $attributes);
+    }
 }
