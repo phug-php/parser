@@ -29,7 +29,7 @@ class AttributeTokenHandlerTest extends AbstractParserTest
     {
         $lexer = new Lexer();
         $state = new State(new Parser(), $lexer->lex('(a)'), [
-            'token_handlers'   => [
+            'token_handlers' => [
                 AttributeStartToken::class => AttributeStartTokenHandler::class,
                 AttributeEndToken::class   => AttributeEndTokenHandler::class,
                 AttributeToken::class      => AttributeTokenHandler::class,

@@ -27,7 +27,7 @@ class AssignmentTokenHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $lexer = new Lexer();
         $state = new State(new Parser(), $lexer->lex('&attributes($a)'), [
-            'token_handlers'   => [
+            'token_handlers' => [
                 AssignmentToken::class     => AssignmentTokenHandler::class,
                 AttributeStartToken::class => AttributeStartTokenHandler::class,
                 AttributeEndToken::class   => AttributeEndTokenHandler::class,
@@ -52,7 +52,7 @@ class AssignmentTokenHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $lexer = new Lexer();
         $state = new State(new Parser(), $lexer->lex('&attributes'), [
-            'token_handlers'   => [
+            'token_handlers' => [
                 AssignmentToken::class     => AssignmentTokenHandler::class,
                 AttributeStartToken::class => AttributeStartTokenHandler::class,
                 AttributeEndToken::class   => AttributeEndTokenHandler::class,
@@ -92,7 +92,7 @@ class AssignmentTokenHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $lexer = new Lexer();
         $state = new State(new Parser(), $lexer->lex('div'), [
-            'token_handlers'   => [
+            'token_handlers' => [
                 AssignmentToken::class     => AssignmentTokenHandler::class,
                 AttributeStartToken::class => AttributeStartTokenHandler::class,
                 AttributeEndToken::class   => AttributeEndTokenHandler::class,
