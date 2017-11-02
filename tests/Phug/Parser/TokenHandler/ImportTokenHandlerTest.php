@@ -16,12 +16,22 @@ class ImportTokenHandlerTest extends AbstractParserTest
 {
     /**
      * @covers ::<public>
+     * @covers ::isEmptyDocument
      */
     public function testHandleToken()
     {
         $this->assertNodes("extends layout\ninclude header", [
             '[DocumentNode]',
             '  [ImportNode]',
+            '  [ImportNode]',
+        ]);
+        $this->assertNodes("//- invisible comment\n\nmixin bar\n  p bar\nextends layout", [
+            '[DocumentNode]',
+            '  [CommentNode]',
+            '    [TextNode]',
+            '  [MixinNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
             '  [ImportNode]',
         ]);
     }
@@ -41,11 +51,34 @@ class ImportTokenHandlerTest extends AbstractParserTest
 
     /**
      * @covers                   ::<public>
+     * @covers                   ::isEmptyDocument
      * @expectedException        \Phug\ParserException
      * @expectedExceptionMessage extends should be the very first statement in a document
      */
-    public function testHandleTokenElementException()
+    public function testDivTagBeforeExtends()
     {
         $this->parser->parse("div\nextends foo");
+    }
+
+    /**
+     * @covers                   ::<public>
+     * @covers                   ::isEmptyDocument
+     * @expectedException        \Phug\ParserException
+     * @expectedExceptionMessage extends should be the very first statement in a document
+     */
+    public function testVisibleCommentBeforeExtends()
+    {
+        $this->parser->parse("// visible comment\nextends foo");
+    }
+
+    /**
+     * @covers                   ::<public>
+     * @covers                   ::isEmptyDocument
+     * @expectedException        \Phug\ParserException
+     * @expectedExceptionMessage extends should be the very first statement in a document
+     */
+    public function testMultipleThingsBeforeExtends()
+    {
+        $this->parser->parse("//- visible comment\nmixin bar()\n  p bar\n.class\nextends foo");
     }
 }
