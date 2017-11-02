@@ -91,7 +91,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     {
         $lexer = new Lexer();
         $state = new State(new Parser(), $lexer->lex('div'), [
-            'token_handlers'   => [
+            'token_handlers' => [
                 TagToken::class => TagTokenHandler::class,
             ],
         ]);
@@ -111,7 +111,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     {
         $lexer = new Lexer();
         $state = new State(new Parser(), $lexer->lex('div Hello'), [
-            'token_handlers'   => [
+            'token_handlers' => [
                 TagToken::class => TagTokenHandler::class,
             ],
         ]);
@@ -187,7 +187,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $lexer = new Lexer();
         $handler = new TagTokenHandler();
         $state = new State(new Parser(), $lexer->lex('div'), [
-            'token_handlers'   => [
+            'token_handlers' => [
                 TagToken::class => $handler,
             ],
         ]);

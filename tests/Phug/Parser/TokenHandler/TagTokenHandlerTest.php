@@ -24,7 +24,7 @@ class TagTokenHandlerTest extends AbstractParserTest
     {
         $lexer = new Lexer();
         $state = new State(new Parser(), $lexer->lex('div'), [
-            'token_handlers'   => [
+            'token_handlers' => [
                 TagToken::class => TagTokenHandler::class,
             ],
         ]);
@@ -70,7 +70,7 @@ class TagTokenHandlerTest extends AbstractParserTest
     {
         $lexer = new Lexer();
         $state = new State(new Parser(), $lexer->lex('div'), [
-            'token_handlers'   => [
+            'token_handlers' => [
                 TagToken::class => TagTokenHandler::class,
             ],
         ]);
@@ -90,7 +90,7 @@ class TagTokenHandlerTest extends AbstractParserTest
     {
         $lexer = new Lexer();
         $state = new State(new Parser(), $lexer->lex('div'), [
-            'token_handlers'   => [
+            'token_handlers' => [
                 TagToken::class => TagTokenHandler::class,
             ],
         ]);
