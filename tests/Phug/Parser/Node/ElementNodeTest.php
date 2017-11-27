@@ -33,6 +33,6 @@ class ElementNodeTest extends AbstractParserTest
         self::assertSame('foo', $tag->getAttribute('id'));
         self::assertSame('img', $tag->getAttribute('src'));
         self::assertSame('bar', $tag->getAttribute('class'));
-        self::assertSame(null, $tag->getAttribute('alt'));
+        self::assertNull($tag->getAttribute('alt'));
     }
 }

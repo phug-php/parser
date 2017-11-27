@@ -2,6 +2,7 @@
 
 namespace Phug\Test\Parser\TokenHandler;
 
+use PHPUnit\Framework\TestCase;
 use Phug\Lexer;
 use Phug\Lexer\Token\AttributeToken;
 use Phug\Parser;
@@ -11,7 +12,7 @@ use Phug\Parser\TokenHandler\TagInterpolationEndTokenHandler;
 /**
  * @coversDefaultClass Phug\Parser\TokenHandler\TagInterpolationEndTokenHandler
  */
-class TagInterpolationEndTokenHandlerTest extends \PHPUnit_Framework_TestCase
+class TagInterpolationEndTokenHandlerTest extends TestCase
 {
     /**
      * @covers                   ::<public>

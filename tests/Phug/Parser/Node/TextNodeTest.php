@@ -20,7 +20,7 @@ class TextNodeTest extends AbstractParserTest
     {
         $text = new TextNode();
 
-        self::assertSame(null, $text->getLevel());
+        self::assertNull($text->getLevel());
 
         $text->setLevel(2);
 

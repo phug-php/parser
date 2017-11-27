@@ -2,6 +2,7 @@
 
 namespace Phug\Test\Parser\TokenHandler;
 
+use PHPUnit\Framework\TestCase;
 use Phug\Lexer;
 use Phug\Lexer\Token\AssignmentToken;
 use Phug\Lexer\Token\AttributeEndToken;
@@ -18,7 +19,7 @@ use Phug\Parser\TokenHandler\AttributeTokenHandler;
 /**
  * @coversDefaultClass Phug\Parser\TokenHandler\AssignmentTokenHandler
  */
-class AssignmentTokenHandlerTest extends \PHPUnit_Framework_TestCase
+class AssignmentTokenHandlerTest extends TestCase
 {
     /**
      * @covers ::<public>

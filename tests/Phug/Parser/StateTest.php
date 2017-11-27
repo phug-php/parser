@@ -2,6 +2,7 @@
 
 namespace Phug\Test\Parser;
 
+use PHPUnit\Framework\TestCase;
 use Phug\Lexer;
 use Phug\Lexer\Token\AttributeToken;
 use Phug\Lexer\Token\NewLineToken;
@@ -18,7 +19,7 @@ use Phug\Util\SourceLocation;
 /**
  * @coversDefaultClass Phug\Parser\State
  */
-class StateTest extends \PHPUnit_Framework_TestCase
+class StateTest extends TestCase
 {
     private function generateTokens()
     {
@@ -265,7 +266,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
 
         self::assertInstanceOf(TagToken::class, $state->expectNext($types));
         self::assertInstanceOf(NewLineToken::class, $state->expectNext($types));
-        self::assertSame(null, $state->expectNext($types));
+        self::assertNull($state->expectNext($types));
     }
 
     /**
@@ -319,7 +320,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $a = new ElementNode();
         $b = new ElementNode();
 
-        self::assertSame(null, $state->getCurrentNode());
+        self::assertNull($state->getCurrentNode());
 
         $state->append($a);
 

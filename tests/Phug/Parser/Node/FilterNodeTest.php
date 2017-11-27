@@ -18,7 +18,7 @@ class FilterNodeTest extends AbstractParserTest
     {
         $text = new FilterNode();
 
-        self::assertSame(null, $text->getImport());
+        self::assertNull($text->getImport());
 
         $import = new ImportNode();
         $text->setImport($import);

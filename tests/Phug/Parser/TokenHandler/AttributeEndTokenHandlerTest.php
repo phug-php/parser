@@ -2,6 +2,7 @@
 
 namespace Phug\Test\Parser\TokenHandler;
 
+use PHPUnit\Framework\TestCase;
 use Phug\Lexer;
 use Phug\Lexer\Token\AttributeEndToken;
 use Phug\Lexer\Token\AttributeToken;
@@ -12,7 +13,7 @@ use Phug\Parser\TokenHandler\AttributeEndTokenHandler;
 /**
  * @coversDefaultClass Phug\Parser\TokenHandler\AttributeEndTokenHandler
  */
-class AttributeEndTokenHandlerTest extends \PHPUnit_Framework_TestCase
+class AttributeEndTokenHandlerTest extends TestCase
 {
     /**
      * @covers ::<public>
@@ -24,7 +25,7 @@ class AttributeEndTokenHandlerTest extends \PHPUnit_Framework_TestCase
         $handler = new AttributeEndTokenHandler();
         $handler->handleToken(new AttributeEndToken(), $state);
 
-        self::assertSame(null, $state->getCurrentNode());
+        self::assertNull($state->getCurrentNode());
     }
 
     /**

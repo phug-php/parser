@@ -31,7 +31,7 @@ class NodeTest extends AbstractParserTest
         self::assertSame(1, $div->getSourceLocation()->getLine());
         self::assertSame(1, $div->getSourceLocation()->getOffset());
         self::assertSame(0, $div->getLevel());
-        self::assertSame(null, $div->getOuterNode());
+        self::assertNull($div->getOuterNode());
         self::assertInstanceOf(TagToken::class, $div->getToken());
         self::assertSame('source.pug', $div->getSourceLocation()->getPath());
 
@@ -42,7 +42,7 @@ class NodeTest extends AbstractParserTest
         self::assertSame(2, $p->getSourceLocation()->getLine());
         self::assertSame(3, $p->getSourceLocation()->getOffset());
         self::assertSame(1, $p->getLevel());
-        self::assertSame(null, $p->getOuterNode());
+        self::assertNull($p->getOuterNode());
         self::assertInstanceOf(TagToken::class, $p->getToken());
         self::assertSame('source.pug', $p->getSourceLocation()->getPath());
 
@@ -53,7 +53,7 @@ class NodeTest extends AbstractParserTest
         self::assertSame(2, $text->getSourceLocation()->getLine());
         self::assertSame(4, $text->getSourceLocation()->getOffset());
         self::assertSame(2, $text->getLevel());
-        self::assertSame(null, $text->getOuterNode());
+        self::assertNull($text->getOuterNode());
         self::assertInstanceOf(TextToken::class, $text->getToken());
         self::assertSame('source.pug', $text->getSourceLocation()->getPath());
 
