@@ -58,6 +58,13 @@ class CodeTokenHandlerTest extends AbstractParserTest
         $elementNodes = $documentNodes[0]->getChildren();
         self::assertSame('do_something()', $elementNodes[0]->getValue());
         self::assertSame('foo', $elementNodes[1]->getValue());
+
+        $code = '- "#{}"';
+        $this->assertNodes($code, [
+            '[DocumentNode]',
+            '  [CodeNode]',
+            '    [TextNode]',
+        ]);
     }
 
     /**
