@@ -20,6 +20,15 @@ engines:
     exclude_fingerprints:
     # Allow is method
     - 9566f83b400b55b985a7c18e702063fd
+plugins:
+  phpcodesniffer:
+    enabled: true
+  phpmd:
+    enabled: true
+  SonarPHP:
+    enabled: true
+  phan:
+    enabled: true
 ratings:
   paths:
   - "**.inc"
