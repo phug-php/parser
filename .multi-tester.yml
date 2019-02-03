@@ -1,0 +1,33 @@
+phug/compiler:
+  script: vendor/bin/phpunit -c ./vendor/phug/dev-tool/config/
+
+phug/renderer:
+  script: vendor/bin/phpunit -c ./vendor/phug/dev-tool/config/
+
+phug/phug:
+  script: vendor/bin/phpunit -c ./vendor/phug/dev-tool/config/
+
+phug/formatter:
+  script: vendor/bin/phpunit -c ./vendor/phug/dev-tool/config/
+
+pug-php/pug: default
+
+pug/bemto: default
+
+pug-php/pug-phalcon: default
+
+pug-php/pug-symfony: default
+
+pug-php/pug-assets: default
+
+pug-php/pug-minify: default
+
+pug/slim: default
+
+pug/twig: default
+
+ci-pug/ci-pug: default
+
+bkwld/laravel-pug: default
+
+pug/yii2: default
