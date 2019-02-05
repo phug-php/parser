@@ -14,17 +14,14 @@ pug-php/pug: default
 
 pug/bemto: default
 
-pug-php/pug-phalcon: default
-
-pug-php/pug-symfony: default
-
 pug-php/pug-assets: default
 
 pug-php/pug-minify: default
 
 pug/slim: default
 
-pug/twig: default
+pug/twig:
+  script: vendor/bin/phpunit -c ./vendor/phug/dev-tool/config/
 
 ci-pug/ci-pug: default
 
