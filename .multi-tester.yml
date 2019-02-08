@@ -25,6 +25,9 @@ pug/twig:
 
 ci-pug/ci-pug: default
 
-bkwld/laravel-pug: default
+bkwld/laravel-pug:
+  install:
+    - php tests/setDependenciesVersions.php 5.8.* ^3.0
+    - composer update --no-interaction
 
 pug/yii2: default
