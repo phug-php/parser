@@ -34,6 +34,31 @@ class TextTokenHandlerTest extends AbstractParserTest
     }
 
     /**
+     * @covers ::<public>
+     */
+    public function testHandleMarkup()
+    {
+        $this->assertNodes(implode("\n", [
+            'body',
+            '  if (test == true)',
+            '    h1 Phug',
+            '  else',
+            '    <!---->',
+            '  div test',
+        ]), [
+            '[DocumentNode]',
+            '  [ElementNode]',
+            '    [ConditionalNode]',
+            '      [ElementNode]',
+            '        [TextNode]',
+            '    [ConditionalNode]',
+            '      [TextNode]',
+            '    [ElementNode]',
+            '      [TextNode]',
+        ]);
+    }
+
+    /**
      * @covers                   ::<public>
      * @expectedException        \RuntimeException
      * @expectedExceptionMessage You can only pass text tokens to this token handler
