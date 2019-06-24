@@ -9,7 +9,6 @@ use Phug\Lexer\Token\AttributeToken;
 use Phug\Lexer\Token\TagToken;
 use Phug\Parser;
 use Phug\Parser\Node\AttributeNode;
-use Phug\Parser\Node\DocumentNode;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandler\AttributeEndTokenHandler;
