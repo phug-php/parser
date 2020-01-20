@@ -32,9 +32,4 @@ class ParserException extends LocatedException
     {
         return $this->relatedToken;
     }
-
-    public static function message($message, array $details = [])
-    {
-        return static::getFailureMessage('parse', $message, $details);
-    }
 }
