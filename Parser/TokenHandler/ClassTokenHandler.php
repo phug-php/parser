@@ -14,8 +14,7 @@ class ClassTokenHandler extends AbstractTokenHandler
 
     public function handleClassToken(ClassToken $token, State $state)
     {
-        $this->createElementNodeIfMissing($token, $state);
-        $this->assertCurrentNodeIs($token, $state, [ElementNode::class, MixinCallNode::class]);
+        $this->onlyOnElement($token, $state);
 
         //We actually create a fake class attribute
         /** @var AttributeNode $attr */

@@ -15,8 +15,7 @@ class AssignmentTokenHandler extends AbstractTokenHandler
 
     public function handleAssignmentToken(AssignmentToken $token, State $state)
     {
-        $this->createElementNodeIfMissing($token, $state);
-        $this->assertCurrentNodeIs($token, $state, [ElementNode::class, MixinCallNode::class]);
+        $this->onlyOnElement($token, $state);
 
         /** @var AssignmentNode $node */
         $node = $state->createNode(AssignmentNode::class, $token);

@@ -32,12 +32,13 @@ class AttributeTokenHandler extends AbstractTokenHandler
         // Mixin calls and assignments take the first
         // expression set as the name as the value
         if (($value === '' || $value === null) &&
-            $state->currentNodeIs([MixinCallNode::class, AssignmentNode::class])
+            (
+                $state->currentNodeIs([AssignmentNode::class]) ||
+                ($state->currentNodeIs([MixinCallNode::class]) && !$state->getCurrentNode()->areArgumentsCompleted())
+            )
         ) {
-            if (!$state->currentNodeIs([MixinCallNode::class]) || !$state->getCurrentNode()->areArgumentsCompleted()) {
-                $node->setValue($name);
-                $node->setName(null);
-            }
+            $node->setValue($name);
+            $node->setName(null);
         }
 
         /** @var ElementNode|MixinCallNode|AssignmentNode $current */

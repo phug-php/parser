@@ -14,8 +14,7 @@ class IdTokenHandler extends AbstractTokenHandler
 
     public function handleIdToken(IdToken $token, State $state)
     {
-        $this->createElementNodeIfMissing($token, $state);
-        $this->assertCurrentNodeIs($token, $state, [ElementNode::class, MixinCallNode::class]);
+        $this->onlyOnElement($token, $state);
 
         /** @var AttributeNode $attr */
         $attr = $state->createNode(AttributeNode::class, $token);
