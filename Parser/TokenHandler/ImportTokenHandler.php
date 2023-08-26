@@ -3,13 +3,11 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\ImportToken;
-use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\CommentNode;
 use Phug\Parser\Node\ImportNode;
 use Phug\Parser\Node\MixinNode;
 use Phug\Parser\NodeInterface;
 use Phug\Parser\State;
-use Phug\Parser\TokenHandlerInterface;
 
 class ImportTokenHandler extends AbstractTokenHandler
 {

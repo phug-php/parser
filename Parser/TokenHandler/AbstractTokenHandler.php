@@ -22,7 +22,7 @@ abstract class AbstractTokenHandler implements TokenHandlerInterface
             );
         }
 
-        $method = 'handle' . $this->getClassLastPart(get_class($token));
+        $method = 'handle'.$this->getClassLastPart(get_class($token));
         $this->$method($token, $state);
     }
 
@@ -41,11 +41,11 @@ abstract class AbstractTokenHandler implements TokenHandlerInterface
             $count = count($nodeTypes);
 
             foreach ($nodeTypes as $i => $nodeType) {
-                $list .= ($i === $count - 1 ? ' and ' : ', ') . $this->getPluralTypeName($nodeType);
+                $list .= ($i === $count - 1 ? ' and ' : ', ').$this->getPluralTypeName($nodeType);
             }
 
             $state->throwException(
-                ucfirst($this->getPluralTypeName(get_class($token))) . ' can only happen on ' . $list,
+                ucfirst($this->getPluralTypeName(get_class($token))).' can only happen on '.$list,
                 0,
                 $token
             );
@@ -75,6 +75,6 @@ abstract class AbstractTokenHandler implements TokenHandlerInterface
             return 'classes';
         }
 
-        return $name . 's';
+        return $name.'s';
     }
 }
