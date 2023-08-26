@@ -20,26 +20,7 @@ class InterpolationStartTokenHandler extends AbstractTokenHandler
         $node = $state->getCurrentNode();
 
         if (!$node && !($state->getPreviousToken() instanceof InterpolationEndToken)) {
-            /** @var ElementNode $element */
-            $element = $state->createNode(ElementNode::class, $token);
-            $state->setCurrentNode($element);
-
-            foreach ($state->lookUpNext([ExpressionToken::class]) as $expression) {
-                /** @var ExpressionNode $expressionNode */
-                $expressionNode = $state->createNode(ExpressionNode::class, $expression);
-                $expressionNode->check();
-                $expressionNode->unescape();
-                $expressionNode->setValue($expression->getValue());
-                $element->setName($expressionNode);
-            }
-
-            if (!$state->expect([InterpolationEndToken::class])) {
-                $state->throwException(
-                    'Interpolation not properly closed',
-                    0,
-                    $token
-                );
-            }
+            $this->handleExpressionTokens($token, $state);
 
             return;
         }
@@ -58,5 +39,29 @@ class InterpolationStartTokenHandler extends AbstractTokenHandler
         ]);
 
         $state->store();
+    }
+
+    private function handleExpressionTokens(InterpolationStartToken $token, State $state)
+    {
+        /** @var ElementNode $element */
+        $element = $state->createNode(ElementNode::class, $token);
+        $state->setCurrentNode($element);
+
+        foreach ($state->lookUpNext([ExpressionToken::class]) as $expression) {
+            /** @var ExpressionNode $expressionNode */
+            $expressionNode = $state->createNode(ExpressionNode::class, $expression);
+            $expressionNode->check();
+            $expressionNode->unescape();
+            $expressionNode->setValue($expression->getValue());
+            $element->setName($expressionNode);
+        }
+
+        if (!$state->expect([InterpolationEndToken::class])) {
+            $state->throwException(
+                'Interpolation not properly closed',
+                0,
+                $token
+            );
+        }
     }
 }
