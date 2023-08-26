@@ -2,7 +2,9 @@
 
 namespace Phug\Parser\TokenHandler\Partial;
 
+use Phug\Lexer\Token\ClassToken;
 use Phug\Lexer\Token\IdToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\AttributeNode;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\Node\MixinCallNode;
@@ -11,13 +13,13 @@ use Phug\Parser\State;
 trait StaticAttributeTrait
 {
     /**
-     * @param string  $name
-     * @param IdToken $token
-     * @param State   $state
+     * @param string             $name
+     * @param IdToken|ClassToken $token
+     * @param State              $state
      *
      * @return void
      */
-    private function attachStaticAttribute($name, IdToken $token, State $state)
+    private function attachStaticAttribute($name, TokenInterface $token, State $state)
     {
         $this->onlyOnElement($token, $state);
 
