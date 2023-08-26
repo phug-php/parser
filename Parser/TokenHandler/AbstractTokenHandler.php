@@ -4,6 +4,7 @@ namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\ElementNode;
+use Phug\Parser\Node\MixinCallNode;
 use Phug\Parser\State;
 use Phug\Parser\TokenHandlerInterface;
 
@@ -24,6 +25,12 @@ abstract class AbstractTokenHandler implements TokenHandlerInterface
 
         $method = 'handle'.$this->getClassLastPart(get_class($token));
         $this->$method($token, $state);
+    }
+
+    protected function onlyOnElement(TokenInterface $token, State $state)
+    {
+        $this->createElementNodeIfMissing($token, $state);
+        $this->assertCurrentNodeIs($token, $state, [ElementNode::class, MixinCallNode::class]);
     }
 
     protected function createElementNodeIfMissing(TokenInterface $token, State $state)
