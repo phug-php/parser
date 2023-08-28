@@ -4,15 +4,21 @@ namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\CodeToken;
 use Phug\Lexer\Token\TextToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\CodeNode;
 use Phug\Parser\State;
+use Phug\Parser\TokenHandlerInterface;
 
-class CodeTokenHandler extends AbstractTokenHandler
+class CodeTokenHandler implements TokenHandlerInterface
 {
-    const TOKEN_TYPE = CodeToken::class;
-
-    public function handleCodeToken(CodeToken $token, State $state)
+    public function handleToken(TokenInterface $token, State $state)
     {
+        if (!($token instanceof CodeToken)) {
+            throw new \RuntimeException(
+                'You can only pass code tokens to this token handler'
+            );
+        }
+
         /** @var CodeNode $node */
         $node = $state->createNode(CodeNode::class, $token);
 

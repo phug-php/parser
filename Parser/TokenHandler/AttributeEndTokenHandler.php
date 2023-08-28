@@ -3,13 +3,18 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\AttributeEndToken;
+use Phug\Lexer\TokenInterface;
+use Phug\Parser\State;
+use Phug\Parser\TokenHandlerInterface;
 
-class AttributeEndTokenHandler extends AbstractTokenHandler
+class AttributeEndTokenHandler implements TokenHandlerInterface
 {
-    const TOKEN_TYPE = AttributeEndToken::class;
-
-    public function handleAttributeEndToken()
+    public function handleToken(TokenInterface $token, State $state)
     {
-        // noop
+        if (!($token instanceof AttributeEndToken)) {
+            throw new \RuntimeException(
+                'You can only pass attribute end tokens to this token handler'
+            );
+        }
     }
 }

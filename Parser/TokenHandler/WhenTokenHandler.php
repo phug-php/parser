@@ -3,15 +3,21 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\WhenToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\WhenNode;
 use Phug\Parser\State;
+use Phug\Parser\TokenHandlerInterface;
 
-class WhenTokenHandler extends AbstractTokenHandler
+class WhenTokenHandler implements TokenHandlerInterface
 {
-    const TOKEN_TYPE = WhenToken::class;
-
-    public function handleWhenToken(WhenToken $token, State $state)
+    public function handleToken(TokenInterface $token, State $state)
     {
+        if (!($token instanceof WhenToken)) {
+            throw new \RuntimeException(
+                'You can only pass when tokens to this token handler'
+            );
+        }
+
         /** @var WhenNode $node */
         $node = $state->createNode(WhenNode::class, $token);
         $node->setSubject($token->getSubject());

@@ -3,15 +3,21 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\EachToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\EachNode;
 use Phug\Parser\State;
+use Phug\Parser\TokenHandlerInterface;
 
-class EachTokenHandler extends AbstractTokenHandler
+class EachTokenHandler implements TokenHandlerInterface
 {
-    const TOKEN_TYPE = EachToken::class;
-
-    public function handleEachToken(EachToken $token, State $state)
+    public function handleToken(TokenInterface $token, State $state)
     {
+        if (!($token instanceof EachToken)) {
+            throw new \RuntimeException(
+                'You can only pass each tokens to this token handler'
+            );
+        }
+
         /** @var EachNode $node */
         $node = $state->createNode(EachNode::class, $token);
         $node->setSubject($token->getSubject());

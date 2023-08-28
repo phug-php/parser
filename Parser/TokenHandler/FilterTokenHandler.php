@@ -3,16 +3,22 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\FilterToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\FilterNode;
 use Phug\Parser\Node\ImportNode;
 use Phug\Parser\State;
+use Phug\Parser\TokenHandlerInterface;
 
-class FilterTokenHandler extends AbstractTokenHandler
+class FilterTokenHandler implements TokenHandlerInterface
 {
-    const TOKEN_TYPE = FilterToken::class;
-
-    public function handleFilterToken(FilterToken $token, State $state)
+    public function handleToken(TokenInterface $token, State $state)
     {
+        if (!($token instanceof FilterToken)) {
+            throw new \RuntimeException(
+                'You can only pass filter tokens to this token handler'
+            );
+        }
+
         /** @var FilterNode $node */
         $node = $state->createNode(FilterNode::class, $token);
         $node->setName($token->getName());

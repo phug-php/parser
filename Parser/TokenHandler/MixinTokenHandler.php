@@ -3,15 +3,21 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\MixinToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\MixinNode;
 use Phug\Parser\State;
+use Phug\Parser\TokenHandlerInterface;
 
-class MixinTokenHandler extends AbstractTokenHandler
+class MixinTokenHandler implements TokenHandlerInterface
 {
-    const TOKEN_TYPE = MixinToken::class;
-
-    public function handleMixinToken(MixinToken $token, State $state)
+    public function handleToken(TokenInterface $token, State $state)
     {
+        if (!($token instanceof MixinToken)) {
+            throw new \RuntimeException(
+                'You can only pass mixin tokens to this token handler'
+            );
+        }
+
         /** @var MixinNode $node */
         $node = $state->createNode(MixinNode::class, $token);
         $node->setName($token->getName());

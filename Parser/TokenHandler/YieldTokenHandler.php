@@ -3,15 +3,21 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\YieldToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\YieldNode;
 use Phug\Parser\State;
+use Phug\Parser\TokenHandlerInterface;
 
-class YieldTokenHandler extends AbstractTokenHandler
+class YieldTokenHandler implements TokenHandlerInterface
 {
-    const TOKEN_TYPE = YieldToken::class;
-
-    public function handleYieldToken(YieldToken $token, State $state)
+    public function handleToken(TokenInterface $token, State $state)
     {
+        if (!($token instanceof YieldToken)) {
+            throw new \RuntimeException(
+                'You can only pass yield tokens to this token handler'
+            );
+        }
+
         $state->setCurrentNode($state->createNode(YieldNode::class, $token));
     }
 }

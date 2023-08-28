@@ -3,16 +3,28 @@
 namespace Phug\Parser\TokenHandler;
 
 use Phug\Lexer\Token\AutoCloseToken;
+use Phug\Lexer\TokenInterface;
 use Phug\Parser\Node\ElementNode;
 use Phug\Parser\State;
+use Phug\Parser\TokenHandlerInterface;
 
-class AutoCloseTokenHandler extends AbstractTokenHandler
+class AutoCloseTokenHandler implements TokenHandlerInterface
 {
-    const TOKEN_TYPE = AutoCloseToken::class;
-
-    public function handleAutoCloseToken(AutoCloseToken $token, State $state)
+    public function handleToken(TokenInterface $token, State $state)
     {
-        $this->assertCurrentNodeIs($token, $state, [ElementNode::class]);
+        if (!($token instanceof AutoCloseToken)) {
+            throw new \RuntimeException(
+                'You can only pass auto-close tokens to this token handler'
+            );
+        }
+
+        if (!$state->currentNodeIs([ElementNode::class])) {
+            $state->throwException(
+                'Auto-close operators can only be used on elements',
+                0,
+                $token
+            );
+        }
 
         $state->getCurrentNode()->autoClose();
     }
